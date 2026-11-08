@@ -3,6 +3,8 @@
 const WA_ADMIN = '';
 
 const gerakBoleh = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+// versi file (dari app.js?v=...) dipakai juga waktu ngambil logo, biar gak kecampur versi lama di cache
+const VERSI = (document.currentScript && new URL(document.currentScript.src).searchParams.get('v')) || '';
 
 // ---------- tema terang/gelap ----------
 // Bawaan ngikutin setelan perangkat; pilihan lewat tombol disimpen di perangkat pengunjung.
@@ -50,12 +52,11 @@ menu.addEventListener('click', (e) => {
 (async () => {
   const kanvas = document.querySelector('.hero__bara');
   const wadah = document.querySelector('.hero__logo');
-  if (!kanvas || !gerakBoleh) return;
-  document.documentElement.classList.add('bara-hidup');
+  if (!kanvas || !wadah || !gerakBoleh) return;
   const c = kanvas.getContext('2d');
-  const sprite = await fetch('gambar/logo.svg').then((r) => r.text()).catch(() => '');
+  const sprite = await fetch(`gambar/logo.svg?v=${VERSI}`).then((r) => r.text()).catch(() => '');
   const m = sprite.match(/id="tegak" viewBox="([^"]+)">(.*?)<\/symbol>/);
-  if (!m) { document.documentElement.classList.remove('bara-hidup'); return; }
+  if (!m) return;
   const vb = m[1].split(' ').map(Number), bentuk = [...m[2].matchAll(/ d="([^"]+)"/g)].map((x) => new Path2D(x[1]));
   // dominan merah; oranye & kuning cuma sedikit buat kesan inti api
   const WARNA = [['#da1617', 34], ['#ff1f1f', 22], ['#b30d10', 18], ['#ff3b26', 14], ['#ff6a2a', 8], ['#ffb04a', 4]];
@@ -65,7 +66,9 @@ menu.addEventListener('click', (e) => {
   const titikLogo = () => {
     const r = wadah.getBoundingClientRect(), k = kanvas.getBoundingClientRect();
     const lw = Math.round(r.width), lh = Math.round(r.height);
-    const o = new OffscreenCanvas(lw, lh), oc = o.getContext('2d');
+    // OffscreenCanvas belum ada di Safari lama: pakai kanvas biasa
+    const o = typeof OffscreenCanvas === 'function' ? new OffscreenCanvas(lw, lh) : Object.assign(document.createElement('canvas'), { width: lw, height: lh });
+    const oc = o.getContext('2d', { willReadFrequently: true });
     const s = Math.min(lw / vb[2], lh / vb[3]);
     oc.translate((lw - vb[2] * s) / 2, 0); oc.scale(s, s); oc.translate(-vb[0], -vb[1]);
     bentuk.forEach((b) => oc.fill(b, 'evenodd'));
@@ -131,8 +134,16 @@ menu.addEventListener('click', (e) => {
   hero.addEventListener('pointerup', (e) => { if (e.pointerType !== 'mouse') px = py = -999; });
   new IntersectionObserver(([e]) => { const tadi = jalan; jalan = e.isIntersecting; if (jalan && !tadi) requestAnimationFrame(gambar); }).observe(kanvas);
   let tunggu; addEventListener('resize', () => { clearTimeout(tunggu); tunggu = setTimeout(ukur, 150); });
-  await document.fonts.ready;
-  ukur(); requestAnimationFrame(gambar);
+  // logo SVG asli baru disembunyiin kalau bara udah pasti kegambar; gagal = logo biasa tetap tampil
+  try {
+    ukur();
+    if (!butir.length) throw new Error('titik logo kosong');
+    document.documentElement.classList.add('bara-hidup');
+    requestAnimationFrame(gambar);
+  } catch (e) {
+    document.documentElement.classList.remove('bara-hidup');
+    kanvas.remove();
+  }
 })();
 
 // ---------- maskot rubah ekor sembilan (BELUM DISETUJUI OWNER: cuma muncul di pratinjau lokal pakai ?rubah) ----------
@@ -188,7 +199,7 @@ new IntersectionObserver((daftar, o) => {
   const isian = document.querySelector('[name=tag]');
   const W = 1500, H = 500;
   // Ambil bentuk logo dari sprite, biar banner pakai vektor asli.
-  const sprite = await fetch('gambar/logo.svg').then((r) => r.text()).catch(() => '');
+  const sprite = await fetch(`gambar/logo.svg?v=${VERSI}`).then((r) => r.text()).catch(() => '');
   const bentuk = (id) => {
     const m = sprite.match(new RegExp(`id="${id}" viewBox="([^"]+)">(.*?)</symbol>`));
     return m ? { vb: m[1].split(' ').map(Number), p: [...m[2].matchAll(/ d="([^"]+)"/g)].map((x) => new Path2D(x[1])) } : null;
