@@ -33,7 +33,7 @@ if (window.top !== window.self) { try { window.top.location.replace(window.self.
     );
     console.log(
       '%cSeluruh kode, desain, aset visual, font Reign9Display, dan maskot IXAR dilindungi hak cipta © 2026 Reign 9 International. Ekstraksi otomatis oleh AI/scraper luar atau penggandaan tanpa izin dilarang keras.',
-      'color:#ff8a3c;font-size:12px;'
+      'color:#DA1617;font-size:12px;'
     );
   } catch (e) {}
 
@@ -210,7 +210,7 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
     const semua = cuplik(oc, Math.round(w), Math.round(h), w < 600 ? 6 : 7), lompat = Math.max(1, semua.length / 2200);
     titik.kastil = Array.from({ length: Math.min(2200, semua.length) }, (_, i) => semua[Math.floor(i * lompat)]);
   };
-  const WARNA_GELAP = [['#da1617', 34], ['#ff1f1f', 22], ['#b30d10', 18], ['#ff3b26', 14], ['#ff6a2a', 8], ['#ffb04a', 4]];
+  const WARNA_GELAP = [['#da1617', 34], ['#ff1f1f', 22], ['#b30d10', 18], ['#ff3b26', 14], ['#ff5c5c', 8], ['#ffd6d6', 4]];
   const WARNA_TERANG = [['#000000', 46], ['#1a0102', 10], ['#da1617', 24], ['#a80309', 20]];
   const pilihWarna = () => { const daftar = terang ? WARNA_TERANG : WARNA_GELAP; let n = Math.random() * 100; for (const [wr, b] of daftar) { if ((n -= b) < 0) return wr; } return daftar[0][0]; };
   const baraLepas = (acak) => ({ x: Math.random() * w, y: acak ? Math.random() * h : h + 10, r: Math.random() * 1.8 + .5, v: Math.random() * .6 + .25, goyang: Math.random() * 6.28, umur: Math.random() * .5 + .4 });

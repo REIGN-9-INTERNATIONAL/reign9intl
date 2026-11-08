@@ -21,8 +21,8 @@
 <link rel="icon" href="gambar/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="font/Reign9Display-Regular.ttf" as="font" type="font/ttf" crossorigin>
 <link rel="preload" href="font/oxanium-500.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="font/font.css?v=2611090318">
-<link rel="stylesheet" href="gaya.css?v=2611090318">
+<link rel="stylesheet" href="font/font.css?v=2611090324">
+<link rel="stylesheet" href="gaya.css?v=2611090324">
 </head>
 <body>
 <!-- Sprite SVG Logo disematkan langsung agar dibuka lewat file:// (klik 2x index.html) tetap jalan 100% tanpa kena blokir CORS browser -->
@@ -58,13 +58,9 @@
   </div>
 </header>
 
-<!-- panggung IXAR penjelajah aktif (mengikuti scroll, drag & drop, fisika jatuh, gelembung 200 cuitan) -->
+<!-- panggung IXAR penjelajah aktif (mengikuti scroll, drag & drop, fisika jatuh, gelembung cuitan) -->
 <div class="panggung-ixar">
-  <button type="button" class="ixar-gelembung" data-ixar-gelembung hidden title="Klik untuk ganti cuitan / fun fact IXAR">
-    <span class="ixar-gelembung__kepala">
-      <span class="ixar-gelembung__tag">IXAR // FUN FACT &amp; JOKES</span>
-      <span class="ixar-gelembung__nomor" data-ixar-cuitan-nomor>#1/200</span>
-    </span>
+  <button type="button" class="ixar-gelembung" data-ixar-gelembung hidden data-i18n-attr="title:ixar.gelembungJudul" title="Klik buat cuitan IXAR berikutnya">
     <span class="ixar-gelembung__teks" data-ixar-cuitan-teks></span>
   </button>
   <span class="jelajah__ixar" data-ixar="diam" data-ixar-bara data-ixar-otak data-ixar-interaktif data-i18n-attr="aria-label:ixar.label"></span>
@@ -180,16 +176,12 @@
       </div>
       <svg class="kenal__lambang" viewBox="0 0 105.63 183.98" aria-hidden="true"><use href="#simbol"/></svg>
       <div class="kenal__cuitan-box">
-        <div class="kenal__cuitan-atas">
-          <span>💬 IXAR LIVE CHIME · 200 TOPIK R9 &amp; HOK</span>
-          <b data-ixar-cuitan-counter>#1 / 200</b>
-        </div>
-        <p class="kenal__cuitan-isi" data-ixar-cuitan-panggung>“Klik tombol di bawah atau sentuh tubuh IXAR untuk mendengar fun fact &amp; jokes seputar Reign 9, Honor of Kings, dan dunia esports!”</p>
+        <p class="kenal__cuitan-isi" data-ixar-cuitan-panggung data-i18n="ixar.cuitanAwal">Tekan tombol di bawah atau colek IXAR. Dia punya banyak omongan.</p>
       </div>
       <div class="kenal__panggung-info">
         <button type="button" class="tombol tombol--utama tombol--kecil" data-lempar-cuitan>
           <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zM7.5 18A1.5 1.5 0 1 1 9 16.5 1.5 1.5 0 0 1 7.5 18zm0-9A1.5 1.5 0 1 1 9 7.5 1.5 1.5 0 0 1 7.5 9zm4.5 4.5a1.5 1.5 0 1 1 1.5-1.5 1.5 1.5 0 0 1-1.5 1.5zm4.5 4.5a1.5 1.5 0 1 1 1.5-1.5 1.5 1.5 0 0 1-1.5 1.5zm0-9A1.5 1.5 0 1 1 18 7.5 1.5 1.5 0 0 1 16.5 9z" fill="currentColor"/></svg>
-          <span data-i18n="ixar.cuitanTombol">Lempar Cuitan / Fun Fact (200 Topik)</span>
+          <span data-i18n="ixar.cuitanTombol">Suruh IXAR ngomong</span>
         </button>
         <button type="button" class="tombol tombol--garis tombol--kecil" data-panggil-ixar data-i18n="ixar.panggil">Panggil IXAR ke Panggung</button>
       </div>
@@ -498,9 +490,9 @@
   <p class="kaki__hak" data-i18n="kaki.hak">© 2026 Reign 9 International.</p>
 </footer>
 
-<script src="bahasa.js?v=2611090318"></script>
+<script src="bahasa.js?v=2611090324"></script>
 <script src="cuitan-ixar.js?v=26110904"></script>
-<script src="ixar.js?v=2611090318"></script>
-<script src="app.js?v=2611090318"></script>
+<script src="ixar.js?v=2611090324"></script>
+<script src="app.js?v=2611090324"></script>
 </body>
 </html>

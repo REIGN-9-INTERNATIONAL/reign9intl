@@ -132,13 +132,13 @@
       // Handheld konsol/HP HoK di depan dada
       buat('rect', { x: 678, y: 695, width: 180, height: 92, rx: 22, fill: '#111', stroke: alat, 'stroke-width': 12 }, stik);
       buat('circle', { cx: 716, cy: 741, r: 16, fill: alat }, stik);
-      buat('circle', { cx: 818, cy: 728, r: 10, fill: '#ffd447' }, stik);
+      buat('circle', { cx: 818, cy: 728, r: 10, fill: 'var(--ixar-alat-2, #ffffff)' }, stik);
       buat('circle', { cx: 836, cy: 752, r: 10, fill: alat }, stik);
-      buat('path', { d: 'M748 672 L766 640 L776 668 L796 636', fill: 'none', stroke: '#ffd447', 'stroke-width': 8, 'stroke-linecap': 'round' }, stik);
+      buat('path', { d: 'M748 672 L766 640 L776 668 L796 636', fill: 'none', stroke: 'var(--ixar-alat-2, #ffffff)', 'stroke-width': 8, 'stroke-linecap': 'round' }, stik);
 
       // 2. Alat Shop: Tas Belanja Merch R9
       const tas = this.alat['tas-belanja'] = buat('g', { class: 'ixar__alat' }, this.akar);
-      buat('path', { d: 'M-40 0 C-40 -52 40 -52 40 0', fill: 'none', stroke: '#ffd447', 'stroke-width': 14 }, tas);
+      buat('path', { d: 'M-40 0 C-40 -52 40 -52 40 0', fill: 'none', stroke: 'var(--ixar-alat-2, #ffffff)', 'stroke-width': 14 }, tas);
       buat('path', { d: 'M-78 0 L78 0 L92 175 L-92 175 Z', fill: alat, stroke: '#fff', 'stroke-width': 8 }, tas);
       const tTas = buat('text', { x: 0, y: 112, fill: '#fff', 'font-size': 68, 'font-weight': 800, 'text-anchor': 'middle', 'font-family': 'Reign9Display, Oxanium, sans-serif' }, tas);
       tTas.textContent = 'R9';
@@ -146,12 +146,12 @@
       // 3. Alat Schedule: Kacamata Manajer & Papan Klip Jadwal / Kalender
       const kalender = this.alat.kalender = buat('g', { class: 'ixar__alat' }, this.akar);
       // Kacamata taktis manajer di depan mata
-      buat('rect', { x: 582, y: 332, width: 136, height: 84, rx: 12, fill: 'none', stroke: '#ffd447', 'stroke-width': 14 }, kalender);
-      buat('rect', { x: 818, y: 332, width: 136, height: 84, rx: 12, fill: 'none', stroke: '#ffd447', 'stroke-width': 14 }, kalender);
-      buat('line', { x1: 718, y1: 372, x2: 818, y2: 372, stroke: '#ffd447', 'stroke-width': 14 }, kalender);
+      buat('rect', { x: 582, y: 332, width: 136, height: 84, rx: 12, fill: 'none', stroke: 'var(--ixar-alat-2, #ffffff)', 'stroke-width': 14 }, kalender);
+      buat('rect', { x: 818, y: 332, width: 136, height: 84, rx: 12, fill: 'none', stroke: 'var(--ixar-alat-2, #ffffff)', 'stroke-width': 14 }, kalender);
+      buat('line', { x1: 718, y1: 372, x2: 818, y2: 372, stroke: 'var(--ixar-alat-2, #ffffff)', 'stroke-width': 14 }, kalender);
       // Clipboard jadwal di tangan kiri
       buat('rect', { x: 470, y: 620, width: 175, height: 220, rx: 14, fill: '#150406', stroke: alat, 'stroke-width': 12 }, kalender);
-      buat('rect', { x: 518, y: 598, width: 80, height: 32, rx: 8, fill: '#ffd447' }, kalender);
+      buat('rect', { x: 518, y: 598, width: 80, height: 32, rx: 8, fill: 'var(--ixar-alat-2, #ffffff)' }, kalender);
       buat('path', { d: 'M502 678 H612 M502 722 H612 M502 766 H580', stroke: '#fff', 'stroke-width': 12, 'stroke-linecap': 'round' }, kalender);
 
       // 4. Alat News: Koran / Tablet Berita R9 NEWS
@@ -164,15 +164,15 @@
 
       // 5. Alat Banner: Kuas Lukis Besar + Cipratan Warna
       const kuas = this.alat.kuas = buat('g', { class: 'ixar__alat' }, this.akar);
-      buat('path', { d: 'M0 0 L110 -150', stroke: '#ffd447', 'stroke-width': 22, 'stroke-linecap': 'round' }, kuas);
+      buat('path', { d: 'M0 0 L110 -150', stroke: 'var(--ixar-alat-2, #ffffff)', 'stroke-width': 22, 'stroke-linecap': 'round' }, kuas);
       buat('path', { d: 'M95 -135 C125 -195 185 -180 165 -235 C120 -225 75 -185 95 -135 Z', fill: alat }, kuas);
       buat('circle', { cx: 185, cy: -250, r: 16, fill: alat }, kuas);
-      buat('circle', { cx: 140, cy: -275, r: 10, fill: '#ffd447' }, kuas);
+      buat('circle', { cx: 140, cy: -275, r: 10, fill: 'var(--ixar-alat-2, #ffffff)' }, kuas);
 
       // 6. Alat About/Ethos: Panji Bendera Kerajaan R9
       const panji = this.alat['panji-r9'] = buat('g', { class: 'ixar__alat' }, this.akar);
-      buat('line', { x1: 0, y1: 180, x2: 0, y2: -340, stroke: '#ffd447', 'stroke-width': 16, 'stroke-linecap': 'round' }, panji);
-      buat('path', { d: 'M0 -330 L230 -285 L195 -195 L230 -115 L0 -145 Z', fill: alat, stroke: '#ffd447', 'stroke-width': 8 }, panji);
+      buat('line', { x1: 0, y1: 180, x2: 0, y2: -340, stroke: 'var(--ixar-alat-2, #ffffff)', 'stroke-width': 16, 'stroke-linecap': 'round' }, panji);
+      buat('path', { d: 'M0 -330 L230 -285 L195 -195 L230 -115 L0 -145 Z', fill: alat, stroke: 'var(--ixar-alat-2, #ffffff)', 'stroke-width': 8 }, panji);
       const tPanji = buat('text', { x: 98, y: -198, fill: '#fff', 'font-size': 72, 'font-weight': 800, 'text-anchor': 'middle', 'font-family': 'Reign9Display, Oxanium, sans-serif' }, panji);
       tPanji.textContent = 'R9';
 
