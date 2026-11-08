@@ -644,3 +644,53 @@ button { font: inherit; color: inherit; }
 :root { --ixar-alat-2: #FFFFFF; }
 :root[data-tema="terang"] { --ixar-alat-2: var(--merah); }
 @media (prefers-color-scheme: light) { :root:not([data-tema="gelap"]) { --ixar-alat-2: var(--merah); } }
+
+/* =====================================================================================
+   v3: BATAS WARNA TIAP BAGIAN (ala nmss) + LOGO LEBIH TEGAS + SKALA HURUF KONSISTEN
+   Aturan warna teks: latar hitam/merah tua → teks putih, aksen merah. Latar merah muda/merah → teks hitam.
+   Latar merah pekat → teks & logo hitam. Latar hitam pekat (footer) → teks putih, logo merah.
+   ===================================================================================== */
+:root {
+  --pita-a: #0B0203; --pita-b: #22040A; --pita-c: #3A050A; --pita-aksen: #A80309; --pita-aksen-teks: #000;
+  --skala-judul: clamp(40px, 7.2vw, 88px); --skala-sub: clamp(16px, 1.6vw, 19px); --jarak-bagian: clamp(72px, 9vw, 120px);
+}
+:root[data-tema="terang"] { --pita-a: #FFE3E9; --pita-b: #FFC2CF; --pita-c: #FF9DB1; --pita-aksen: #000; --pita-aksen-teks: #FFF; }
+@media (prefers-color-scheme: light) { :root:not([data-tema="gelap"]) { --pita-a: #FFE3E9; --pita-b: #FFC2CF; --pita-c: #FF9DB1; --pita-aksen: #000; --pita-aksen-teks: #FFF; } }
+
+/* satu warna rata per bagian, batasnya tegas */
+.bagian { background: var(--pita-a) !important; padding-block: var(--jarak-bagian) !important; }
+#about { background: var(--pita-b) !important; }
+#ixar { background: var(--pita-a) !important; }
+#rosters { background: var(--pita-c) !important; }
+#schedule { background: var(--pita-a) !important; }
+#news { background: var(--pita-b) !important; }
+#banner { background: var(--pita-a) !important; }
+#shop { background: var(--pita-c) !important; }
+#contact { background: var(--pita-aksen) !important; --teks: var(--pita-aksen-teks); --teks-redup: var(--pita-aksen-teks); --teks-merah: var(--pita-aksen-teks); --garis: color-mix(in srgb, var(--pita-aksen-teks) 30%, transparent); color: var(--pita-aksen-teks); }
+#contact .aksen-merah { color: var(--pita-aksen-teks); text-shadow: none; }
+
+/* skala huruf: judul bagian ≈ 1.618² × sub judul; teks badan 17px; baris maks ±60 huruf */
+.judul { font-size: var(--skala-judul) !important; line-height: .98 !important; letter-spacing: .02em; }
+.kepala-bagian { gap: 16px; margin-bottom: clamp(36px, 5vw, 56px); }
+.kepala-bagian p { font-size: var(--skala-sub); line-height: 1.55; max-width: 58ch; color: var(--teks-redup); }
+.bagian p { max-width: 64ch; }
+
+/* logo: header hitam pekat & besar (header merah pekat), footer merah besar di atas hitam */
+.atas__logo svg { height: 40px !important; color: var(--hitam) !important; filter: none !important; }
+@media (min-width: 1000px) { .atas__logo svg { height: 52px !important; } .atas { height: 84px !important; } html { scroll-padding-top: 96px; } }
+.kaki { background: #000 !important; }
+.kaki__logo { height: clamp(56px, 7vw, 76px) !important; width: auto; color: var(--merah) !important; }
+
+/* header sesuai aturan owner: merah pekat, logo & semua tulisan hitam pekat (dua tema) */
+.atas { background: var(--merah-pekat) !important; backdrop-filter: none !important; color: var(--hitam); border-bottom: 2px solid #000; }
+.atas__menu { background: var(--merah-pekat); }
+.atas__menu a, .bahasa button, .tema, .atas__buka { color: var(--hitam) !important; }
+.atas__buka i { background: var(--hitam) !important; }
+.atas__menu a:hover, .atas__menu a[aria-current="page"] { background: none !important; color: #000 !important; }
+.atas__menu a::after { background: #000 !important; }
+@media (max-width: 999px) { .atas__menu a:hover { background: rgba(0, 0, 0, .12) !important; } }
+.atas__menu .atas__kontak { background: #000 !important; color: var(--merah-pekat) !important; }
+.atas__menu .atas__kontak:hover { color: #fff !important; }
+.bahasa { border-color: #000 !important; }
+.bahasa button[aria-pressed="true"] { background: #000 !important; color: var(--merah-pekat) !important; }
+.bahasa button:hover { color: #000 !important; text-decoration: underline; }
