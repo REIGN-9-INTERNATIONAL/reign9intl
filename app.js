@@ -44,9 +44,11 @@ $('.tema').addEventListener('click', (e) => {
   }
   const r = e.currentTarget.getBoundingClientRect(), x = r.left + r.width / 2, y = r.top + r.height / 2;
   const jari = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+  // titik awal lingkaran dipasang dulu biar tampilan baru mulai tertutup (gak kedip)
+  document.documentElement.style.setProperty('--vt-x', `${x}px`); document.documentElement.style.setProperty('--vt-y', `${y}px`);
   document.startViewTransition(() => pasangTema(baru)).ready.then(() => {
     document.documentElement.animate({ clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${jari}px at ${x}px ${y}px)`] },
-      { duration: 700, easing: 'cubic-bezier(.65, 0, .35, 1)', pseudoElement: '::view-transition-new(root)' });
+      { duration: 700, easing: 'cubic-bezier(.65, 0, .35, 1)', fill: 'forwards', pseudoElement: '::view-transition-new(root)' });
   });
 });
 

@@ -383,7 +383,7 @@ button { font: inherit; color: inherit; }
 
 /* ---------- ganti tema: lingkaran nyebar ---------- */
 ::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
-::view-transition-new(root) { z-index: 9999; }
+::view-transition-new(root) { z-index: 9999; clip-path: circle(0px at var(--vt-x, 50%) var(--vt-y, 0px)); } /* mulai tertutup: gak kedip */
 .ganti-tema, .ganti-tema * { transition: background-color .45s, color .45s, border-color .45s !important; }
 @media (prefers-reduced-motion: reduce) { .pita__jalan { animation: none; } html { scroll-behavior: auto; } }
 @media (min-width: 860px) { .hero { padding-bottom: 64px; } }
