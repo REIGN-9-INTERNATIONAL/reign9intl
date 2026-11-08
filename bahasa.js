@@ -5,7 +5,7 @@ window.R9_KAMUS = {
   // ---------- umum ----------
   'lewati': { id: 'Langsung ke isi', en: 'Skip to content', zh: '跳到内容' },
   'menu.buka': { id: 'Buka menu', en: 'Open menu', zh: '打开菜单' },
-  'menu.rosters': { id: 'Rosters', en: 'Rosters', zh: '阵容' },
+  'menu.rosters': { id: 'Tim', en: 'Team', zh: '团队' },
   'menu.about': { id: 'About', en: 'About', zh: '关于' },
   'menu.news': { id: 'News', en: 'News', zh: '新闻' },
   'menu.schedule': { id: 'Schedule', en: 'Schedule', zh: '赛程' },
@@ -21,7 +21,7 @@ window.R9_KAMUS = {
   'hero.sambut': { id: 'WELCOME TO OUR REIGN', en: 'WELCOME TO OUR REIGN', zh: 'WELCOME TO OUR REIGN' },
   'hero.ringkas': { id: 'Organisasi esports Honor of Kings lintas negara — dari Indonesia, Malaysia, hingga Tiongkok.', en: 'A multinational Honor of Kings esports organization — from Indonesia and Malaysia to China.', zh: '跨国王者荣耀国际版电竞组织——汇聚印度尼西亚、马来西亚与中国。' },
   'hero.gabung': { id: 'Gabung Discord', en: 'Join our Discord', zh: '加入 Discord' },
-  'hero.roster': { id: 'Lihat roster', en: 'See the roster', zh: '查看阵容' },
+  'hero.roster': { id: 'Lihat tim', en: 'Meet the team', zh: '认识团队' },
   'sosmed.ig': { id: 'Instagram Reign 9', en: 'Reign 9 on Instagram', zh: 'Reign 9 的 Instagram' },
   'sosmed.tt': { id: 'TikTok Reign 9', en: 'Reign 9 on TikTok', zh: 'Reign 9 的 TikTok' },
   'sosmed.dc': { id: 'Discord Reign 9', en: 'Reign 9 Discord server', zh: 'Reign 9 的 Discord 服务器' },
@@ -116,7 +116,7 @@ window.R9_KAMUS = {
   'pose.kurir': { id: 'Mode Kurir Surat', en: 'Mail Courier', zh: '信使接待模式' },
 
   // ---------- roster (3-Level Drilldown: Active Squads, Non-Active Squads, & Management) ----------
-  'roster.judul': { id: 'Our <span class="aksen-merah">Rosters</span>', en: 'Our <span class="aksen-merah">Rosters</span>', zh: 'R9 <span class="aksen-merah">阵容与管理层</span>' },
+  'roster.judul': { id: 'Tim <span class="aksen-merah">Kami</span>', en: 'Our <span class="aksen-merah">Team</span>', zh: '我们的<span class="aksen-merah">团队</span>' },
   'roster.sub': { id: 'Pilih kategori (Active Squads, Non-Active Squads, atau Management), lalu klik nama tim/divisi untuk melihat daftar anggota.', en: 'Select a category (Active Squads, Non-Active Squads, or Management), then click a team or division to view its members.', zh: '选择类别（现役战队、历史荣誉阵容或管理层部门），再点击具体战队或部门名称查看成员。' },
   'roster.wilayah': { id: 'Skuad Lintas Negara: Indonesia, Malaysia, Singapura & Tiongkok', en: 'Multinational Squad: Indonesia, Malaysia, Singapore & China', zh: '跨国阵容：印度尼西亚、马来西亚、新加坡与中国' },
   'roster.wilayahIsi': { id: 'Berawal dari Indonesia, kini Reign 9 menyatukan talenta terbaik dari berbagai negara Asia dalam satu bendera kompetitif.', en: 'Starting in Indonesia, Reign 9 now unites top Asian talents under one competitive banner.', zh: '从印度尼西亚起步，Reign 9 现已将亚洲多国顶尖人才汇聚在同一面竞技旗帜之下。' },

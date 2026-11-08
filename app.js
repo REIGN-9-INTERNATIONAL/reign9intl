@@ -1540,6 +1540,11 @@ gambarData();
     }
   };
   await segarkan();
+  // langsung tayang: admin ngirim sinyal tiap ada yang disimpan/diunggah → data diambil saat itu juga (cadangan: cek tiap 15 dtk)
+  try {
+    const sinyal = new EventSource(`${ADMIN}/api/langsung`);
+    sinyal.addEventListener('berubah', () => segarkan());
+  } catch (e) { /* peramban tanpa EventSource: cukup cek berkala */ }
   setInterval(() => { if (!document.hidden) segarkan(); }, 15000);
   document.addEventListener('visibilitychange', () => { if (!document.hidden) segarkan(); });
 })();
