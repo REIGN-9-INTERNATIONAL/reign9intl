@@ -233,10 +233,10 @@ h1, h2, h3, p { margin: 0; }
 .rubah-intip .rubah-wadah { transform: translateY(100%); transition: transform .8s cubic-bezier(.2, 1.4, .4, 1); }
 .rubah-intip.muncul .rubah-wadah { transform: translateY(14%); }
 /* bendera juara 1: logo REIGN 9 INTERNATIONAL, tiang & kain ikut tema */
-.podium { --tiang: var(--tulang); --kain: #0B0102; --kain-garis: rgba(243, 233, 220, .14); --bendera-teks: var(--tulang); }
-:root[data-tema="terang"] .podium { --tiang: #1A0A0B; --kain: #FFFFFF; --kain-garis: rgba(26, 10, 11, .12); --bendera-teks: #0B0102; }
+.podium { --tiang: var(--tulang); --kain: #0B0102; --kain-garis: rgba(243, 233, 220, .14); }
+:root[data-tema="terang"] .podium { --tiang: #1A0A0B; --kain: #FFFFFF; --kain-garis: rgba(26, 10, 11, .12); }
 @media (prefers-color-scheme: light) {
-  :root:not([data-tema="gelap"]) .podium { --tiang: #1A0A0B; --kain: #FFFFFF; --kain-garis: rgba(26, 10, 11, .12); --bendera-teks: #0B0102; }
+  :root:not([data-tema="gelap"]) .podium { --tiang: #1A0A0B; --kain: #FFFFFF; --kain-garis: rgba(26, 10, 11, .12); }
 }
 .bendera { position: absolute; bottom: 100%; left: 50%; width: 3px; height: 148px; margin-left: -1.5px; }
 .bendera__tiang { position: absolute; inset: 0; background: var(--tiang); }
@@ -250,7 +250,7 @@ h1, h2, h3, p { margin: 0; }
   transform-origin: left center;
   clip-path: polygon(0 0, 100% 0, 92% 50%, 100% 100%, 0 100%); /* ujung kain berpotongan kayak panji */
 }
-.bendera__kain svg { width: 100%; height: auto; --logo-simbol: var(--darah); --logo-teks: var(--bendera-teks); }
+.bendera__kain svg { width: 100%; height: auto; color: var(--darah); } /* logo satu warna: merah penuh */
 .bendera__kain::after { /* kilap kain yang ikut bergelombang */
   content: ''; position: absolute; inset: 0;
   background: linear-gradient(100deg, transparent 20%, rgba(255, 255, 255, .14) 40%, transparent 55%, rgba(0, 0, 0, .12) 75%, transparent 90%);
