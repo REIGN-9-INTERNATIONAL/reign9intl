@@ -3,178 +3,315 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Reign 9 International · Komunitas Honor of Kings</title>
-<meta name="description" content="Reign 9 International, komunitas Honor of Kings. Lihat roster, bikin banner gamertag, dan daftar gabung lewat WhatsApp.">
+<title>Reign 9 International · Honor of Kings Esports</title>
+<meta name="description" content="Reign 9 International (R9), organisasi esports Honor of Kings dari Indonesia sampai Malaysia. Roster, jadwal, berita, dan maskot IXAR.">
 <meta property="og:title" content="Reign 9 International">
-<meta property="og:description" content="Komunitas Honor of Kings. Bikin banner gamertag-mu dan gabung bareng kami.">
-<meta property="og:image" content="gambar/share.jpg">
-<meta name="theme-color" content="#DA1617">
+<meta property="og:description" content="Honor of Kings esports organization. Together we reign.">
+<meta property="og:image" content="https://reign9.site/gambar/banner/banner-5.jpg">
+<meta name="theme-color" content="#A80309">
 <meta name="color-scheme" content="dark light">
-<script>try { const t = localStorage.getItem('tema'); if (t) document.documentElement.dataset.tema = t; } catch (e) {}</script>
+<script>try { const t = localStorage.getItem('tema'); if (t) document.documentElement.dataset.tema = t; const b = localStorage.getItem('bahasa'); if (b) document.documentElement.lang = b === 'zh' ? 'zh-CN' : b; } catch (e) {}</script>
 <link rel="icon" href="gambar/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="font/oxanium-500.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="font/font.css?v=2611081832">
-<link rel="stylesheet" href="gaya.css?v=2611081832">
+<link rel="stylesheet" href="font/font.css?v=2611082214">
+<link rel="stylesheet" href="gaya.css?v=2611082214">
 </head>
 <body>
-<a class="lompat" href="#isi">Langsung ke isi</a>
+<a class="lewati" href="#isi" data-i18n="lewati">Langsung ke isi</a>
 
-<header class="nav" id="atas">
-  <a class="nav__logo" href="#atas" aria-label="Reign 9 International, ke atas">
-    <svg viewBox="0 0 428.51 163.23" aria-hidden="true"><use href="gambar/logo.svg?v=2611081832#datar"/></svg>
+<header class="atas" id="atas">
+  <a class="atas__logo" href="#atas" data-i18n-attr="aria-label:logo.label" aria-label="Reign 9 International, ke atas">
+    <svg viewBox="0 0 428.51 163.23" aria-hidden="true"><use href="gambar/logo.svg?v=2611082214#datar"/></svg>
   </a>
-  <button class="nav__tema" type="button" aria-label="Ganti mode terang/gelap">
-    <svg class="matahari" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M4.6 19.4l2.1-2.1M17.3 6.7l2.1-2.1" stroke="currentColor" stroke-width="2.2" stroke-linecap="square"/></svg>
-    <svg class="bulan" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z" fill="currentColor"/></svg>
-  </button>
-  <button class="nav__buka" aria-expanded="false" aria-controls="menu">
-    <span class="sr">Buka menu</span><i></i><i></i><i></i>
-  </button>
-  <nav id="menu" class="nav__menu">
-    <a href="#roster">Roster</a>
-    <a href="#tentang">Tentang</a>
-    <a href="#banner">Banner</a>
-    <a href="#gabung" class="nav__gabung">Gabung</a>
+  <nav class="atas__menu" id="menu" aria-label="Menu">
+    <a href="#rosters" data-i18n="menu.rosters">Rosters</a>
+    <a href="#about" data-i18n="menu.about">About</a>
+    <a href="#news" data-i18n="menu.news">News</a>
+    <a href="#schedule" data-i18n="menu.schedule">Schedule</a>
+    <a href="#shop" data-i18n="menu.shop">Shop</a>
+    <a href="#contact" class="atas__kontak" data-i18n="menu.contact">Contact Us</a>
   </nav>
+  <div class="atas__alat">
+    <div class="bahasa" role="group" data-i18n-attr="aria-label:bahasa.pilih" aria-label="Pilih bahasa">
+      <button type="button" data-bahasa="id" aria-pressed="true">ID</button>
+      <button type="button" data-bahasa="en" aria-pressed="false">EN</button>
+      <button type="button" data-bahasa="zh" aria-pressed="false" lang="zh-CN">中文</button>
+    </div>
+    <button class="tema" type="button" data-i18n-attr="aria-label:tema.ganti" aria-label="Ganti mode terang/gelap">
+      <svg class="tema__matahari" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M4.6 19.4l2.1-2.1M17.3 6.7l2.1-2.1" stroke="currentColor" stroke-width="2.2"/></svg>
+      <svg class="tema__bulan" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z" fill="currentColor"/></svg>
+    </button>
+    <button class="atas__buka" type="button" aria-expanded="false" aria-controls="menu">
+      <span class="sr" data-i18n="menu.buka">Buka menu</span><i></i><i></i><i></i>
+    </button>
+  </div>
 </header>
 
+<!-- panggung IXAR layar pembuka: di atas header & hero biar dia bisa jalan, lompat ke menu, nonjok logo -->
+<div class="panggung-ixar"><span class="hero__ixar" data-ixar="diam" data-ixar-bara data-ixar-otak data-ixar-interaktif data-i18n-attr="aria-label:ixar.label"></span></div>
+
 <main id="isi">
+  <!-- ========== layar pembuka ========== -->
   <section class="hero" aria-labelledby="judul-hero">
     <canvas class="hero__bara" aria-hidden="true"></canvas>
-    <div class="hero__sudut hero__sudut--kiri" aria-hidden="true">
-      <span>R9//HOK-DIV</span><span>SEASON 01</span><b></b>
-    </div>
-    <div class="hero__sudut hero__sudut--kanan" aria-hidden="true">
-      <span class="kode-batang"></span><span>REIGN-9-INTL</span>
-    </div>
+    <div class="hero__sudut hero__sudut--kiri" aria-hidden="true"><span>R9//HOK</span><span>EST. 11.11.2025</span><b></b></div>
+    <div class="hero__sudut hero__sudut--kanan" aria-hidden="true"><span class="kode-batang"></span><span>GUILD 980982</span></div>
     <div class="hero__logo">
-      <h1 id="judul-hero" class="sr">Reign 9 International</h1>
-      <svg viewBox="0 0 188.61 237.24" aria-hidden="true"><use href="gambar/logo.svg?v=2611081832#tegak"/></svg>
+      <h1 id="judul-hero" class="sr" data-i18n="hero.judul">Reign 9 International</h1>
+      <svg viewBox="0 0 188.61 237.24" aria-hidden="true"><use href="gambar/logo.svg?v=2611082214#tegak"/></svg>
     </div>
     <div class="hero__teks">
-      <p>Komunitas Honor of Kings. Mabar, latihan, turun turnamen, naik bareng.</p>
+      <ul class="sosmed" aria-label="Instagram, TikTok, Discord">
+        <li><a href="https://www.instagram.com/reignnine/" target="_blank" rel="noopener" data-i18n-attr="aria-label:sosmed.ig" aria-label="Instagram Reign 9"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 3.2.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 3.2-1.7 4.8-4.9 4.9-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-3.3-.1-4.8-1.7-4.9-4.9C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8C2.4 3.9 3.9 2.4 7.2 2.3 8.4 2.2 8.8 2.2 12 2.2zM12 0C8.7 0 8.3 0 7.1.1 2.7.3.3 2.7.1 7.1 0 8.3 0 8.7 0 12s0 3.7.1 4.9c.2 4.4 2.6 6.8 7 7 1.2.1 1.6.1 4.9.1s3.7 0 4.9-.1c4.4-.2 6.8-2.6 7-7 .1-1.2.1-1.6.1-4.9s0-3.7-.1-4.9c-.2-4.4-2.6-6.8-7-7C15.7 0 15.3 0 12 0zm0 5.8a6.2 6.2 0 1 0 0 12.4 6.2 6.2 0 0 0 0-12.4zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.4-11.8a1.4 1.4 0 1 0 0 2.9 1.4 1.4 0 0 0 0-2.9z" fill="currentColor"/></svg></a></li>
+        <li><a href="https://www.tiktok.com/@reignnine" target="_blank" rel="noopener" data-i18n-attr="aria-label:sosmed.tt" aria-label="TikTok Reign 9"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.6 6.7a4.8 4.8 0 0 1-3.8-4.2V2h-3.4v13.7a2.9 2.9 0 0 1-5.2 1.7 2.9 2.9 0 0 1 3.2-4.5V9.4a6.3 6.3 0 0 0-5.4 10.7 6.3 6.3 0 0 0 10.8-4.4V8.7a8.2 8.2 0 0 0 4.8 1.5V6.8a4.8 4.8 0 0 1-1-.1z" fill="currentColor"/></svg></a></li>
+        <li><a href="https://discord.gg/g9DFeHUMYs" target="_blank" rel="noopener" data-i18n-attr="aria-label:sosmed.dc" aria-label="Discord Reign 9"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.3 4.4A19.8 19.8 0 0 0 15.4 3l-.6 1.3a18.3 18.3 0 0 0-5.5 0L8.6 3a19.7 19.7 0 0 0-4.9 1.5C.5 9.1-.3 13.6.1 18.1a19.9 19.9 0 0 0 6 3l1.3-2a12.9 12.9 0 0 1-2-1l.5-.4a14.2 14.2 0 0 0 12.2 0l.5.4c-.6.4-1.3.7-2 1l1.3 2a19.8 19.8 0 0 0 6-3c.5-5.2-.8-9.7-3.6-13.7zM8 15.4c-1.2 0-2.2-1.1-2.2-2.4S6.8 10.5 8 10.5s2.2 1.1 2.2 2.5-1 2.4-2.2 2.4zm8 0c-1.2 0-2.2-1.1-2.2-2.4s1-2.5 2.2-2.5 2.2 1.1 2.2 2.5-1 2.4-2.2 2.4z" fill="currentColor"/></svg></a></li>
+      </ul>
+      <p data-i18n="hero.ringkas">Organisasi esports Honor of Kings dari Indonesia, kini sampai Malaysia.</p>
       <div class="hero__aksi">
-        <a class="tombol tombol--merah" href="#gabung">Daftar gabung</a>
-        <a class="tombol tombol--garis" href="#banner">Bikin banner gamertag</a>
+        <a class="tombol tombol--utama" href="https://discord.gg/g9DFeHUMYs" target="_blank" rel="noopener" data-i18n="hero.gabung">Gabung Discord</a>
+        <a class="tombol tombol--garis" href="#rosters" data-i18n="hero.roster">Lihat roster</a>
       </div>
     </div>
   </section>
 
   <div class="pita" aria-hidden="true">
     <div class="pita__jalan">
-      <span>Reign 9 International</span><svg><use href="gambar/logo.svg?v=2611081832#simbol"/></svg>
-      <span>Honor of Kings</span><svg><use href="gambar/logo.svg?v=2611081832#simbol"/></svg>
-      <span>Slot sponsor terbuka</span><svg><use href="gambar/logo.svg?v=2611081832#simbol"/></svg>
-      <span>Reign 9 International</span><svg><use href="gambar/logo.svg?v=2611081832#simbol"/></svg>
-      <span>Honor of Kings</span><svg><use href="gambar/logo.svg?v=2611081832#simbol"/></svg>
-      <span>Slot sponsor terbuka</span><svg><use href="gambar/logo.svg?v=2611081832#simbol"/></svg>
+      <span data-i18n="pita.1">Reign 9 International</span><svg><use href="gambar/logo.svg?v=2611082214#simbol"/></svg>
+      <span data-i18n="pita.2">Honor of Kings</span><svg><use href="gambar/logo.svg?v=2611082214#simbol"/></svg>
+      <span data-i18n="pita.3">Indonesia · Malaysia</span><svg><use href="gambar/logo.svg?v=2611082214#simbol"/></svg>
+      <span data-i18n="pita.4">Slot sponsor terbuka</span><svg><use href="gambar/logo.svg?v=2611082214#simbol"/></svg>
+      <span data-i18n="pita.1">Reign 9 International</span><svg><use href="gambar/logo.svg?v=2611082214#simbol"/></svg>
+      <span data-i18n="pita.2">Honor of Kings</span><svg><use href="gambar/logo.svg?v=2611082214#simbol"/></svg>
+      <span data-i18n="pita.3">Indonesia · Malaysia</span><svg><use href="gambar/logo.svg?v=2611082214#simbol"/></svg>
+      <span data-i18n="pita.4">Slot sponsor terbuka</span><svg><use href="gambar/logo.svg?v=2611082214#simbol"/></svg>
     </div>
   </div>
 
-  <section class="tentang" id="tentang" aria-labelledby="judul-tentang">
-    <div class="tentang__kiri">
-      <h2 id="judul-tentang" class="judul">Together<br>we reign</h2>
-      <p>Kami kumpulan pemain Honor of Kings yang serius soal main bareng. Di sini kamu dapat tim buat push rank, partner latihan, dan jalan ke turnamen.</p>
-      <a class="tombol tombol--merah" href="#gabung">Kenalan sama kami</a>
+  <!-- ========== about ========== -->
+  <section class="bagian about" id="about" aria-labelledby="judul-about">
+    <div class="about__kiri">
+      <h2 id="judul-about" class="judul" data-i18n-html="about.judul">Together<br>we reign</h2>
+      <p class="about__sejarah" data-i18n="about.sejarah"></p>
+      <dl class="fakta">
+        <div><dt data-i18n="about.berdiri">Berdiri</dt><dd data-i18n="about.tanggal">11 November 2025</dd></div>
+        <div><dt data-i18n="guild.id">Guild ID</dt><dd><span class="guild__id">980982</span> <button class="tombol tombol--kecil" type="button" data-salin="980982" data-i18n="guild.salin">Salin ID</button></dd></div>
+        <div><dt data-i18n="guild.nama">Nama guild</dt><dd>REIGN9</dd></div>
+        <div><dt data-i18n="guild.tag">Tag</dt><dd>R9</dd></div>
+      </dl>
     </div>
     <div class="podium" data-muncul>
-      <div class="podium__kotak podium__kotak--2"><b>2nd</b><small>place</small><strong>–</strong></div>
+      <div class="podium__kotak podium__kotak--2"><b data-i18n="podium.2">2nd</b><strong data-juara="2">–</strong><small data-i18n="podium.kali">kali</small></div>
       <div class="podium__kotak podium__kotak--1">
-        <span class="bendera" aria-hidden="true">
+        <div class="podium__bendera" aria-hidden="true">
           <span class="bendera__tiang"></span>
-          <span class="bendera__kain"><svg viewBox="0 0 428.51 163.23"><use href="gambar/logo.svg?v=2611081832#datar"/></svg></span>
-        </span>
-        <span class="rubah-wadah podium__rubah" data-rubah aria-hidden="true"></span>
-        <b>1st</b><small>place</small><strong>–</strong>
-      </div>
-      <div class="podium__kotak podium__kotak--3"><b>3rd</b><small>place</small><strong>–</strong></div>
-      <p class="podium__catatan">Jumlah juara terisi begitu hasil turnamen pertama masuk.</p>
-    </div>
-    <div class="kartu kartu--merah">
-      <h3>Divisi aktif</h3>
-      <p>Honor of Kings</p>
-    </div>
-    <div class="kartu kartu--hitam">
-      <svg class="kartu__piala" viewBox="0 0 64 64" aria-hidden="true"><path d="M18 6h28v6h10v8c0 8-6 14-13 15-2 5-5 8-9 9v8h10v6H20v-6h10v-8c-4-1-7-4-9-9C14 34 8 28 8 20v-8h10zm-4 12v2c0 4 2 7 5 8-1-3-1-6-1-10zm36 0h-4c0 4 0 7-1 10 3-1 5-4 5-8z" fill="currentColor"/></svg>
-      <h3>Total hadiah turnamen</h3>
-      <p class="kartu__angka">–</p>
-    </div>
-  </section>
-
-  <section class="roster" id="roster" aria-labelledby="judul-roster">
-    <h2 id="judul-roster" class="judul judul--tengah">Roster</h2>
-    <p class="roster__sub">Satu game, satu tujuan: jadi yang paling atas.</p>
-    <ul class="roster__daftar">
-      <li>
-        <a class="baris" href="#gabung">
-          <span class="baris__latar" aria-hidden="true"><span>Honor of Kings ✦ Honor of Kings ✦ Honor of Kings ✦ Honor of Kings ✦ </span></span>
-          <span class="baris__ikon" aria-hidden="true"><svg viewBox="0 0 105.63 183.98"><use href="gambar/logo.svg?v=2611081832#simbol"/></svg></span>
-          <span class="baris__nama">Honor of Kings</span>
-          <span class="baris__tim">Main roster</span>
-          <svg class="baris__panah" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.5"/></svg>
-        </a>
-      </li>
-      <li>
-        <div class="baris baris--mati">
-          <span class="baris__ikon" aria-hidden="true">?</span>
-          <span class="baris__nama">Divisi berikutnya</span>
-          <span class="baris__tim">Segera</span>
+          <span class="bendera__kain"><svg viewBox="0 0 428.51 163.23"><use href="gambar/logo.svg?v=2611082214#datar"/></svg></span>
+          <span class="podium__ixar" data-ixar="bendera"></span>
         </div>
-      </li>
-    </ul>
+       <b data-i18n="podium.1">1st</b><strong data-juara="1">–</strong><small data-i18n="podium.kali">kali</small></div>
+      <div class="podium__kotak podium__kotak--3"><b data-i18n="podium.3">3rd</b><strong data-juara="3">–</strong><small data-i18n="podium.kali">kali</small></div>
+      <p class="podium__catatan" data-i18n="podium.catatan">Jumlah juara dihitung otomatis dari prestasi yang diisi admin.</p>
+      <div class="kartu-hadiah">
+        <svg class="kartu-hadiah__piala" viewBox="0 0 64 64" aria-hidden="true"><path d="M18 6h28v6h10v8c0 8-6 14-13 15-2 5-5 8-9 9v8h10v6H20v-6h10v-8c-4-1-7-4-9-9C14 34 8 28 8 20v-8h10zm-4 12v2c0 4 2 7 5 8-1-3-1-6-1-10zm36 0h-4c0 4 0 7-1 10 3-1 5-4 5-8z" fill="currentColor"/></svg>
+        <span data-i18n="hadiah.judul">Total hadiah turnamen</span>
+        <strong data-hadiah>–</strong>
+      </div>
+    </div>
   </section>
 
-  <section class="banner" id="banner" aria-labelledby="judul-banner">
-    <div class="banner__kepala">
-      <h2 id="judul-banner" class="judul">Bikin<br>banner kamu</h2>
-      <p>Pilih banner Reign 9, ketik gamertag, unduh. Pasang di profil X, Discord, atau YouTube.</p>
+  <!-- ========== ethos ========== -->
+  <section class="bagian ethos" aria-labelledby="judul-ethos">
+    <h2 id="judul-ethos" class="judul" data-i18n="ethos.judul">Reign 9 Ethos</h2>
+    <p class="ethos__isi" data-i18n="ethos.isi"></p>
+    <ul class="ethos__pilar">
+      <li data-i18n="ethos.1">Disiplin</li><li data-i18n="ethos.2">Ketangguhan</li><li data-i18n="ethos.3">Keunggulan</li><li data-i18n="ethos.4">Kesetiaan</li>
+    </ul>
+    <span class="ethos__ixar" data-ixar="meditasi" data-ixar-interaktif data-i18n-attr="aria-label:ixar.label"></span>
+  </section>
+
+  <!-- ========== IXAR ========== -->
+  <section class="bagian kenal" id="ixar" aria-labelledby="judul-ixar">
+    <div class="kenal__panggung">
+      <span class="kenal__ixar" data-ixar="nyambut" data-ixar-interaktif data-i18n-attr="aria-label:ixar.label"></span>
+    </div>
+    <div class="kenal__teks">
+      <h2 id="judul-ixar" class="judul" data-i18n="ixar.judul">Kenalan sama IXAR</h2>
+      <p class="kenal__baca" data-i18n="ixar.baca">Dibaca "IK-SAR"</p>
+      <p data-i18n="ixar.isi"></p>
+      <p class="kenal__petunjuk" data-i18n="ixar.petunjuk"></p>
+      <p class="kenal__label" data-i18n="ixar.coba">Suruh IXAR:</p>
+      <div class="kenal__pose" role="group" data-i18n-attr="aria-label:ixar.coba">
+        <button type="button" data-pose="nyambut" data-i18n="pose.nyambut">Nyambut</button>
+        <button type="button" data-pose="tunjuk" data-i18n="pose.tunjuk">Nunjuk</button>
+        <button type="button" data-pose="penasaran" data-i18n="pose.penasaran">Penasaran</button>
+        <button type="button" data-pose="pedang" data-i18n="pose.pedang">Pedang Reign</button>
+        <button type="button" data-pose="tonjok" data-i18n="pose.tonjok">Tonjok</button>
+        <button type="button" data-pose="serbu" data-i18n="pose.serbu">Serbu</button>
+        <button type="button" data-pose="tameng" data-i18n="pose.tameng">Bertahan</button>
+        <button type="button" data-pose="lompat" data-i18n="pose.lompat">Lompat</button>
+        <button type="button" data-pose="menang" data-i18n="pose.menang">Menang</button>
+        <button type="button" data-pose="marah" data-i18n="pose.marah">Marah</button>
+        <button type="button" data-pose="kaget" data-i18n="pose.kaget">Kaget</button>
+        <button type="button" data-pose="kecewa" data-i18n="pose.kecewa">Kecewa</button>
+        <button type="button" data-pose="regang" data-i18n="pose.regang">Peregangan</button>
+        <button type="button" data-pose="meditasi" data-i18n="pose.meditasi">Meditasi</button>
+        <button type="button" data-pose="tidur" data-i18n="pose.tidur">Tidur</button>
+        <button type="button" data-pose="bendera" data-i18n="pose.bendera">Pantang mundur</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== rosters ========== -->
+  <section class="bagian roster" id="rosters" aria-labelledby="judul-roster">
+    <div class="kepala-bagian">
+      <h2 id="judul-roster" class="judul" data-i18n="roster.judul">Rosters</h2>
+      <p data-i18n="roster.sub">Pemain dan pelatih yang membawa nama R9.</p>
+    </div>
+    <div class="wilayah">
+      <div class="wilayah__bendera" aria-hidden="true">
+        <svg viewBox="0 0 30 20"><rect width="30" height="10" fill="#E70011"/><rect y="10" width="30" height="10" fill="#fff"/></svg>
+        <svg viewBox="0 0 28 14"><rect width="28" height="14" fill="#fff"/><g fill="#CC0001"><rect width="28" height="1"/><rect y="2" width="28" height="1"/><rect y="4" width="28" height="1"/><rect y="6" width="28" height="1"/><rect y="8" width="28" height="1"/><rect y="10" width="28" height="1"/><rect y="12" width="28" height="1"/></g><rect width="14" height="8" fill="#010066"/><circle cx="5.6" cy="4" r="3" fill="#FC0"/><circle cx="6.5" cy="4" r="2.5" fill="#010066"/><path d="M10.3 1.6l.5 1.6 1.6-.4-1.1 1.2 1.1 1.2-1.6-.4-.5 1.6-.5-1.6-1.6.4 1.1-1.2-1.1-1.2 1.6.4z" fill="#FC0"/></svg>
+      </div>
+      <div>
+        <h3 data-i18n="roster.wilayah">R9 udah berkembang sampai Malaysia</h3>
+        <p data-i18n="roster.wilayahIsi"></p>
+        <p class="wilayah__hitung" data-hitung-negara></p>
+      </div>
+    </div>
+    <ul class="roster__grid" data-roster></ul>
+    <p class="kosong" data-roster-kosong data-i18n="roster.kosong">Roster lagi disiapin. Pantau terus ya.</p>
+    <details class="alumni" data-alumni hidden>
+      <summary data-i18n="roster.alumni">Mantan anggota</summary>
+      <ul data-alumni-daftar></ul>
+    </details>
+    <span class="roster__ixar" data-ixar="intip" data-ixar-interaktif data-i18n-attr="aria-label:ixar.label"></span>
+  </section>
+
+  <!-- ========== schedule ========== -->
+  <section class="bagian jadwal" id="schedule" aria-labelledby="judul-jadwal">
+    <div class="kepala-bagian">
+      <h2 id="judul-jadwal" class="judul" data-i18n="jadwal.judul">Schedule</h2>
+      <p data-i18n="jadwal.sub">Turnamen, scrim, dan acara komunitas R9.</p>
+    </div>
+    <div class="jadwal__isi">
+      <div>
+        <h3 class="sub-judul" data-i18n="jadwal.akan">Akan datang</h3>
+        <ol class="daftar-event" data-event-akan></ol>
+        <p class="kosong" data-event-kosong data-i18n="jadwal.kosong">Belum ada jadwal.</p>
+      </div>
+      <div>
+        <h3 class="sub-judul" data-i18n="prestasi.judul">Riwayat prestasi</h3>
+        <ol class="daftar-prestasi" data-prestasi></ol>
+        <h3 class="sub-judul" data-i18n="jadwal.lewat" data-event-lewat-judul hidden>Sudah lewat</h3>
+        <ol class="daftar-event daftar-event--lewat" data-event-lewat></ol>
+      </div>
+    </div>
+    <span class="jadwal__ixar" data-ixar="tunjuk" data-ixar-interaktif data-i18n-attr="aria-label:ixar.label"></span>
+  </section>
+
+  <!-- ========== news ========== -->
+  <section class="bagian news" id="news" aria-labelledby="judul-news">
+    <div class="kepala-bagian">
+      <h2 id="judul-news" class="judul" data-i18n="news.judul">News</h2>
+      <p data-i18n="news.sub">Kabar terbaru dari R9.</p>
+    </div>
+    <div class="news__grid" data-news></div>
+    <p class="kosong" data-news-kosong data-i18n="news.kosong">Belum ada berita.</p>
+    <button class="tombol tombol--garis" type="button" data-news-lebih hidden data-i18n="news.lebih">Lihat berita lama</button>
+    <span class="news__ixar" data-ixar="penasaran" data-ixar-interaktif data-i18n-attr="aria-label:ixar.label"></span>
+  </section>
+  <dialog class="baca" data-baca>
+    <article>
+      <img class="baca__gambar" alt="" hidden>
+      <time class="baca__tanggal"></time>
+      <h3 class="baca__judul"></h3>
+      <div class="baca__isi"></div>
+      <form method="dialog"><button class="tombol tombol--utama" data-i18n="news.tutup">Tutup</button></form>
+    </article>
+  </dialog>
+
+  <!-- ========== banner ========== -->
+  <section class="bagian banner" id="banner" aria-labelledby="judul-banner">
+    <div class="kepala-bagian">
+      <h2 id="judul-banner" class="judul" data-i18n="banner.judul">Bikin banner kamu</h2>
+      <p data-i18n="banner.sub"></p>
     </div>
     <div class="banner__kerja">
-      <canvas class="banner__kanvas" width="1500" height="500" role="img" aria-label="Pratinjau banner dengan gamertag kamu"></canvas>
+      <canvas class="banner__kanvas" width="1500" height="500" role="img" data-i18n-attr="aria-label:banner.alt"></canvas>
       <div class="banner__atur">
         <fieldset class="banner__pilih">
-          <legend>Pilih banner</legend>
-          <label><input type="radio" name="gaya" value="bara" checked><span>Bara</span></label>
-          <label><input type="radio" name="gaya" value="takhta"><span>Takhta</span></label>
-          <label><input type="radio" name="gaya" value="malam"><span>Malam</span></label>
+          <legend data-i18n="banner.pilih">Pilih banner</legend>
+          <label><input type="radio" name="banner" value="1" checked><img src="gambar/banner/banner-1-kecil.jpg" alt="" width="600" height="200"><span data-i18n="banner.1">Jembatan</span></label>
+          <label><input type="radio" name="banner" value="2"><img src="gambar/banner/banner-2-kecil.jpg" alt="" width="600" height="200" loading="lazy"><span data-i18n="banner.2">Reruntuhan</span></label>
+          <label><input type="radio" name="banner" value="3"><img src="gambar/banner/banner-3-kecil.jpg" alt="" width="600" height="200" loading="lazy"><span data-i18n="banner.3">Taman</span></label>
+          <label><input type="radio" name="banner" value="4"><img src="gambar/banner/banner-4-kecil.jpg" alt="" width="600" height="200" loading="lazy"><span data-i18n="banner.4">Markas</span></label>
+          <label><input type="radio" name="banner" value="5"><img src="gambar/banner/banner-5-kecil.jpg" alt="" width="600" height="200" loading="lazy"><span data-i18n="banner.5">Gerbang</span></label>
         </fieldset>
         <label class="isian">
-          <span>Gamertag</span>
-          <input type="text" name="tag" maxlength="12" placeholder="Tulis gamertag" autocomplete="off" spellcheck="false">
-          <small>Maksimal 12 karakter</small>
+          <span data-i18n="banner.nama">Nama kamu</span>
+          <input type="text" name="nama-banner" maxlength="16" autocomplete="off" spellcheck="false" data-i18n-attr="placeholder:banner.namaPh">
+          <small data-i18n="banner.batas">Maksimal 16 karakter</small>
         </label>
-        <button class="tombol tombol--merah tombol--penuh" type="button" data-unduh>Unduh banner</button>
+        <button class="tombol tombol--utama tombol--penuh" type="button" data-unduh data-i18n="banner.unduh">Unduh banner</button>
       </div>
     </div>
   </section>
 
-  <section class="gabung" id="gabung" aria-labelledby="judul-gabung">
-    <div class="gabung__sudut" aria-hidden="true"><span>R9//REKRUT</span><span class="kode-batang"></span></div>
-    <h2 id="judul-gabung" class="judul judul--tengah">Gabung Reign 9</h2>
-    <form class="gabung__form" novalidate>
-      <span class="rubah-intip" aria-hidden="true"><span class="rubah-wadah" data-rubah></span></span>
-      <label class="isian isian--terang"><span>Nama</span><input name="nama" required autocomplete="name"></label>
-      <label class="isian isian--terang"><span>Nickname HoK</span><input name="nick" required autocomplete="nickname"></label>
-      <label class="isian isian--terang"><span>Role utama</span>
-        <select name="role">
-          <option>Clash Lane</option><option>Jungling</option><option>Mid Lane</option><option>Farm Lane</option><option>Roaming</option>
+  <!-- ========== shop ========== -->
+  <section class="bagian shop" id="shop" aria-labelledby="judul-shop">
+    <span class="shop__ixar" data-ixar="santai" data-ixar-interaktif data-i18n-attr="aria-label:ixar.label"></span>
+    <div>
+      <h2 id="judul-shop" class="judul" data-i18n="shop.judul">Shop</h2>
+      <p data-i18n="shop.isi"></p>
+      <p class="shop__segera" data-i18n="shop.segera">Segera hadir</p>
+    </div>
+  </section>
+
+  <!-- ========== contact ========== -->
+  <section class="bagian kontak" id="contact" aria-labelledby="judul-kontak">
+    <div class="kontak__kiri">
+      <h2 id="judul-kontak" class="judul" data-i18n="kontak.judul">Contact Us</h2>
+      <p data-i18n="kontak.sub"></p>
+      <p class="kontak__atau"><span data-i18n="kontak.atau">Atau email langsung:</span><br>
+        <a href="mailto:reign9intl@reign9.site">reign9intl@reign9.site</a><br>
+        <a href="mailto:reignnine2@gmail.com">reignnine2@gmail.com</a></p>
+      <span class="kontak__ixar" data-ixar="nyambut" data-ixar-interaktif data-i18n-attr="aria-label:ixar.label"></span>
+    </div>
+    <form class="kontak__form" novalidate>
+      <label class="isian"><span data-i18n="kontak.nama">Nama</span><input name="nama" required autocomplete="name" maxlength="80"></label>
+      <label class="isian"><span data-i18n="kontak.email">Email</span><input name="email" type="email" required autocomplete="email" maxlength="120"></label>
+      <label class="isian"><span data-i18n="kontak.perlu">Keperluan</span>
+        <select name="keperluan">
+          <option value="Sponsor" data-i18n="kontak.p1">Sponsor</option>
+          <option value="Kerja sama" data-i18n="kontak.p2">Kerja sama</option>
+          <option value="Media" data-i18n="kontak.p3">Media</option>
+          <option value="Gabung tim" data-i18n="kontak.p4">Gabung tim</option>
+          <option value="Lainnya" data-i18n="kontak.p5">Lainnya</option>
         </select>
       </label>
-      <label class="isian isian--terang isian--lebar"><span>Pesan</span><textarea name="pesan" rows="4" placeholder="Rank sekarang, jam biasa main, atau pertanyaan"></textarea></label>
-      <button class="tombol tombol--hitam" type="submit">Kirim lewat WhatsApp</button>
-      <p class="gabung__info" role="status" aria-live="polite"></p>
+      <label class="isian isian--lebar"><span data-i18n="kontak.pesan">Pesan</span><textarea name="pesan" rows="5" required maxlength="3000"></textarea></label>
+      <input class="sr" name="situs" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <button class="tombol tombol--hitam" type="submit" data-i18n="kontak.kirim">Kirim pesan</button>
+      <p class="kontak__info" role="status" aria-live="polite"></p>
     </form>
   </section>
 </main>
 
 <footer class="kaki">
-  <svg class="kaki__logo" viewBox="0 0 428.51 163.23" aria-label="Reign 9 International"><use href="gambar/logo.svg?v=2611081832#datar"/></svg>
+  <div class="kaki__merek">
+    <svg class="kaki__logo" viewBox="0 0 428.51 163.23" aria-label="Reign 9 International"><use href="gambar/logo.svg?v=2611082214#datar"/></svg>
+    <ul class="sosmed sosmed--kecil" data-sosmed-salin></ul>
+  </div>
   <nav class="kaki__menu" aria-label="Menu bawah">
-    <a href="#roster">Roster</a><a href="#tentang">Tentang</a><a href="#banner">Banner</a><a href="#gabung">Gabung</a>
+    <a href="#rosters" data-i18n="menu.rosters">Rosters</a><a href="#about" data-i18n="menu.about">About</a>
+    <a href="#news" data-i18n="menu.news">News</a><a href="#schedule" data-i18n="menu.schedule">Schedule</a>
+    <a href="#shop" data-i18n="menu.shop">Shop</a><a href="#contact" data-i18n="menu.contact">Contact Us</a>
   </nav>
-  <p class="kaki__hak">© 2026 Reign 9 International</p>
+  <span class="kaki__ixar" data-ixar="tidur" data-ixar-interaktif data-i18n-attr="aria-label:ixar.label"></span>
+  <p class="kaki__hak" data-i18n="kaki.hak">© 2026 Reign 9 International.</p>
 </footer>
 
-<script src="app.js?v=2611081832"></script>
+<script src="bahasa.js?v=2611082214"></script>
+<script src="ixar.js?v=2611082214"></script>
+<script src="app.js?v=2611082214"></script>
 </body>
 </html>
