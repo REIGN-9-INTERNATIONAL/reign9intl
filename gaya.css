@@ -694,3 +694,18 @@ button { font: inherit; color: inherit; }
 .bahasa { border-color: #000 !important; }
 .bahasa button[aria-pressed="true"] { background: #000 !important; color: var(--merah-pekat) !important; }
 .bahasa button:hover { color: #000 !important; text-decoration: underline; }
+
+/* ---------- Contact Us ala nmss: blok warna penuh, judul tengah, form rapi di tengah, tanpa email ---------- */
+#contact.kontak { display: block !important; text-align: center; padding-top: clamp(96px, 11vw, 140px) !important;
+  --ixar: var(--pita-aksen-teks); --ixar-mata: var(--pita-aksen); --ixar-sinar: none; --ixar-alat: var(--pita-aksen-teks); }
+.kontak__sudut { position: absolute; top: 22px; left: var(--tepi); right: var(--tepi); display: flex; justify-content: space-between; align-items: flex-start; color: var(--pita-aksen-teks); }
+.kontak__lencana { display: flex; align-items: center; gap: 10px; text-align: left; font: 700 10px/1.35 var(--judul); letter-spacing: .14em; }
+.kontak__ixar { width: 46px; flex: none; }
+.kontak__judul { margin-inline: auto; }
+.kontak__sub { margin: 16px auto 0; max-width: 52ch; font-size: var(--skala-sub); color: var(--pita-aksen-teks); opacity: .85; }
+#contact .kontak__form { max-width: 760px; margin: 40px auto 0; text-align: left; display: grid; gap: 14px; }
+#contact .isian > span { color: var(--pita-aksen-teks); }
+#contact .isian input, #contact .isian select, #contact .isian textarea { background: color-mix(in srgb, var(--pita-aksen-teks) 10%, transparent); color: var(--pita-aksen-teks); border-color: color-mix(in srgb, var(--pita-aksen-teks) 35%, transparent); }
+#contact .isian input:focus, #contact .isian select:focus, #contact .isian textarea:focus { border-color: var(--pita-aksen-teks); }
+#contact .tombol { background: var(--pita-aksen-teks); color: var(--pita-aksen); }
+@media (min-width: 700px) { #contact .kontak__form { grid-template-columns: 1fr 1fr; } #contact .isian--lebar, #contact .kontak__form .tombol, #contact .kontak__info { grid-column: 1 / -1; } #contact .kontak__form .tombol { justify-self: start; } }
