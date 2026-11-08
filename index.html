@@ -10,12 +10,17 @@
 <meta property="og:image" content="gambar/banner/banner-5.jpg">
 <meta name="theme-color" content="#A80309">
 <meta name="color-scheme" content="dark light">
+<meta name="robots" content="index, follow, noai, noimageai">
+<meta name="googlebot" content="index, follow, noai, noimageai">
+<meta name="bingbot" content="noai, noimageai">
+<meta name="copyright" content="© 2026 Reign 9 International">
+<style>@media (prefers-reduced-motion: no-preference){html:not(.bara-gagal) .hero__logo svg{visibility:hidden;opacity:0}}</style>
 <script>try { const t = localStorage.getItem('tema'); if (t) document.documentElement.dataset.tema = t; const b = localStorage.getItem('bahasa'); if (b) document.documentElement.lang = b === 'zh' ? 'zh-CN' : b; } catch (e) {}</script>
 <link rel="icon" href="gambar/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="font/Reign9Display-Regular.ttf" as="font" type="font/ttf" crossorigin>
 <link rel="preload" href="font/oxanium-500.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="font/font.css?v=26110902">
-<link rel="stylesheet" href="gaya.css?v=26110902">
+<link rel="stylesheet" href="font/font.css?v=26110903">
+<link rel="stylesheet" href="gaya.css?v=26110903">
 </head>
 <body>
 <!-- Sprite SVG Logo disematkan langsung agar dibuka lewat file:// (klik 2x index.html) tetap jalan 100% tanpa kena blokir CORS browser -->
@@ -51,13 +56,24 @@
   </div>
 </header>
 
-<!-- panggung IXAR layar pembuka -->
-<div class="panggung-ixar"><span class="hero__ixar" data-ixar="diam" data-ixar-bara data-ixar-otak data-ixar-interaktif data-i18n-attr="aria-label:ixar.label"></span></div>
+<!-- panggung IXAR penjelajah aktif (mengikuti scroll, drag & drop, fisika jatuh, gelembung 200 cuitan) -->
+<div class="panggung-ixar">
+  <button type="button" class="ixar-gelembung" data-ixar-gelembung hidden title="Klik untuk ganti cuitan / fun fact IXAR">
+    <span class="ixar-gelembung__kepala">
+      <span class="ixar-gelembung__tag">IXAR // FUN FACT &amp; JOKES</span>
+      <span class="ixar-gelembung__nomor" data-ixar-cuitan-nomor>#1/200</span>
+    </span>
+    <span class="ixar-gelembung__teks" data-ixar-cuitan-teks></span>
+  </button>
+  <span class="jelajah__ixar" data-ixar="diam" data-ixar-bara data-ixar-otak data-ixar-interaktif data-i18n-attr="aria-label:ixar.label"></span>
+</div>
 
 <main id="isi">
   <!-- ========== layar pembuka ========== -->
   <section class="hero" aria-labelledby="judul-hero">
     <canvas class="hero__bara" aria-hidden="true"></canvas>
+    <!-- IXAR khusus penjaga dashboard utama (meninju WELCOME TO OUR REIGN & logo R9) -->
+    <div class="panggung-ixar-hero"><span class="hero__ixar" data-ixar="diam" data-ixar-bara data-ixar-otak data-ixar-interaktif data-i18n-attr="aria-label:ixar.label"></span></div>
     <div class="hero__sudut hero__sudut--kiri" aria-hidden="true"><span>R9//HOK</span><span>EST. 11.11.2025</span><b></b></div>
     <div class="hero__sudut hero__sudut--kanan" aria-hidden="true"><span class="kode-batang"></span><span>GUILD 980982</span></div>
     <div class="hero__logo">
@@ -153,13 +169,27 @@
     </div>
   </section>
 
-  <!-- ========== IXAR ========== -->
+  <!-- ========== IXAR (Modern Interactive Command Deck) ========== -->
   <section class="bagian kenal" id="ixar" aria-labelledby="judul-ixar">
     <div class="kenal__panggung" data-panggung-kenal>
+      <div class="kenal__hud">
+        <span class="kenal__hud-status"><span class="titik-status"></span>IXAR // GUARDIAN AI</span>
+        <span class="kenal__hud-mode"><b data-i18n="ixar.statusLabel">MODE AKTIF:</b> <strong data-ixar-mode-badge>STANDBY</strong></span>
+      </div>
       <svg class="kenal__lambang" viewBox="0 0 105.63 183.98" aria-hidden="true"><use href="#simbol"/></svg>
+      <div class="kenal__cuitan-box">
+        <div class="kenal__cuitan-atas">
+          <span>💬 IXAR LIVE CHIME · 200 TOPIK R9 &amp; HOK</span>
+          <b data-ixar-cuitan-counter>#1 / 200</b>
+        </div>
+        <p class="kenal__cuitan-isi" data-ixar-cuitan-panggung>“Klik tombol di bawah atau sentuh tubuh IXAR untuk mendengar fun fact &amp; jokes seputar Reign 9, Honor of Kings, dan dunia esports!”</p>
+      </div>
       <div class="kenal__panggung-info">
-        <span data-i18n="ixar.panggungInfo">Panggung Interaksi IXAR — Klik tombol pose atau tarik IXAR ke sini!</span>
-        <button type="button" class="tombol tombol--kecil" data-panggil-ixar data-i18n="ixar.panggil">Panggil IXAR ke Panggung</button>
+        <button type="button" class="tombol tombol--utama tombol--kecil" data-lempar-cuitan>
+          <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zM7.5 18A1.5 1.5 0 1 1 9 16.5 1.5 1.5 0 0 1 7.5 18zm0-9A1.5 1.5 0 1 1 9 7.5 1.5 1.5 0 0 1 7.5 9zm4.5 4.5a1.5 1.5 0 1 1 1.5-1.5 1.5 1.5 0 0 1-1.5 1.5zm4.5 4.5a1.5 1.5 0 1 1 1.5-1.5 1.5 1.5 0 0 1-1.5 1.5zm0-9A1.5 1.5 0 1 1 18 7.5 1.5 1.5 0 0 1 16.5 9z" fill="currentColor"/></svg>
+          <span data-i18n="ixar.cuitanTombol">Lempar Cuitan / Fun Fact (200 Topik)</span>
+        </button>
+        <button type="button" class="tombol tombol--garis tombol--kecil" data-panggil-ixar data-i18n="ixar.panggil">Panggil IXAR ke Panggung</button>
       </div>
     </div>
     <div class="kenal__teks">
@@ -167,25 +197,117 @@
       <p class="kenal__baca" data-i18n="ixar.baca">Dibaca "IK-SAR"</p>
       <p data-i18n="ixar.isi"></p>
       <p class="kenal__petunjuk" data-i18n="ixar.petunjuk"></p>
-      <p class="kenal__label" data-i18n="ixar.coba">Suruh IXAR:</p>
-      <div class="kenal__pose" role="group" data-i18n-attr="aria-label:ixar.coba">
-        <button type="button" data-pose="nyambut" data-i18n="pose.nyambut">Nyambut</button>
-        <button type="button" data-pose="tunjuk" data-i18n="pose.tunjuk">Nunjuk</button>
-        <button type="button" data-pose="penasaran" data-i18n="pose.penasaran">Penasaran</button>
-        <button type="button" data-pose="pedang" data-i18n="pose.pedang">Pedang Reign</button>
-        <button type="button" data-pose="tonjok" data-i18n="pose.tonjok">Tonjok</button>
-        <button type="button" data-pose="serbu" data-i18n="pose.serbu">Serbu</button>
-        <button type="button" data-pose="tameng" data-i18n="pose.tameng">Bertahan</button>
-        <button type="button" data-pose="lompat" data-i18n="pose.lompat">Lompat</button>
-        <button type="button" data-pose="menang" data-i18n="pose.menang">Menang</button>
-        <button type="button" data-pose="marah" data-i18n="pose.marah">Marah</button>
-        <button type="button" data-pose="kaget" data-i18n="pose.kaget">Kaget</button>
-        <button type="button" data-pose="kecewa" data-i18n="pose.kecewa">Kecewa</button>
-        <button type="button" data-pose="regang" data-i18n="pose.regang">Peregangan</button>
-        <button type="button" data-pose="meditasi" data-i18n="pose.meditasi">Meditasi</button>
-        <button type="button" data-pose="rebahan" data-i18n="pose.rebahan">Rebahan Santai</button>
-        <button type="button" data-pose="tidur" data-i18n="pose.tidur">Tidur Pulas</button>
-        <button type="button" data-pose="bendera" data-i18n="pose.bendera">Pantang mundur</button>
+
+      <div class="dek-ixar">
+        <div class="dek-ixar__kepala">
+          <span class="kenal__label" data-i18n="ixar.coba">Suruh IXAR:</span>
+          <div class="dek-ixar__tab" role="tablist" aria-label="Filter kategori aksi IXAR">
+            <button type="button" role="tab" data-tab-pose="semua" aria-selected="true" data-i18n="ixar.tab.semua">Semua Aksi</button>
+            <button type="button" role="tab" data-tab-pose="peran" aria-selected="false" data-i18n="ixar.tab.peran">Mode Bagian</button>
+            <button type="button" role="tab" data-tab-pose="tempur" aria-selected="false" data-i18n="ixar.tab.tempur">Tempur &amp; Aksi</button>
+            <button type="button" role="tab" data-tab-pose="santai" aria-selected="false" data-i18n="ixar.tab.santai">Santai &amp; Emosi</button>
+          </div>
+        </div>
+
+        <div class="dek-ixar__grid" role="group" data-i18n-attr="aria-label:ixar.coba">
+          <!-- Mode Bagian / Role Spesifik -->
+          <button type="button" class="kartu-pose" data-pose="roster" data-kategori-pose="peran">
+            <span class="kartu-pose__ikon"><svg viewBox="0 0 24 24"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4-3c-.83 0-1.5-.67-1.5-1.5S18.67 9 19.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z" fill="currentColor"/></svg></span>
+            <span class="kartu-pose__info"><strong data-i18n="pose.roster">Mode Pro Player</strong><small>Rosters // Push HoK</small></span>
+          </button>
+          <button type="button" class="kartu-pose" data-pose="belanja" data-kategori-pose="peran">
+            <span class="kartu-pose__ikon"><svg viewBox="0 0 24 24"><path d="M18 6h-2c0-2.21-1.79-4-4-4S8 3.79 8 6H6c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-6-2c1.1 0 2 .9 2 2h-4c0-1.1.9-2 2-2zm6 16H6V8h2v2c0 .55.45 1 1 1s1-.45 1-1V8h4v2c0 .55.45 1 1 1s1-.45 1-1V8h2v12z" fill="currentColor"/></svg></span>
+            <span class="kartu-pose__info"><strong data-i18n="pose.belanja">Mode Belanja Merch</strong><small>Shop // Tas R9</small></span>
+          </button>
+          <button type="button" class="kartu-pose" data-pose="manajer" data-kategori-pose="peran">
+            <span class="kartu-pose__ikon"><svg viewBox="0 0 24 24"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1s-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" fill="currentColor"/></svg></span>
+            <span class="kartu-pose__info"><strong data-i18n="pose.manajer">Mode Manajer Sibuk</strong><small>Schedule // Kalender</small></span>
+          </button>
+          <button type="button" class="kartu-pose" data-pose="wartawan" data-kategori-pose="peran">
+            <span class="kartu-pose__ikon"><svg viewBox="0 0 24 24"><path d="M22 3l-1.67 1.67L18.67 3 17 4.67 15.33 3l-1.66 1.67L12 3l-1.67 1.67L8.67 3 7 4.67 5.33 3 3.67 4.67 2 3v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V3zM11 19H4v-6h7v6zm9 0h-7v-2h7v2zm0-4h-7v-2h7v2zm0-4H4V8h16v3z" fill="currentColor"/></svg></span>
+            <span class="kartu-pose__info"><strong data-i18n="pose.wartawan">Mode Baca Berita</strong><small>News // Koran R9</small></span>
+          </button>
+          <button type="button" class="kartu-pose" data-pose="pelukis" data-kategori-pose="peran">
+            <span class="kartu-pose__ikon"><svg viewBox="0 0 24 24"><path d="M7 14c-1.66 0-3 1.34-3 3 0 1.31-1.16 2-2 2 .92 1.22 2.49 2 4 2 2.21 0 4-1.79 4-4 0-1.66-1.34-3-3-3zm13.71-9.37l-1.34-1.34a.996.996 0 0 0-1.41 0L9 12.25 11.75 15l8.96-8.96a.996.996 0 0 0 0-1.41z" fill="currentColor"/></svg></span>
+            <span class="kartu-pose__info"><strong data-i18n="pose.pelukis">Mode Lukis Banner</strong><small>Banner // Desainer</small></span>
+          </button>
+          <button type="button" class="kartu-pose" data-pose="kurir" data-kategori-pose="peran">
+            <span class="kartu-pose__ikon"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" fill="currentColor"/></svg></span>
+            <span class="kartu-pose__info"><strong data-i18n="pose.kurir">Mode Kurir Surat</strong><small>Contact // Amplop R9</small></span>
+          </button>
+
+          <!-- Tempur & Aksi -->
+          <button type="button" class="kartu-pose" data-pose="pedang" data-kategori-pose="tempur">
+            <span class="kartu-pose__ikon"><svg viewBox="0 0 24 24"><path d="M19 3l2 2-9 9-2-2 9-9zM5 13l6 6-4 2-2-2 2-4-2-2z" fill="currentColor"/></svg></span>
+            <span class="kartu-pose__info"><strong data-i18n="pose.pedang">Pedang Reign</strong><small>Combat // Blade</small></span>
+          </button>
+          <button type="button" class="kartu-pose" data-pose="tonjok" data-kategori-pose="tempur">
+            <span class="kartu-pose__ikon"><svg viewBox="0 0 24 24"><path d="M12 2L4 12l6 2-2 8 12-11-6-2 2-7z" fill="currentColor"/></svg></span>
+            <span class="kartu-pose__info"><strong data-i18n="pose.tonjok">Tonjok</strong><small>Combat // Heavy Punch</small></span>
+          </button>
+          <button type="button" class="kartu-pose" data-pose="serbu" data-kategori-pose="tempur">
+            <span class="kartu-pose__ikon"><svg viewBox="0 0 24 24"><path d="M13 5l7 7-7 7M5 5l7 7-7 7" stroke="currentColor" stroke-width="2.5" fill="none"/></svg></span>
+            <span class="kartu-pose__info"><strong data-i18n="pose.serbu">Serbu</strong><small>Combat // Rush</small></span>
+          </button>
+          <button type="button" class="kartu-pose" data-pose="tameng" data-kategori-pose="tempur">
+            <span class="kartu-pose__ikon"><svg viewBox="0 0 24 24"><path d="M12 2L4 5v6c0 5.5 3.4 10.7 8 12 4.6-1.3 8-6.5 8-12V5l-8-3z" fill="currentColor"/></svg></span>
+            <span class="kartu-pose__info"><strong data-i18n="pose.tameng">Bertahan</strong><small>Combat // Shield</small></span>
+          </button>
+          <button type="button" class="kartu-pose" data-pose="lompat" data-kategori-pose="tempur">
+            <span class="kartu-pose__ikon"><svg viewBox="0 0 24 24"><path d="M12 4l-6 6h4v8h4v-8h4l-6-6z" fill="currentColor"/></svg></span>
+            <span class="kartu-pose__info"><strong data-i18n="pose.lompat">Lompat</strong><small>Physics // High Jump</small></span>
+          </button>
+          <button type="button" class="kartu-pose" data-pose="bendera" data-kategori-pose="tempur">
+            <span class="kartu-pose__ikon"><svg viewBox="0 0 24 24"><path d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6h-5.6z" fill="currentColor"/></svg></span>
+            <span class="kartu-pose__info"><strong data-i18n="pose.bendera">Pantang mundur</strong><small>Royal // Panji R9</small></span>
+          </button>
+
+          <!-- Santai & Emosi -->
+          <button type="button" class="kartu-pose" data-pose="rebahan" data-kategori-pose="santai">
+            <span class="kartu-pose__ikon"><svg viewBox="0 0 24 24"><path d="M7 13c1.66 0 3-1.34 3-3S8.66 7 7 7s-3 1.34-3 3 1.34 3 3 3zm12-6h-8v7H3V5H1v15h2v-3h18v3h2v-9c0-2.21-1.79-4-4-4z" fill="currentColor"/></svg></span>
+            <span class="kartu-pose__info"><strong data-i18n="pose.rebahan">Rebahan Santai</strong><small>Rest // Tiduran Lantai</small></span>
+          </button>
+          <button type="button" class="kartu-pose" data-pose="tidur" data-kategori-pose="santai">
+            <span class="kartu-pose__ikon"><svg viewBox="0 0 24 24"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z" fill="currentColor"/></svg></span>
+            <span class="kartu-pose__info"><strong data-i18n="pose.tidur">Tidur Pulas</strong><small>Rest // Zzz Mode</small></span>
+          </button>
+          <button type="button" class="kartu-pose" data-pose="nyambut" data-kategori-pose="santai">
+            <span class="kartu-pose__ikon"><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 3-7 3-3 7-3-7-7-3 7-3z" fill="currentColor"/></svg></span>
+            <span class="kartu-pose__info"><strong data-i18n="pose.nyambut">Nyambut</strong><small>Emote // Wave</small></span>
+          </button>
+          <button type="button" class="kartu-pose" data-pose="menang" data-kategori-pose="santai">
+            <span class="kartu-pose__ikon"><svg viewBox="0 0 24 24"><path d="M18 4h-2V2H8v2H6C4.9 4 4 4.9 4 6v3c0 2.97 2.16 5.43 5 5.91V18H6v2h12v-2h-3v-3.09c2.84-.48 5-2.94 5-5.91V6c0-1.1-.9-2-2-2z" fill="currentColor"/></svg></span>
+            <span class="kartu-pose__info"><strong data-i18n="pose.menang">Menang</strong><small>Emote // Victory</small></span>
+          </button>
+          <button type="button" class="kartu-pose" data-pose="meditasi" data-kategori-pose="santai">
+            <span class="kartu-pose__ikon"><svg viewBox="0 0 24 24"><circle cx="12" cy="6" r="2.5" fill="currentColor"/><path d="M16 14l-2.5-3.5h-3L8 14l-3 2 1.2 1.8L9.5 16h5l3.3 1.8L19 16l-3-2z" fill="currentColor"/></svg></span>
+            <span class="kartu-pose__info"><strong data-i18n="pose.meditasi">Meditasi</strong><small>Chill // Zen Focus</small></span>
+          </button>
+          <button type="button" class="kartu-pose" data-pose="regang" data-kategori-pose="santai">
+            <span class="kartu-pose__ikon"><svg viewBox="0 0 24 24"><path d="M12 2a2 2 0 1 1 0 4 2 2 0 0 1 0-4zm9 7h-6v13h-2v-6h-2v6H9V9H3V7h18v2z" fill="currentColor"/></svg></span>
+            <span class="kartu-pose__info"><strong data-i18n="pose.regang">Peregangan</strong><small>Chill // Warmup</small></span>
+          </button>
+          <button type="button" class="kartu-pose" data-pose="tunjuk" data-kategori-pose="santai">
+            <span class="kartu-pose__ikon"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" fill="currentColor"/></svg></span>
+            <span class="kartu-pose__info"><strong data-i18n="pose.tunjuk">Nunjuk</strong><small>Emote // Point</small></span>
+          </button>
+          <button type="button" class="kartu-pose" data-pose="penasaran" data-kategori-pose="santai">
+            <span class="kartu-pose__ikon"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 17h-2v-2h2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z" fill="currentColor"/></svg></span>
+            <span class="kartu-pose__info"><strong data-i18n="pose.penasaran">Penasaran</strong><small>Emote // Curious</small></span>
+          </button>
+          <button type="button" class="kartu-pose" data-pose="marah" data-kategori-pose="santai">
+            <span class="kartu-pose__ikon"><svg viewBox="0 0 24 24"><path d="M13.5.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.62 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8C20 8.61 17.41 3.8 13.5.67z" fill="currentColor"/></svg></span>
+            <span class="kartu-pose__info"><strong data-i18n="pose.marah">Marah</strong><small>Emote // Rage</small></span>
+          </button>
+          <button type="button" class="kartu-pose" data-pose="kaget" data-kategori-pose="santai">
+            <span class="kartu-pose__ikon"><svg viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm1 16h-2v-2h2v2zm0-4h-2v-4h2v4z" fill="currentColor"/></svg></span>
+            <span class="kartu-pose__info"><strong data-i18n="pose.kaget">Kaget</strong><small>Emote // Shock</small></span>
+          </button>
+          <button type="button" class="kartu-pose" data-pose="kecewa" data-kategori-pose="santai">
+            <span class="kartu-pose__ikon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 14c-1.48 0-2.75.81-3.45 2H6.88c.8-2.05 2.79-3.5 5.12-3.5s4.32 1.45 5.12 3.5h-1.67c-.7-1.19-1.97-2-3.45-2z" fill="currentColor"/></svg></span>
+            <span class="kartu-pose__info"><strong data-i18n="pose.kecewa">Kecewa</strong><small>Emote // Sad</small></span>
+          </button>
+        </div>
       </div>
     </div>
   </section>
@@ -374,8 +496,9 @@
   <p class="kaki__hak" data-i18n="kaki.hak">© 2026 Reign 9 International.</p>
 </footer>
 
-<script src="bahasa.js?v=26110902"></script>
-<script src="ixar.js?v=26110902"></script>
-<script src="app.js?v=26110902"></script>
+<script src="bahasa.js?v=26110903"></script>
+<script src="cuitan-ixar.js?v=26110903"></script>
+<script src="ixar.js?v=26110903"></script>
+<script src="app.js?v=26110903"></script>
 </body>
 </html>

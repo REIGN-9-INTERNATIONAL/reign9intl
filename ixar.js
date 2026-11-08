@@ -36,10 +36,25 @@
     rebahan: P({ rot: -70, dx: 340, dy: -195, kep: 28, panjang: 1.2, lk: [-110, -25], ln: [48, -12], kk: [8, 4], kn: [58, -26], mata: 'sayu', gerak: 'napas-tidur' }),
     regang: P({ panjang: 1.65, lk: [-92, -150], ln: [92, 150], kk: [-14, -12], kn: [14, 12], sy: 1.03, mata: 'senang' }),
     meditasi: P({ dy: 115, kk: [-105, 75], kn: [105, -75], lk: [-50, -100], ln: [50, 100], mata: 'tidur' }),
-    bendera: P({ dy: 8, panjang: 1.6, ln: [92, 140], lk: [-62, 40], kk: [-32, -20], kn: [32, 20], mata: 'yakin' }),
+    bendera: P({ dy: 8, panjang: 1.6, ln: [92, 140], lk: [-62, 40], kk: [-32, -20], kn: [32, 20], mata: 'yakin', alat: 'panji-r9', gerak: 'kuda' }),
     jalan: P({ mata: 'biasa', gerak: 'jalan' }),
     jalanCepat: P({ rot: 6, mata: 'yakin', gerak: 'jalan-cepat' }),
     santai: P({ rot: -70, dx: 340, dy: -195, kep: 28, panjang: 1.2, lk: [-110, -25], ln: [48, -12], kk: [8, 4], kn: [58, -26], mata: 'sayu', gerak: 'napas-tidur' }),
+    // ---------- POSE KHUSUS TIAP BAGIAN MENU WEBSITE ----------
+    // 1. #rosters: Pro Player fokus push rank / tanding HoK pegang gaming handheld + headset
+    roster: P({ dy: 14, kep: 5, panjang: 1.18, lk: [-18, 52], ln: [18, -52], kk: [-32, -16], kn: [32, 16], mata: 'yakin', alat: 'stik-game', gerak: 'main-game' }),
+    // 2. #shop: Sultan R9 lagi belanja menenteng tas merch R9 dengan gembira
+    belanja: P({ dy: 4, kep: -4, panjang: 1.28, lk: [-62, -28], ln: [68, 35], kk: [-24, -18], kn: [28, 18], mata: 'senang', alat: 'tas-belanja', gerak: 'belanja' }),
+    // 3. #schedule: Manajer sibuk pegang clipboard jadwal turnamen & pakai kacamata
+    manajer: P({ dy: 6, kep: 4, panjang: 1.22, lk: [-42, -55], ln: [68, 105], kk: [-26, -20], kn: [26, 20], mata: 'penasaran', alat: 'kalender', gerak: 'manajer' }),
+    // 4. #news: Wartawan / pembaca berita fokus baca koran R9 NEWS
+    wartawan: P({ dy: 8, kep: 3, panjang: 1.18, lk: [-34, -48], ln: [34, 48], kk: [-24, -18], kn: [24, 18], mata: 'lirik', alat: 'koran', gerak: 'baca' }),
+    // 5. #banner: Desainer / pelukis banner pegang kuas cat R9
+    pelukis: P({ dy: 6, kep: -5, panjang: 1.38, lk: [-48, 25], ln: [88, 124], kk: [-28, -18], kn: [28, 18], mata: 'senang', alat: 'kuas', gerak: 'lukis' }),
+    // 6. #about & .ethos: Penjaga kehormatan benteng R9 bawa panji
+    penjaga: P({ dy: 8, panjang: 1.5, ln: [86, 132], lk: [-56, 36], kk: [-32, -20], kn: [32, 20], mata: 'yakin', alat: 'panji-r9', gerak: 'kuda' }),
+    // 7. #contact: Kurir / resepsionis R9 bawa surat & melambai ramah
+    kurir: P({ dy: 4, panjang: 1.45, lk: [-58, -32], ln: [92, 125], kk: [-25, -18], kn: [25, 18], mata: 'senang', alat: 'amplop', gerak: 'lambai' }),
   };
   const ANGKA = ['dx', 'dy', 'rot', 'sx', 'sy', 'kep', 'mahkota', 'panjang'];
 
@@ -52,12 +67,11 @@
     const [x0, y0, x1, y1] = MATA[i], w = x1 - x0, r = w / 2, cx = (x0 + x1) / 2;
     const tinggi = (y1 - y0) * Math.max(.06, buka), atas = y1 - tinggi;
     const jendela = (a) => tinggi > r ? `M${x0} ${y1}V${a + r}A${r} ${r} 0 0 1 ${x1} ${a + r}V${y1}Z` : `M${x0} ${y1}L${x0} ${a}L${x1} ${a}L${x1} ${y1}Z`;
-    const dalam = i === 0 ? 1 : -1; // sisi mata yang dekat tengah wajah
     switch (jenis) {
       case 'senang': return `M${x0 - 4} ${y1 - 20}Q${cx} ${y0 + 30} ${x1 + 4} ${y1 - 20}Q${cx} ${y0 + 70} ${x0 - 4} ${y1 - 20}Z`;
       case 'tidur': return `M${x0} ${y1 - 46}Q${cx} ${y1 - 16} ${x1} ${y1 - 46}Q${cx} ${y1 - 30} ${x0} ${y1 - 46}Z`;
       case 'marah': { const tinggiDalam = i === 0 ? [y1 - 40, y1 - 90] : [y1 - 90, y1 - 40]; return `M${x0} ${y1}L${x0} ${tinggiDalam[0]}L${x1} ${tinggiDalam[1]}L${x1} ${y1}Z`; }
-      case 'kaget': return jendela(Math.min(atas, y0) - 18).replace(/A/, `A`) ;
+      case 'kaget': return jendela(Math.min(atas, y0) - 18).replace(/A/, `A`);
       case 'sayu': case 'yakin': return `M${x0} ${y1}L${x0} ${y1 - Math.min(tinggi, 62)}L${x1} ${y1 - Math.min(tinggi, 62)}L${x1} ${y1}Z`;
       case 'penasaran': return i === 0 ? `M${x0} ${y1 - 18}L${x0} ${y1 - 58}L${x1} ${y1 - 52}L${x1} ${y1 - 18}Z` : jendela(atas);
       case 'lirik': return jendela(atas + 10);
@@ -72,7 +86,7 @@
       this.lirikX = 0; this.lirikY = 0; this.tujuanLirik = [0, 0]; this.buka = 1; this.diamSejak = performance.now(); this.t0 = performance.now();
       this.bangun();
       if (el.hasAttribute('data-ixar-interaktif')) this.interaktif();
-      this.langkah(performance.now()); // gambar lengkap dari awal, walau belum keliatan di layar
+      this.langkah(performance.now());
     }
     bangun() {
       const s = buat('svg', { viewBox: '360 -40 820 1000', class: 'ixar', 'aria-hidden': 'true' });
@@ -89,8 +103,8 @@
       this.mata = [buat('path', { class: 'ixar__mata' }, this.kepala), buat('path', { class: 'ixar__mata' }, this.kepala)];
       // perlengkapan
       this.alat = {};
-      const alat = 'var(--ixar-alat, #DA1617)'; // warna atribut ikut tema (aturan logo)
-      // pedang Reign digenggam di gagang (bawah kepala pedang), ujung ke bawah
+      const alat = 'var(--ixar-alat, #DA1617)';
+      // pedang Reign digenggam di gagang
       const pedang = this.alat.pedang = buat('g', { class: 'ixar__alat', fill: alat }, this.akar);
       const bilah = buat('g', { transform: 'scale(1.75) translate(-297.1 -197)' }, pedang);
       PEDANG.forEach((d) => buat('path', { d, 'fill-rule': 'evenodd' }, bilah));
@@ -107,8 +121,67 @@
       this.alat.zzz = buat('g', { class: 'ixar__alat ixar__zzz', fill: alat, 'font-family': 'Reign9Display, Oxanium, sans-serif', 'font-weight': 800 }, s);
       [['z', 1000, 230, 70], ['z', 1050, 160, 95], ['Z', 1110, 70, 120]].forEach(([z, x, y, u]) => { const t = buat('text', { x, y, 'font-size': u }, this.alat.zzz); t.textContent = z; });
       this.alat.daun = buat('path', { class: 'ixar__alat', d: 'M1010 420Q1060 380 1080 440Q1040 470 1010 420Z', fill: alat }, this.akar);
+
+      // 1. Alat Roster: Handheld Gaming Phone/Controller + Headset Esports
+      const stik = this.alat['stik-game'] = buat('g', { class: 'ixar__alat' }, this.akar);
+      // Headset di kepala
+      buat('path', { d: 'M482 370 C475 210 1060 210 1054 370', fill: 'none', stroke: alat, 'stroke-width': 22 }, stik);
+      buat('rect', { x: 454, y: 330, width: 42, height: 96, rx: 16, fill: alat }, stik);
+      buat('rect', { x: 1040, y: 330, width: 42, height: 96, rx: 16, fill: alat }, stik);
+      // Handheld konsol/HP HoK di depan dada
+      buat('rect', { x: 678, y: 695, width: 180, height: 92, rx: 22, fill: '#111', stroke: alat, 'stroke-width': 12 }, stik);
+      buat('circle', { cx: 716, cy: 741, r: 16, fill: alat }, stik);
+      buat('circle', { cx: 818, cy: 728, r: 10, fill: '#ffd447' }, stik);
+      buat('circle', { cx: 836, cy: 752, r: 10, fill: alat }, stik);
+      buat('path', { d: 'M748 672 L766 640 L776 668 L796 636', fill: 'none', stroke: '#ffd447', 'stroke-width': 8, 'stroke-linecap': 'round' }, stik);
+
+      // 2. Alat Shop: Tas Belanja Merch R9
+      const tas = this.alat['tas-belanja'] = buat('g', { class: 'ixar__alat' }, this.akar);
+      buat('path', { d: 'M-40 0 C-40 -52 40 -52 40 0', fill: 'none', stroke: '#ffd447', 'stroke-width': 14 }, tas);
+      buat('path', { d: 'M-78 0 L78 0 L92 175 L-92 175 Z', fill: alat, stroke: '#fff', 'stroke-width': 8 }, tas);
+      const tTas = buat('text', { x: 0, y: 112, fill: '#fff', 'font-size': 68, 'font-weight': 800, 'text-anchor': 'middle', 'font-family': 'Reign9Display, Oxanium, sans-serif' }, tas);
+      tTas.textContent = 'R9';
+
+      // 3. Alat Schedule: Kacamata Manajer & Papan Klip Jadwal / Kalender
+      const kalender = this.alat.kalender = buat('g', { class: 'ixar__alat' }, this.akar);
+      // Kacamata taktis manajer di depan mata
+      buat('rect', { x: 582, y: 332, width: 136, height: 84, rx: 12, fill: 'none', stroke: '#ffd447', 'stroke-width': 14 }, kalender);
+      buat('rect', { x: 818, y: 332, width: 136, height: 84, rx: 12, fill: 'none', stroke: '#ffd447', 'stroke-width': 14 }, kalender);
+      buat('line', { x1: 718, y1: 372, x2: 818, y2: 372, stroke: '#ffd447', 'stroke-width': 14 }, kalender);
+      // Clipboard jadwal di tangan kiri
+      buat('rect', { x: 470, y: 620, width: 175, height: 220, rx: 14, fill: '#150406', stroke: alat, 'stroke-width': 12 }, kalender);
+      buat('rect', { x: 518, y: 598, width: 80, height: 32, rx: 8, fill: '#ffd447' }, kalender);
+      buat('path', { d: 'M502 678 H612 M502 722 H612 M502 766 H580', stroke: '#fff', 'stroke-width': 12, 'stroke-linecap': 'round' }, kalender);
+
+      // 4. Alat News: Koran / Tablet Berita R9 NEWS
+      const koran = this.alat.koran = buat('g', { class: 'ixar__alat' }, this.akar);
+      buat('rect', { x: 610, y: 650, width: 316, height: 210, rx: 12, fill: '#fff', stroke: alat, 'stroke-width': 12 }, koran);
+      buat('rect', { x: 632, y: 672, width: 272, height: 48, fill: alat }, koran);
+      const tKoran = buat('text', { x: 768, y: 709, fill: '#fff', 'font-size': 38, 'font-weight': 800, 'text-anchor': 'middle', 'font-family': 'Reign9Display, Oxanium, sans-serif' }, koran);
+      tKoran.textContent = 'R9 NEWS';
+      buat('path', { d: 'M640 750 H896 M640 785 H896 M640 820 H810', stroke: '#111', 'stroke-width': 12, 'stroke-linecap': 'round' }, koran);
+
+      // 5. Alat Banner: Kuas Lukis Besar + Cipratan Warna
+      const kuas = this.alat.kuas = buat('g', { class: 'ixar__alat' }, this.akar);
+      buat('path', { d: 'M0 0 L110 -150', stroke: '#ffd447', 'stroke-width': 22, 'stroke-linecap': 'round' }, kuas);
+      buat('path', { d: 'M95 -135 C125 -195 185 -180 165 -235 C120 -225 75 -185 95 -135 Z', fill: alat }, kuas);
+      buat('circle', { cx: 185, cy: -250, r: 16, fill: alat }, kuas);
+      buat('circle', { cx: 140, cy: -275, r: 10, fill: '#ffd447' }, kuas);
+
+      // 6. Alat About/Ethos: Panji Bendera Kerajaan R9
+      const panji = this.alat['panji-r9'] = buat('g', { class: 'ixar__alat' }, this.akar);
+      buat('line', { x1: 0, y1: 180, x2: 0, y2: -340, stroke: '#ffd447', 'stroke-width': 16, 'stroke-linecap': 'round' }, panji);
+      buat('path', { d: 'M0 -330 L230 -285 L195 -195 L230 -115 L0 -145 Z', fill: alat, stroke: '#ffd447', 'stroke-width': 8 }, panji);
+      const tPanji = buat('text', { x: 98, y: -198, fill: '#fff', 'font-size': 72, 'font-weight': 800, 'text-anchor': 'middle', 'font-family': 'Reign9Display, Oxanium, sans-serif' }, panji);
+      tPanji.textContent = 'R9';
+
+      // 7. Alat Contact: Amplop Surat Resmi R9
+      const amplop = this.alat.amplop = buat('g', { class: 'ixar__alat' }, this.akar);
+      buat('rect', { x: -115, y: -65, width: 230, height: 150, rx: 14, fill: '#fff', stroke: alat, 'stroke-width': 10 }, amplop);
+      buat('path', { d: 'M-110 -60 L0 25 L110 -60', fill: 'none', stroke: alat, 'stroke-width': 10 }, amplop);
+      buat('circle', { cx: 0, cy: 18, r: 24, fill: alat }, amplop);
+
       this.miring = 0; this.ayunDrag = 0;
-      // versi bara (layar pembuka): badan diisi butiran api kelap-kelip, warnanya ikut tema lewat --bara-1..4
       if (this.el.hasAttribute('data-ixar-bara')) {
         const id = `bara-${Math.random().toString(36).slice(2, 8)}`, defs = buat('defs', {}), pola = buat('pattern', { id, width: 34, height: 34, patternUnits: 'userSpaceOnUse' }, defs);
         [[0, 0, 1], [17, 0, 2], [8, 17, 3], [25, 17, 1], [0, 17, 4], [17, 17, 2], [8, 0, 3], [25, 0, 4]].forEach(([x, y, k], i) => {
@@ -137,11 +210,12 @@
     interaktif() {
       const el = this.el;
       el.setAttribute('role', 'button'); el.setAttribute('tabindex', '0'); el.setAttribute('aria-label', el.dataset.label || 'IXAR, maskot Reign 9');
-      const reaksi = ['lompat', 'menang', 'kaget', 'pedang', 'tameng', 'marah', 'regang', 'tonjok'];
+      const reaksi = ['lompat', 'menang', 'kaget', 'pedang', 'tameng', 'marah', 'regang', 'tonjok', 'roster', 'belanja', 'manajer'];
       let urut = Math.floor(Math.random() * reaksi.length);
       const sentuh = () => {
         if (this.baruDiseret) return;
-        this.lakukan(reaksi[urut++ % reaksi.length], 1300); this.diamSejak = performance.now();
+        this.lakukan(reaksi[urut++ % reaksi.length], 1500); this.diamSejak = performance.now();
+        document.dispatchEvent(new CustomEvent('r9:ixar-sentuh', { detail: { el } }));
       };
       el.addEventListener('click', sentuh);
       el.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); sentuh(); } });
@@ -167,8 +241,38 @@
           const f = Math.sin(w * 1.35);
           sy += f * .018; kep += f * 2.5; kn[0] += f * 3; ln[1] += f * 4;
         }
+        if (tujuan.gerak === 'main-game') {
+          // Jempol & lengan tap-tap cepat main Honor of Kings
+          const f = Math.sin(w * 24), c = Math.cos(w * 19);
+          lk[1] += f * 9; ln[1] -= c * 9;
+          kep += Math.sin(w * 5) * 2.5;
+          dy += Math.abs(Math.sin(w * 6)) * 5;
+        }
+        if (tujuan.gerak === 'belanja') {
+          // Mengayun tas belanja dengan riang
+          const f = Math.sin(w * 6.5);
+          ln[0] += f * 10; ln[1] += f * 16;
+          lk[1] -= f * 12;
+          dy -= Math.abs(f) * 10;
+          kep += f * 3;
+        }
+        if (tujuan.gerak === 'manajer') {
+          // Mengecek jadwal & mencatat di clipboard
+          const f = Math.sin(w * 5.2);
+          ln[1] += f * 18;
+          kep += Math.sin(w * 2.6) * 4;
+        }
+        if (tujuan.gerak === 'baca') {
+          const f = Math.sin(w * 3.4);
+          kep += f * 3.5;
+          lk[1] += f * 4; ln[1] -= f * 4;
+        }
+        if (tujuan.gerak === 'lukis') {
+          const f = Math.sin(w * 8.5);
+          ln[0] += f * 16; ln[1] += Math.cos(w * 8.5) * 28;
+          kep -= f * 3;
+        }
         if (tujuan.gerak === 'jatuh') {
-          // Gerak jatuh bebas: tangan & kaki mengayuh panik di udara, mahkota terangkat angin
           const f = Math.sin(w * 26), c = Math.cos(w * 26);
           lk[0] += f * 18; lk[1] += c * 24;
           ln[0] -= f * 18; ln[1] -= c * 24;
@@ -178,7 +282,6 @@
           mahkota += 14 + Math.abs(f) * 10;
         }
         if (tujuan.gerak === 'seret') {
-          // Saat di-drag: kaki & tangan menjuntai terayun mengikuti arah geseran kursor/jari
           const ayun = (this.ayunDrag || 0) + Math.sin(w * 9) * 10;
           kk[0] += ayun * .9; kk[1] += ayun * 1.25;
           kn[0] += ayun * .9; kn[1] += ayun * 1.25;
@@ -191,7 +294,6 @@
           mahkota += 6;
         }
         if (tujuan.gerak === 'jalan' || tujuan.gerak === 'jalan-cepat') {
-          // langkah: kaki maju-mundur gantian, lutut nekuk pas kaki diangkat, tangan ngayun berlawanan
           const cepat = tujuan.gerak === 'jalan-cepat', f = w * (cepat ? 13 : 8.5), a = cepat ? 34 : 24, sf = Math.sin(f), cf = Math.cos(f);
           kk[0] = -6 + sf * a; kk[1] = kk[0] - 4 - Math.max(0, cf) * (cepat ? 34 : 22);
           kn[0] = 6 - sf * a; kn[1] = kn[0] + 4 + Math.max(0, -cf) * (cepat ? 34 : 22);
@@ -203,7 +305,7 @@
       }
       this.akar.setAttribute('transform', `translate(${n.dx} ${dy}) rotate(${rot} ${TAPAK[0]} ${TAPAK[1]}) translate(${TAPAK[0]} ${TAPAK[1]}) scale(${n.sx} ${sy}) translate(${-TAPAK[0]} ${-TAPAK[1]})`);
       // anggota badan
-      [lk, ln].forEach((s, i) => { const a = BAHU[i], b = ujung(a, s[0], LENGAN[0] * n.panjang), c = ujung(b, s[1], LENGAN[1] * n.panjang); this.lengan[i].setAttribute('d', `M${a}L${b}L${c}`); this.tangan[i].setAttribute('cx', c[0]); this.tangan[i].setAttribute('cy', c[1]); (i ? this : this)[i ? 'ujungKanan' : 'ujungKiri'] = { titik: c, sudut: s[1] }; });
+      [lk, ln].forEach((s, i) => { const a = BAHU[i], b = ujung(a, s[0], LENGAN[0] * n.panjang), c = ujung(b, s[1], LENGAN[1] * n.panjang); this.lengan[i].setAttribute('d', `M${a}L${b}L${c}`); this.tangan[i].setAttribute('cx', c[0]); this.tangan[i].setAttribute('cy', c[1]); this[i ? 'ujungKanan' : 'ujungKiri'] = { titik: c, sudut: s[1] }; });
       [kk, kn].forEach((s, i) => { const a = PINGGUL[i], b = ujung(a, s[0], KAKI[0]), c = ujung(b, s[1], KAKI[1]); this.kaki[i].setAttribute('d', `M${a}L${b}L${c}`); this.telapak[i].setAttribute('cx', c[0] + (i ? 24 : -24)); this.telapak[i].setAttribute('cy', c[1] + 4); this.telapak[i].setAttribute('transform', `rotate(${(s[1]) * .4 * (i ? 1 : 1)} ${c[0]} ${c[1]})`); });
       // kepala & mata
       this.lirikX = lerp(this.lirikX, this.tujuanLirik[0], .12); this.lirikY = lerp(this.lirikY, this.tujuanLirik[1], .12);
@@ -218,9 +320,13 @@
         const aktif = tujuan.alat === nama; el.style.opacity = aktif ? 1 : 0;
         if (!aktif) continue;
         const kanan = this.ujungKanan, kiri = this.ujungKiri;
-        if (nama === 'pedang') el.setAttribute('transform', `translate(${kanan.titik[0]} ${kanan.titik[1]}) rotate(${-kanan.sudut + (this.pose === 'serbu' ? 0 : 0)})`);
+        if (nama === 'pedang') el.setAttribute('transform', `translate(${kanan.titik[0]} ${kanan.titik[1]}) rotate(${-kanan.sudut})`);
         if (nama === 'tameng') el.setAttribute('transform', `translate(${kiri.titik[0] + 40} ${kiri.titik[1] - 10}) scale(.9)`);
         if (nama === 'percik-tinju') el.setAttribute('transform', `translate(${kanan.titik[0] + 50} ${kanan.titik[1]})`);
+        if (nama === 'tas-belanja') el.setAttribute('transform', `translate(${kanan.titik[0]} ${kanan.titik[1] + 15}) rotate(${Math.sin(w * 6.5) * 8})`);
+        if (nama === 'kuas') el.setAttribute('transform', `translate(${kanan.titik[0]} ${kanan.titik[1]}) rotate(${Math.sin(w * 8.5) * 18})`);
+        if (nama === 'panji-r9') el.setAttribute('transform', `translate(${kanan.titik[0]} ${kanan.titik[1]}) rotate(${Math.sin(w * 4) * 4})`);
+        if (nama === 'amplop') el.setAttribute('transform', `translate(${kiri.titik[0] - 20} ${kiri.titik[1]}) rotate(-12)`);
         if (nama === 'zzz') {
           const rebahan = Math.abs(n.rot) > 40;
           const zx = rebahan ? -420 : 0, zy = (rebahan ? 360 : 0) - ((w * 40) % 60);
