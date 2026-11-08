@@ -262,6 +262,7 @@ window.R9_KAMUS = {
   'shop.judul': { id: 'R9 <span class="aksen-merah">Shop</span>', en: 'R9 <span class="aksen-merah">Shop</span>', zh: 'R9 <span class="aksen-merah">官方商店</span>' },
   'shop.isi': { id: 'Merchandise resmi R9 segera hadir. Jersey Pro Kit 2026, kaos komunitas, dan koleksi edisi maskot IXAR sedang disiapkan.', en: 'Official R9 merchandise is coming soon. Pro Kit 2026 Jerseys, community tees, and IXAR mascot editions are in the works.', zh: 'R9 官方周边即将上线。2026 战队队服、社区 T 恤和 IXAR 限定款正在准备中。' },
   'shop.segera': { id: 'Segera hadir', en: 'Coming soon', zh: '即将上线' },
+  'shop.kunjungi': { id: 'Kunjungi toko', en: 'Visit the shop', zh: '前往商店' },
 
   // ---------- contact ----------
   'kontak.judul': { id: 'Contact <span class="aksen-merah">Us</span>', en: 'Contact <span class="aksen-merah">Us</span>', zh: '联系<span class="aksen-merah">我们</span>' },

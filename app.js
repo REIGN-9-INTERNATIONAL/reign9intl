@@ -82,11 +82,43 @@ const R9 = window.R9 = {
   tanggal(s, opsi = { day: 'numeric', month: 'long', year: 'numeric' }) { return s ? new Intl.DateTimeFormat(R9.lokal(), opsi).format(new Date(`${s.slice(0, 10)}T00:00:00`)) : ''; },
   rupiah(n) { return n ? new Intl.NumberFormat(R9.lokal(), { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(n) : ''; },
 };
+// teks dari admin (tab Situs) cuma teks biasa: di-escape dulu, lalu [kata] jadi aksen merah & baris baru jadi <br>
+const htmlAdmin = (v) => esc(v).replace(/\[([^\]\n]{1,80})\]/g, '<span class="aksen-merah">$1</span>').replace(/\n/g, '<br>');
+const KAMUS_ASLI = JSON.parse(JSON.stringify(window.R9_KAMUS));
+let situsTerpasang = '';
+// pasang isi tab Situs dari admin: teks (3 bahasa) & info (guild, sosmed, toko)
+function terapkanSitus(situs) {
+  const jejak = JSON.stringify(situs || {}); if (jejak === situsTerpasang) return; situsTerpasang = jejak;
+  const teks = situs?.teks || {}, info = situs?.info || {};
+  for (const k of Object.keys(window.R9_KAMUS)) if (window.R9_KAMUS[k].dariAdmin && !teks[k]) window.R9_KAMUS[k] = { ...KAMUS_ASLI[k] };
+  for (const [k, v] of Object.entries(teks)) {
+    const asli = KAMUS_ASLI[k] || {};
+    // terjemahan kosong → pakai teks baru dari admin (biar perubahan selalu keliatan), bukan teks lama
+    window.R9_KAMUS[k] = { id: v.id || asli.id || '', en: v.en || v.id || asli.en || '', zh: v.zh || v.id || asli.zh || '', dariAdmin: true };
+  }
+  if (info.guildId) {
+    $$('.guild__id').forEach((el) => { el.textContent = info.guildId; });
+    $$('[data-salin]').forEach((el) => { el.dataset.salin = info.guildId; });
+    $$('.hero__sudut span').forEach((el) => { if (/^GUILD /.test(el.textContent)) el.textContent = `GUILD ${info.guildId}`; });
+  }
+  const isiDd = (kunci, nilai) => { if (!nilai) return; $$(`dt[data-i18n="${kunci}"]`).forEach((dt) => { const dd = dt.nextElementSibling; if (dd) dd.textContent = nilai; }); };
+  isiDd('guild.nama', info.guildNama); isiDd('guild.tag', info.guildTag);
+  for (const [k, pola] of [['instagram', 'instagram.com'], ['tiktok', 'tiktok.com'], ['discord', 'discord.']]) {
+    const url = tautanAman(info[k]); if (url) $$(`a[href*="${pola}"]`).forEach((a) => { a.href = url; });
+  }
+  const toko = tautanAman(info.toko);
+  $$('.shop__segera, .shop__toko').forEach((el) => {
+    if (toko && el.tagName !== 'A') { const a = document.createElement('a'); a.className = 'tombol tombol--utama shop__toko'; a.href = toko; a.target = '_blank'; a.rel = 'noopener'; a.dataset.i18n = 'shop.kunjungi'; a.textContent = R9.t('shop.kunjungi'); el.replaceWith(a); }
+    else if (toko) el.href = toko;
+    else if (el.tagName === 'A') { const p = document.createElement('p'); p.className = 'shop__segera'; p.dataset.i18n = 'shop.segera'; p.textContent = R9.t('shop.segera'); el.replaceWith(p); }
+  });
+  pasangBahasa(R9.bahasa);
+}
 function pasangBahasa(b, simpan) {
   R9.bahasa = ['id', 'en', 'zh'].includes(b) ? b : 'id';
   document.documentElement.lang = R9.bahasa === 'zh' ? 'zh-CN' : R9.bahasa;
   $$('[data-i18n]').forEach((el) => { el.textContent = R9.t(el.dataset.i18n); });
-  $$('[data-i18n-html]').forEach((el) => { el.innerHTML = R9.t(el.dataset.i18nHtml); });
+  $$('[data-i18n-html]').forEach((el) => { const k = el.dataset.i18nHtml; if (window.R9_KAMUS[k]?.dariAdmin) el.innerHTML = htmlAdmin(R9.t(k)); else el.innerHTML = R9.t(k); });
   $$('[data-i18n-attr]').forEach((el) => el.dataset.i18nAttr.split(';').forEach((p) => { const [a, k] = p.split(':'); el.setAttribute(a, R9.t(k)); }));
   $$('[data-bahasa]').forEach((t) => t.setAttribute('aria-pressed', t.dataset.bahasa === R9.bahasa));
   if (simpan) try { localStorage.setItem('bahasa', R9.bahasa); } catch (e) {}
@@ -1247,6 +1279,7 @@ function gambarHalamanBerita(d) {
 }
 
 function gambarData() {
+  if (DATA?.situs) terapkanSitus(DATA.situs);
   const d = DATA || { pemain: { aktif: [], nonaktif: [] }, event: [], prestasi: [], news: [], ringkas: {} };
 
   if ($('[data-artikel-berita]')) {
