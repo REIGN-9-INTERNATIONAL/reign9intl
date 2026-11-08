@@ -204,104 +204,450 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
   } catch (e) { document.documentElement.classList.remove('bara-hidup'); kanvas.remove(); window.R9Hero = null; }
 })();
 
-// ---------- otak IXAR di layar pembuka ----------
+// ---------- otak IXAR tunggal: jelajah seluruh halaman, ikut scroll, drag & drop, fisika jatuh/lompat, rebahan di lantai ----------
 (() => {
-  const el = $('.hero__ixar'), hero = $('.hero');
+  const el = $('.hero__ixar'), panggung = $('.panggung-ixar'), hero = $('.hero'), panggungKenal = $('[data-panggung-kenal]');
   if (!el) return;
   const x = () => el.ixar;
-  let px = 0, py = 0, tinggi = 160, lebar = 130, sibuk = false, jedaSampai = 0, mati = false, hadapKiri = false;
+  let px = 0, py = 0, tinggi = 152, lebar = 124, sibuk = false, sedangDiseret = false, sedangJatuh = false;
+  let jedaSampai = 0, mati = false, hadapKiri = false, tokenAksi = 0, sudahSapaKenal = false;
   const tidur = (ms) => new Promise((ok) => setTimeout(ok, ms));
-  const ukur = () => { const r = el.getBoundingClientRect(); lebar = r.width; tinggi = r.height || lebar * 1.22; };
-  const lantai = () => { const r = hero.getBoundingClientRect(); return r.bottom + scrollY - tinggi - 6; };
-  const batasX = () => [8, document.documentElement.clientWidth - lebar - 8];
-  const taruh = () => { el.style.transform = `translate(${px}px, ${py}px)`; };
+  const ukur = () => { const r = el.getBoundingClientRect(); lebar = r.width || 124; tinggi = r.height || lebar * 1.22; };
+  const batasLayarX = () => [8, Math.max(8, document.documentElement.clientWidth - lebar - 8)];
+
+  // Deteksi platform/lantai aktif di viewport saat ini (Hero, Panggung Kenal #ixar, Podium #about, atau dasar layar)
+  function infoPlatform() {
+    if (panggungKenal) {
+      const rk = panggungKenal.getBoundingClientRect();
+      if (rk.bottom > tinggi + 36 && rk.top < innerHeight - 70 && rk.width > lebar) {
+        const yPanggung = Math.min(innerHeight - tinggi - 8, rk.bottom - tinggi - 54);
+        return { mode: 'kenal', y: yPanggung, xMin: Math.max(8, rk.left + 18), xMax: Math.min(innerWidth - lebar - 8, rk.right - lebar - 18) };
+      }
+    }
+    if (hero) {
+      const rh = hero.getBoundingClientRect();
+      if (rh.bottom > tinggi + 40 && scrollY < innerHeight * .55) {
+        const yHero = Math.min(innerHeight - tinggi - 8, rh.bottom - tinggi - 6);
+        return { mode: 'hero', y: yHero, xMin: 8, xMax: Math.max(8, document.documentElement.clientWidth - lebar - 8) };
+      }
+    }
+    return { mode: 'jelajah', y: innerHeight - tinggi - 8, xMin: 8, xMax: Math.max(8, document.documentElement.clientWidth - lebar - 8) };
+  }
+  const lantai = () => infoPlatform().y;
+  const batasX = () => { const p = infoPlatform(); return [p.xMin, Math.max(p.xMin, p.xMax)]; };
+  const taruh = () => { el.style.transform = `translate3d(${Math.round(px)}px, ${Math.round(py)}px, 0)`; };
   const hadap = (kiri) => { hadapKiri = kiri; el.classList.toggle('hadap-kiri', kiri); };
   const pose = (p) => x()?.set(p);
-  const animasi = (durasi, tiap) => new Promise((ok) => {
-    const t0 = performance.now();
-    const langkah = (t) => { const k = Math.min(1, (t - t0) / durasi); tiap(k); taruh(); if (k < 1 && !mati) requestAnimationFrame(langkah); else ok(); };
+
+  function efekMendarat(cx, cy) {
+    if (!panggung || !gerakBoleh) return;
+    const j = document.createElement('span');
+    j.className = 'jejak-mendarat';
+    j.style.left = `${Math.round(cx)}px`;
+    j.style.top = `${Math.round(cy)}px`;
+    panggung.append(j);
+    setTimeout(() => j.remove(), 460);
+  }
+
+  const animasi = (durasi, tiap, myToken = tokenAksi) => new Promise((ok) => {
+    const t0 = performance.now(), d = Math.max(16, durasi);
+    const langkah = (t) => {
+      if (mati || sedangDiseret || myToken !== tokenAksi) return ok(false);
+      const k = Math.min(1, (t - t0) / d);
+      tiap(k); taruh();
+      if (k < 1) requestAnimationFrame(langkah); else ok(true);
+    };
     requestAnimationFrame(langkah);
   });
+
+  // Fisika jatuh bebas nyata dengan gravitasi, pantulan dinding/lantai, pose mengayuh di udara, & squash saat mendarat
+  function fisikaJatuh(vxAwal = 0, vyAwal = 0) {
+    if (sedangDiseret) return Promise.resolve();
+    const myToken = ++tokenAksi;
+    sedangJatuh = true; sibuk = true;
+    return new Promise((ok) => {
+      let vx = vxAwal, vy = vyAwal, tTerakhir = performance.now(), pantul = 0;
+      const tinggiJatuhAwal = lantai() - py;
+      const GRAVITASI = 2200;
+      const frame = (t) => {
+        if (mati || sedangDiseret || myToken !== tokenAksi) {
+          if (x()) x().miring = 0;
+          sedangJatuh = false; return ok();
+        }
+        const dt = Math.min(.045, Math.max(.004, (t - tTerakhir) / 1000));
+        tTerakhir = t;
+        vy += GRAVITASI * dt;
+        vx *= Math.pow(.985, dt * 60);
+        px += vx * dt;
+        py += vy * dt;
+
+        const [xMin, xMax] = batasLayarX();
+        if (px < xMin) { px = xMin; vx = Math.abs(vx) * .58; hadap(false); }
+        else if (px > xMax) { px = xMax; vx = -Math.abs(vx) * .58; hadap(true); }
+        if (py < 6) { py = 6; vy = Math.abs(vy) * .35; }
+
+        if (Math.abs(vx) > 25) hadap(vx < 0);
+        if (x()) x().miring = Math.max(-26, Math.min(26, vx * .022));
+
+        // Saat naik pose 'lompat', saat turun pose 'jatuh' (tangan & kaki mengayuh seperti benar-benar jatuh)
+        pose(vy < -110 ? 'lompat' : 'jatuh');
+
+        const yl = lantai();
+        if (py >= yl) {
+          py = yl;
+          if (vy > 260) efekMendarat(px + lebar / 2, py + tinggi - 6);
+          if (vy > 540 && pantul < 2) {
+            pantul++;
+            vy = -vy * .34;
+            vx *= .62;
+            pose('mendarat');
+            taruh();
+            requestAnimationFrame(frame);
+            return;
+          }
+          if (x()) x().miring = 0;
+          taruh();
+          pose('mendarat');
+          setTimeout(() => {
+            if (myToken !== tokenAksi || sedangDiseret) { sedangJatuh = false; return ok(); }
+            if (tinggiJatuhAwal > 220) {
+              pose('rebahan');
+              setTimeout(() => {
+                if (myToken === tokenAksi && !sedangDiseret) pose('diam');
+                sedangJatuh = false; sibuk = false; ok();
+              }, 1600);
+            } else {
+              pose('diam');
+              sedangJatuh = false; sibuk = false; ok();
+            }
+          }, 240);
+          return;
+        }
+        taruh();
+        requestAnimationFrame(frame);
+      };
+      requestAnimationFrame(frame);
+    });
+  }
+
   async function jalanKe(tx, cepat = false) {
+    if (sedangDiseret) return;
+    const myToken = ++tokenAksi;
     const [a, b] = batasX(); tx = Math.max(a, Math.min(b, tx));
     const jarak = Math.abs(tx - px); if (jarak < 4) return;
     hadap(tx < px); pose(cepat ? 'jalanCepat' : 'jalan');
-    const x0 = px, y0 = py, yl = lantai();
-    await animasi(jarak / (cepat ? 420 : 170) * 1000, (k) => { px = x0 + (tx - x0) * k; py = y0 + (yl - y0) * Math.min(1, k * 3); });
-    pose('diam');
+    const x0 = px, y0 = py;
+    await animasi(jarak / (cepat ? 420 : 175) * 1000, (k) => {
+      const yl = lantai();
+      px = x0 + (tx - x0) * k;
+      py = y0 + (yl - y0) * Math.min(1, k * 3);
+    }, myToken);
+    if (myToken === tokenAksi && !sedangDiseret) pose('diam');
   }
-  async function lompatKe(tx, ty, puncak = 160, durasi = 700, gaya = 'lompat') {
-    const x0 = px, y0 = py; hadap(tx < px); pose(gaya);
-    await animasi(durasi, (k) => { px = x0 + (tx - x0) * k; py = y0 + (ty - y0) * k - Math.sin(Math.PI * k) * puncak; });
+
+  // Lompatan parabolik realistis: ancang-ancang jongkok -> melesat naik ('lompat') -> melayang turun ('jatuh') -> mendarat ('mendarat')
+  async function lompatKe(tx, ty, puncak = 150, durasi = 680) {
+    if (sedangDiseret) return;
+    const myToken = ++tokenAksi;
+    const [a, b] = batasLayarX();
+    tx = Math.max(a, Math.min(b, tx));
+    hadap(tx < px);
+    pose('mendarat');
+    await tidur(95);
+    if (myToken !== tokenAksi || sedangDiseret) return;
+    const x0 = px, y0 = py;
+    const selesai = await animasi(durasi, (k) => {
+      px = x0 + (tx - x0) * k;
+      py = y0 + (ty - y0) * k - Math.sin(Math.PI * k) * puncak;
+      if (x()) x().miring = (tx - x0) * .035 * Math.cos(Math.PI * k);
+      pose(k < .52 ? 'lompat' : 'jatuh');
+    }, myToken);
+    if (!selesai || myToken !== tokenAksi || sedangDiseret) return;
+    if (x()) x().miring = 0;
+    efekMendarat(px + lebar / 2, py + tinggi - 6);
+    pose('mendarat');
+    await tidur(210);
+    if (myToken === tokenAksi && !sedangDiseret) pose('diam');
   }
-  async function turun() { await lompatKe(px + (hadapKiri ? -40 : 40), lantai(), 60, 520, 'kaget'); pose('diam'); }
+
+  async function turun() {
+    await lompatKe(px + (hadapKiri ? -36 : 36), lantai(), 70, 520);
+  }
+
   async function tonjokSambutan() {
-    const t = window.R9Hero?.kotakTeks(); if (!t) return;
+    const t = window.R9Hero?.kotakTeks(); if (!t || scrollY > innerHeight * .35) return;
+    const myToken = tokenAksi;
     await jalanKe(t.kiri - lebar * .85, true);
+    if (myToken !== tokenAksi || sedangDiseret) return;
     hadap(false); x()?.lakukan('tonjok', 900); await tidur(180);
     window.R9Hero.tonjokSambut(t.kiri + 10, (t.atas + t.bawah) / 2);
     await tidur(900); x()?.lakukan('menang', 1300); await tidur(1300);
   }
+
   async function hancurinLogo() {
-    const L = window.R9Hero?.kotakLogo(); if (!L) return;
+    const L = window.R9Hero?.kotakLogo(); if (!L || scrollY > innerHeight * .3) return;
     const kiri = Math.random() < .5 || L.kiri - lebar < 20, tx = kiri ? L.kiri - lebar * .8 : L.kanan - lebar * .2;
     await jalanKe(tx, true);
-    await lompatKe(tx, (L.atas + L.bawah) / 2 - tinggi * .45, 120, 600);
+    if (sedangDiseret) return;
+    const targetY = (L.atas + L.bawah) / 2 - scrollY - tinggi * .45;
+    await lompatKe(tx, targetY, 120, 600);
+    if (sedangDiseret) return;
     hadap(!kiri);
     const tinjuX = kiri ? L.kiri + 6 : L.kanan - 6, tinjuY = (L.atas + L.bawah) / 2;
-    for (let i = 0; i < 3; i++) { x()?.lakukan('tonjok', 380); await tidur(160); window.R9Hero.pukul(tinjuX, tinjuY + (i - 1) * 50, 14 + i * 4); await tidur(420); }
+    for (let i = 0; i < 3; i++) {
+      if (sedangDiseret) return;
+      x()?.lakukan('tonjok', 380); await tidur(160);
+      window.R9Hero.pukul(tinjuX, tinjuY + (i - 1) * 50, 14 + i * 4);
+      await tidur(420);
+    }
     x()?.lakukan('marah', 500); await tidur(500);
     x()?.lakukan('tonjok', 600); await tidur(170); window.R9Hero.hancur(tinjuX, tinjuY);
     await tidur(500); await turun(); x()?.lakukan('menang', 1400); await tidur(1600);
   }
+
   async function keMenu() {
-    if (scrollY > 30) return;
+    if (scrollY > 40) return;
     const pilihan = $$('.atas__menu a, .bahasa, .tema').filter((e) => { const r = e.getBoundingClientRect(); return r.width && r.top < 90; });
     if (!pilihan.length) return;
     const sasaran = pilihan[Math.floor(Math.random() * pilihan.length)], r = sasaran.getBoundingClientRect();
-    const tx = r.left + r.width / 2 - lebar / 2 + scrollX, ty = $('.atas').getBoundingClientRect().bottom + scrollY - tinggi * .08;
+    const tx = r.left + r.width / 2 - lebar / 2, ty = $('.atas').getBoundingClientRect().bottom - tinggi * .08;
     await jalanKe(tx, true);
-    await lompatKe(tx, ty, 40, 650);
+    await lompatKe(tx, ty, 45, 620);
+    if (sedangDiseret) return;
     pose('regang'); sasaran.classList.add('disentuh-ixar');
-    await tidur(1800); sasaran.classList.remove('disentuh-ixar');
+    await tidur(1600); sasaran.classList.remove('disentuh-ixar');
     await turun();
   }
-  async function jalanJalan() { const [a, b] = batasX(); await jalanKe(a + Math.random() * (b - a), Math.random() < .25); }
-  async function gaya() { const p = ['regang', 'penasaran', 'pedang', 'tameng', 'tunjuk', 'nyambut', 'meditasi', 'marah'][Math.floor(Math.random() * 8)]; x()?.lakukan(p, 2200); await tidur(2400); }
+
+  async function kePodiumJuara() {
+    const kotak1 = $('.podium__kotak--1');
+    if (!kotak1) return;
+    const r = kotak1.getBoundingClientRect();
+    if (r.top < tinggi + 30 || r.top > innerHeight - 60) return;
+    const tx = r.left + r.width / 2 - lebar / 2, ty = r.top - tinggi + 8;
+    await lompatKe(tx, ty, 130, 680);
+    if (sedangDiseret) return;
+    x()?.lakukan('bendera', 2600);
+    await tidur(2700);
+    if (!sedangDiseret) await turun();
+  }
+
+  async function jalanJalan() {
+    const [a, b] = batasX();
+    await jalanKe(a + Math.random() * (b - a), Math.random() < .3);
+  }
+
+  async function istirahatRebahan() {
+    const jenisRebahan = Math.random() < .6 ? 'rebahan' : 'tidur';
+    x()?.lakukan(jenisRebahan, 4200);
+    await tidur(4300);
+  }
+
+  async function gaya() {
+    const daftar = ['regang', 'penasaran', 'pedang', 'tameng', 'tunjuk', 'nyambut', 'meditasi', 'rebahan', 'lompat'];
+    const p = daftar[Math.floor(Math.random() * daftar.length)];
+    if (p === 'lompat') {
+      await lompatKe(px + (Math.random() - .5) * 90, lantai(), 135, 620);
+    } else {
+      x()?.lakukan(p, p === 'rebahan' ? 3600 : 2200);
+      await tidur(p === 'rebahan' ? 3700 : 2400);
+    }
+  }
+
+  // Perintahkan IXAR melakukan pose tertentu (dipakai oleh tombol "Kenalan sama IXAR")
+  async function peragakanPose(namaPose, durasi = 4200) {
+    if (sedangDiseret) return;
+    jedaSampai = performance.now() + durasi + 800;
+    const info = infoPlatform();
+    if (info.mode === 'kenal') {
+      const tengahPanggung = (info.xMin + info.xMax) / 2;
+      if (Math.abs(px - tengahPanggung) > 60 || Math.abs(py - info.y) > 24) {
+        await lompatKe(tengahPanggung, info.y, 120, 560);
+      }
+    }
+    if (namaPose === 'lompat') {
+      await lompatKe(px, lantai(), 165, 660);
+      x()?.lakukan('menang', 1400);
+    } else {
+      x()?.lakukan(namaPose, durasi);
+    }
+  }
+
+  window.R9IxarUtama = { peragakanPose, lompatKe, fisikaJatuh };
+
+  // Drag & Drop Interaktif pada IXAR
+  let pointerIdAktif = null, geserX0 = 0, geserY0 = 0, offsetDragX = 0, offsetDragY = 0;
+  let riwayatGerak = [];
+  el.addEventListener('pointerdown', (e) => {
+    if (e.button && e.button !== 0) return;
+    e.preventDefault();
+    e.stopPropagation();
+    pointerIdAktif = e.pointerId;
+    try { el.setPointerCapture(e.pointerId); } catch (err) {}
+    sedangDiseret = true;
+    if (x()) x().sedangDiseret = true;
+    tokenAksi++;
+    jedaSampai = performance.now() + 4000;
+    geserX0 = e.clientX; geserY0 = e.clientY;
+    offsetDragX = e.clientX - px;
+    offsetDragY = e.clientY - py;
+    riwayatGerak = [{ x: e.clientX, y: e.clientY, t: performance.now() }];
+    el.classList.add('sedang-diseret');
+    clearTimeout(x()?.balik);
+    pose('seret');
+  });
+
+  el.addEventListener('pointermove', (e) => {
+    if (!sedangDiseret || e.pointerId !== pointerIdAktif) return;
+    e.preventDefault();
+    const sekarang = performance.now();
+    const [xMin, xMax] = batasLayarX();
+    px = Math.max(xMin, Math.min(xMax, e.clientX - offsetDragX));
+    py = Math.max(4, Math.min(innerHeight - tinggi - 4, e.clientY - offsetDragY));
+    riwayatGerak.push({ x: e.clientX, y: e.clientY, t: sekarang });
+    while (riwayatGerak.length > 6 && sekarang - riwayatGerak[0].t > 90) riwayatGerak.shift();
+    const awal = riwayatGerak[0];
+    const dt = Math.max(12, sekarang - awal.t);
+    const vx = ((e.clientX - awal.x) / dt) * 1000;
+    if (Math.abs(vx) > 40) hadap(vx < 0);
+    if (x()) {
+      x().ayunDrag = Math.max(-42, Math.min(42, -vx * .038));
+      x().miring = Math.max(-22, Math.min(22, vx * .015));
+    }
+    taruh();
+  });
+
+  function lepasDrag(e) {
+    if (!sedangDiseret || (e && e.pointerId !== pointerIdAktif)) return;
+    try { el.releasePointerCapture(pointerIdAktif); } catch (err) {}
+    sedangDiseret = false;
+    pointerIdAktif = null;
+    el.classList.remove('sedang-diseret');
+    if (x()) {
+      x().sedangDiseret = false;
+      x().ayunDrag = 0;
+    }
+    const sekarang = performance.now();
+    const jarakTotal = e ? Math.hypot(e.clientX - geserX0, e.clientY - geserY0) : 0;
+    if (jarakTotal > 7 && x()) {
+      x().baruDiseret = true;
+      setTimeout(() => { if (x()) x().baruDiseret = false; }, 180);
+    }
+    const awal = riwayatGerak[0] || { x: px, y: py, t: sekarang - 16 };
+    const akhir = riwayatGerak[riwayatGerak.length - 1] || awal;
+    const dt = Math.max(16, sekarang - awal.t);
+    const vx = jarakTotal > 7 ? Math.max(-1100, Math.min(1100, ((akhir.x - awal.x) / dt) * 1000 * .75)) : 0;
+    const vy = jarakTotal > 7 ? Math.max(-950, Math.min(950, ((akhir.y - awal.y) / dt) * 1000 * .75)) : 0;
+    jedaSampai = performance.now() + 2600;
+    if (py < lantai() - 4 || Math.abs(vx) > 90 || vy < -90) {
+      fisikaJatuh(vx, vy);
+    } else {
+      py = lantai();
+      if (x()) x().miring = 0;
+      taruh();
+      pose('diam');
+    }
+  }
+  el.addEventListener('pointerup', lepasDrag);
+  el.addEventListener('pointercancel', lepasDrag);
+
+  // Mengikuti user saat scroll ke seluruh bagian website
+  let scrollTerakhir = scrollY, timerScroll = null;
+  addEventListener('scroll', () => {
+    const dyScroll = scrollY - scrollTerakhir;
+    scrollTerakhir = scrollY;
+    if (sedangDiseret) return;
+
+    const info = infoPlatform();
+    // Jika baru masuk ke bagian #ixar ("Kenalan sama IXAR"), lompat ke atas panggungnya!
+    if (info.mode === 'kenal' && !sudahSapaKenal && !sedangJatuh) {
+      sudahSapaKenal = true;
+      jedaSampai = performance.now() + 2400;
+      lompatKe((info.xMin + info.xMax) / 2, info.y, 125, 620).then(() => x()?.lakukan('nyambut', 1800));
+      return;
+    }
+    if (info.mode !== 'kenal') sudahSapaKenal = false;
+
+    // Efek terangkat/tertinggal saat halaman di-scroll lalu jatuh mendarat di lantai bagian aktif
+    py = Math.max(10, Math.min(innerHeight - tinggi * .35, py - dyScroll * .48));
+    taruh();
+
+    clearTimeout(timerScroll);
+    timerScroll = setTimeout(() => {
+      if (sedangDiseret || sedangJatuh) return;
+      const targetY = lantai();
+      const [xMin, xMax] = batasX();
+      if (px < xMin || px > xMax) {
+        const tx = Math.max(xMin, Math.min(xMax, px));
+        lompatKe(tx, targetY, 110, 560);
+      } else if (py < targetY - 14) {
+        fisikaJatuh((Math.random() - .5) * 90, 0);
+      } else if (py > targetY + 14) {
+        lompatKe(px, targetY, 95, 480);
+      } else {
+        py = targetY;
+        taruh();
+      }
+    }, 90);
+  }, { passive: true });
 
   async function otak() {
     while (!mati) {
-      if (performance.now() < jedaSampai || !x() || scrollY > innerHeight * 1.2 || document.hidden) { await tidur(400); continue; }
+      if (sedangDiseret || sedangJatuh || performance.now() < jedaSampai || !x() || document.hidden) {
+        await tidur(380);
+        continue;
+      }
       sibuk = true;
       const H = window.R9Hero;
+      const info = infoPlatform();
       try {
-        if (H && H.fase === 'teks' && H.umurFase > 2600) await tonjokSambutan();
-        else if (H && H.fase === 'logo') {
+        if (info.mode === 'hero' && H && H.fase === 'teks' && H.umurFase > 2600) {
+          await tonjokSambutan();
+        } else if (info.mode === 'hero' && H && H.fase === 'logo') {
           const n = Math.random();
-          if (H.umurFase > 9000 && n < .5) await hancurinLogo();
-          else if (n < .35) await jalanJalan();
-          else if (n < .55) await keMenu();
-          else if (n < .85) await gaya();
-          else await tidur(1200);
-        } else await tidur(300);
+          if (H.umurFase > 9000 && n < .42) await hancurinLogo();
+          else if (n < .32) await jalanJalan();
+          else if (n < .48) await keMenu();
+          else if (n < .68) await istirahatRebahan();
+          else if (n < .88) await gaya();
+          else await tidur(1100);
+        } else {
+          // Saat mengikuti user di bagian About, Ethos, IXAR, Rosters, Schedule, News, Banner, Shop, Contact
+          const n = Math.random();
+          if (n < .34) await jalanJalan();
+          else if (n < .56) await istirahatRebahan();
+          else if (n < .72 && info.mode === 'jelajah') await kePodiumJuara();
+          else if (n < .9) await gaya();
+          else await tidur(1100);
+        }
       } catch (e) {}
       sibuk = false;
-      await tidur(500 + Math.random() * 900);
+      await tidur(650 + Math.random() * 1000);
     }
   }
-  hero.addEventListener('click', (e) => {
-    if (e.target.closest('a, button, input')) return;
+
+  hero?.addEventListener('click', (e) => {
+    if (e.target.closest('a, button, input, .hero__ixar')) return;
     jedaSampai = performance.now() + 2500;
-    jalanKe(e.pageX - lebar / 2, true).then(() => x()?.lakukan('nyambut', 1200));
+    jalanKe(e.clientX - lebar / 2, true).then(() => x()?.lakukan('nyambut', 1200));
   });
-  el.addEventListener('click', () => { jedaSampai = performance.now() + 2000; });
-  addEventListener('resize', () => { ukur(); if (!sibuk) { py = lantai(); taruh(); } });
-  addEventListener('scroll', () => { if (scrollY > 30 && py < lantai() - 20 && !sibuk) { py = lantai(); taruh(); } }, { passive: true });
+  addEventListener('resize', () => {
+    ukur();
+    if (!sedangDiseret && !sedangJatuh) {
+      const [a, b] = batasX();
+      px = Math.max(a, Math.min(b, px));
+      py = lantai();
+      taruh();
+    }
+  });
   const mulai = () => {
-    ukur(); px = Math.max(8, (document.documentElement.clientWidth - 1160) / 2); py = lantai(); taruh();
-    if (gerakBoleh && window.R9Hero) otak();
+    ukur();
+    px = Math.max(12, (document.documentElement.clientWidth - Math.min(1160, document.documentElement.clientWidth - 32)) / 2);
+    py = lantai();
+    taruh();
+    if (gerakBoleh) otak();
   };
-  if (window.R9Hero) mulai(); else { document.addEventListener('r9:hero-siap', mulai, { once: true }); setTimeout(() => { if (!px) mulai(); }, 2500); }
+  if (window.R9Hero) mulai(); else { document.addEventListener('r9:hero-siap', mulai, { once: true }); setTimeout(() => { if (!px) mulai(); }, 1800); }
 })();
 
 // ---------- bendera juara 1 ----------
@@ -318,12 +664,14 @@ $$('.bendera__kain').forEach((kain) => {
 const podium = $('.podium');
 new IntersectionObserver((d, o) => { if (d.some((e) => e.isIntersecting)) { podium.classList.add('keliatan'); o.disconnect(); } }, { threshold: .15 }).observe(podium);
 
-// ---------- kenalan IXAR ----------
-const ixarKenal = $('.kenal__ixar');
+// ---------- kenalan IXAR (mengontrol IXAR tunggal di layar) ----------
 $$('[data-pose]').forEach((b) => b.addEventListener('click', () => {
   $$('[data-pose]').forEach((x) => x.setAttribute('aria-pressed', x === b));
-  ixarKenal.ixar?.lakukan(b.dataset.pose, 4000);
+  window.R9IxarUtama?.peragakanPose(b.dataset.pose, 4200);
 }));
+$('[data-panggil-ixar]')?.addEventListener('click', () => {
+  window.R9IxarUtama?.peragakanPose('nyambut', 3000);
+});
 
 // ============================================================================
 // KOLEKSI BENDERA NEGARA LENGKAP (SVG)
@@ -368,12 +716,12 @@ let newsTampil = 6;
 let kategoriTerpilih = null; // null | 'aktif' | 'nonaktif' (Diklik dulu baru muncul nama tim!)
 let timTerpilih = null;      // null | string nama tim (Diklik dulu baru muncul pemain/coach/manager!)
 
-// Resolusi URL media (foto pemain & gambar news) langsung ke server live admin.reign9.site
+// Resolusi URL media (foto pemain, gambar news, & dokumentasi prestasi) langsung ke server live admin.reign9.site
 function urlMedia(jalur) {
   if (!jalur) return '';
   if (/^(https?:|data:|blob:)/i.test(jalur)) return jalur;
   const bersih = String(jalur).replace(/^\/+/, '');
-  if (bersih.startsWith('gambar/roster/') || bersih.startsWith('gambar/news/')) {
+  if (bersih.startsWith('gambar/roster/') || bersih.startsWith('gambar/news/') || bersih.startsWith('gambar/prestasi/')) {
     return `${ADMIN}/${bersih}`;
   }
   return bersih;
@@ -493,10 +841,27 @@ function kelompokkanTim(daftar, status) {
 function gambarData() {
   const d = DATA || { pemain: { aktif: [], nonaktif: [] }, event: [], prestasi: [], news: [], ringkas: {} };
 
-  // 1. Podium & Hadiah
+  // 1. Podium, Champion Spotlight (inspirasi nmss.gg), & Hadiah
   const rk = d.ringkas || {};
   $$('[data-juara]').forEach((el) => { const n = rk[`juara${el.dataset.juara}`]; el.textContent = n ? n : '–'; });
   $('[data-hadiah]').textContent = R9.rupiah(rk.totalHadiah) || R9.t('hadiah.kosong');
+
+  const wadahChampion = $('[data-champion-wadah]');
+  if (wadahChampion) {
+    const juaraUtama = (d.prestasi || []).find((p) => p.juara === 1) || (d.prestasi || [])[0];
+    if (juaraUtama) {
+      wadahChampion.innerHTML = `<button type="button" class="kartu-champion" data-buka-prestasi="${juaraUtama.id}">
+        <span class="kartu-champion__lencana">🏆 ${esc(R9.teks(juaraUtama.peringkat))}</span>
+        <span class="kartu-champion__info">
+          <span class="kartu-champion__judul">${esc(R9.teks(juaraUtama.turnamen))}</span>
+          <span class="kartu-champion__sub">${esc([juaraUtama.divisi || 'Honor of Kings', R9.tanggal(juaraUtama.tanggal, { month: 'long', year: 'numeric' })].filter(Boolean).join(' · '))}</span>
+        </span>
+        <span class="kartu-champion__aksi">${esc(R9.t('prestasi.detail'))}</span>
+      </button>`;
+    } else {
+      wadahChampion.innerHTML = '';
+    }
+  }
 
   // 2. Statistik Wilayah & Bendera
   const aktif = d.pemain?.aktif || [];
@@ -629,13 +994,15 @@ function gambarData() {
   $('[data-event-lewat]').innerHTML = lewat.slice(0, 8).map(kartuEvent).join('');
   $('[data-event-lewat-judul]').hidden = !lewat.length;
 
-  $('[data-prestasi]').innerHTML = (d.prestasi || []).map((p) => `<li class="prestasi">
-    <span class="prestasi__lencana">${esc(R9.teks(p.peringkat))}</span>
-    <span class="prestasi__nama">${esc(R9.teks(p.turnamen))}<small>${esc([R9.tanggal(p.tanggal), p.divisi].filter(Boolean).join(' · '))}</small></span>
-    <span class="prestasi__kanan">
-      <span class="prestasi__hadiah">${esc(R9.rupiah(p.hadiah))}</span>
-      ${p.bukti ? `<a class="prestasi__bukti" href="${esc(p.bukti)}" target="_blank" rel="noopener">${esc(R9.t('jadwal.bukti'))} ↗</a>` : ''}
-    </span>
+  $('[data-prestasi]').innerHTML = (d.prestasi || []).map((p) => `<li>
+    <button type="button" class="prestasi" data-buka-prestasi="${p.id}">
+      <span class="prestasi__lencana">🏆 ${esc(R9.teks(p.peringkat))}</span>
+      <span class="prestasi__nama">${esc(R9.teks(p.turnamen))}<small>${esc([R9.tanggal(p.tanggal), p.divisi].filter(Boolean).join(' · '))}</small></span>
+      <span class="prestasi__kanan">
+        ${p.hadiah ? `<span class="prestasi__hadiah">${esc(R9.rupiah(p.hadiah))}</span>` : ''}
+        <span class="prestasi__detail">${esc(R9.t('prestasi.detail'))}</span>
+      </span>
+    </button>
   </li>`).join('');
 
   // 4. News
@@ -672,15 +1039,61 @@ $('[data-roster-tim-wadah]')?.addEventListener('click', (e) => {
 });
 
 $('[data-news-lebih]').addEventListener('click', () => { newsTampil += 6; gambarData(); });
+
+// Buka Popup News
 $('[data-news]').addEventListener('click', (e) => {
   const b = e.target.closest('[data-berita]'); if (!b) return;
   const n = (DATA?.news || []).find((x) => String(x.id) === b.dataset.berita); if (!n) return;
-  const dlg = $('[data-baca]'), img = $('.baca__gambar', dlg);
+  const dlg = $('[data-baca]'), img = $('.baca__gambar', dlg), visual = $('[data-baca-visual]', dlg);
+  const lencana = $('[data-baca-lencana]', dlg), meta = $('[data-baca-meta]', dlg);
+  if (visual) { visual.hidden = true; visual.innerHTML = ''; }
+  if (lencana) { lencana.hidden = false; lencana.textContent = 'NEWS // R9'; }
+  if (meta) { meta.hidden = true; meta.innerHTML = ''; }
   img.hidden = !n.gambar; if (n.gambar) img.src = urlMedia(n.gambar);
   $('.baca__tanggal', dlg).textContent = R9.tanggal(n.tanggal);
   $('.baca__judul', dlg).textContent = R9.teks(n.judul);
   $('.baca__isi', dlg).textContent = R9.teks(n.isi);
   dlg.showModal();
+});
+
+// Buka Popup Detail Prestasi (Konsep modal seperti News, tanpa redirect link keluar)
+document.addEventListener('click', (e) => {
+  const b = e.target.closest('[data-buka-prestasi]');
+  if (!b) return;
+  const p = (DATA?.prestasi || []).find((x) => String(x.id) === b.dataset.bukaPrestasi);
+  if (!p) return;
+  const dlg = $('[data-baca]'), img = $('.baca__gambar', dlg), visual = $('[data-baca-visual]', dlg);
+  const lencana = $('[data-baca-lencana]', dlg), meta = $('[data-baca-meta]', dlg);
+  const peringkat = R9.teks(p.peringkat), turnamen = R9.teks(p.turnamen);
+  if (p.gambar) {
+    img.hidden = false;
+    img.src = urlMedia(p.gambar);
+    if (visual) { visual.hidden = true; visual.innerHTML = ''; }
+  } else {
+    img.hidden = true;
+    if (visual) {
+      visual.hidden = false;
+      visual.innerHTML = `<div class="baca__visual-isi">
+        <svg class="baca__visual-piala" viewBox="0 0 64 64" aria-hidden="true"><path d="M18 6h28v6h10v8c0 8-6 14-13 15-2 5-5 8-9 9v8h10v6H20v-6h10v-8c-4-1-7-4-9-9C14 34 8 28 8 20v-8h10zm-4 12v2c0 4 2 7 5 8-1-3-1-6-1-10zm36 0h-4c0 4 0 7-1 10 3-1 5-4 5-8z" fill="currentColor"/></svg>
+        <span class="baca__visual-peringkat">🏆 ${esc(peringkat)}</span>
+        <strong class="baca__visual-judul">${esc(turnamen)}</strong>
+      </div>`;
+    }
+  }
+  if (lencana) { lencana.hidden = false; lencana.textContent = `🏆 ${peringkat}`; }
+  $('.baca__tanggal', dlg).textContent = R9.tanggal(p.tanggal);
+  $('.baca__judul', dlg).textContent = turnamen;
+  if (meta) {
+    meta.hidden = false;
+    meta.innerHTML = `
+      <span>${esc(R9.t('prestasi.divisi'))}: ${esc(p.divisi || 'Honor of Kings')}</span>
+      <span>${esc(R9.t('prestasi.hadiahLabel'))}: ${esc(p.hadiah ? R9.rupiah(p.hadiah) : R9.t('prestasi.penghargaan'))}</span>
+    `;
+  }
+  const cerita = R9.teks(p.keterangan);
+  $('.baca__isi', dlg).textContent = cerita || R9.t('prestasi.ceritaDefault');
+  dlg.showModal();
+  window.R9IxarUtama?.peragakanPose('menang', 2600);
 });
 document.addEventListener('r9:bahasa', gambarData);
 gambarData();
@@ -742,20 +1155,20 @@ gambarData();
 
 // ---------- contact ----------
 (() => {
-  const form = $('.kontak__form'), info = $('.kontak__info'), ixar = $('.kontak__ixar');
+  const form = $('.kontak__form'), info = $('.kontak__info');
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const d = Object.fromEntries(new FormData(form));
     if (!d.nama.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email) || !d.pesan.trim()) {
       info.textContent = R9.t('kontak.lengkapi');
-      ixar?.ixar?.lakukan('kaget', 1200);
+      window.R9IxarUtama?.peragakanPose('kaget', 1200);
       return;
     }
     const tombol = $('button[type=submit]', form); tombol.disabled = true;
     try {
       const r = await fetch(`${ADMIN}/api/kontak`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...d, bahasa: R9.bahasa }) });
       if (!r.ok) throw new Error();
-      info.textContent = R9.t('kontak.terkirim'); form.reset(); ixar?.ixar?.lakukan('menang', 2200);
+      info.textContent = R9.t('kontak.terkirim'); form.reset(); window.R9IxarUtama?.peragakanPose('menang', 2200);
     } catch (err) {
       info.textContent = R9.t('kontak.gagal');
       location.href = `mailto:reign9intl@reign9.site?cc=reignnine2@gmail.com&subject=${encodeURIComponent(`[R9 Contact] ${d.keperluan} - ${d.nama}`)}&body=${encodeURIComponent(`${d.pesan}\n\n${d.nama} <${d.email}>`)}`;

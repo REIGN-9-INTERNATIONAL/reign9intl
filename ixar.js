@@ -22,20 +22,24 @@
     penasaran: P({ panjang: 1.15, ln: [28, 205], lk: [-15, 70], kep: 6, mata: 'penasaran', alat: 'tanya' }),
     pedang: P({ kep: -3, dy: 8, ln: [42, 8], lk: [-62, 40], kk: [-30, -18], kn: [30, 18], mata: 'yakin', alat: 'pedang' }),
     tonjok: P({ rot: 10, dx: 30, dy: 30, ln: [92, 90], lk: [-25, 70], kk: [-62, -62], kn: [55, 5], mata: 'marah', alat: 'percik-tinju', gerak: 'kuda' }),
-    lompat: P({ dy: -130, panjang: 1.45, ln: [100, 120], lk: [-100, -120], kk: [-70, 15], kn: [70, -15], mata: 'senang' }),
+    lompat: P({ dy: -40, sx: .92, sy: 1.12, panjang: 1.4, ln: [130, 155], lk: [-130, -155], kk: [-68, 12], kn: [42, -28], mata: 'senang', gerak: 'lompat' }),
+    jatuh: P({ dy: 0, sx: .88, sy: 1.16, mahkota: 20, panjang: 1.45, lk: [-152, -172], ln: [152, 172], kk: [-45, -18], kn: [48, 22], mata: 'kaget', alat: 'percik-atas', gerak: 'jatuh' }),
+    mendarat: P({ dy: 44, sx: 1.24, sy: .74, mahkota: -6, kep: 8, lk: [-82, -48], ln: [82, 48], kk: [-72, 32], kn: [72, -32], mata: 'yakin' }),
+    seret: P({ dy: 10, sx: .94, sy: 1.08, mahkota: 12, panjang: 1.35, lk: [-132, -148], ln: [132, 148], kk: [-18, -10], kn: [18, 10], mata: 'kaget', gerak: 'seret' }),
     menang: P({ dy: -90, panjang: 1.6, ln: [92, 145], lk: [-92, -145], kk: [-35, -5], kn: [70, -30], mata: 'senang', alat: 'percik-atas' }),
     serbu: P({ rot: 14, dx: 40, dy: 34, ln: [80, 92], lk: [-115, -100], kk: [-66, -66], kn: [58, 4], mata: 'marah', alat: 'pedang', gerak: 'kuda' }),
     tameng: P({ dy: 22, lk: [-12, 78], ln: [55, 20], kk: [-42, -14], kn: [42, 14], mata: 'marah', alat: 'tameng', gerak: 'kuda' }),
     marah: P({ dy: 18, lk: [-32, -14], ln: [32, 14], kk: [-40, -12], kn: [40, 12], mata: 'marah', alat: 'percik-atas', gerak: 'getar' }),
     kaget: P({ dy: -24, panjang: 1.55, lk: [-95, -135], ln: [95, 135], kk: [-15, -30], kn: [30, 10], mata: 'kaget', alat: 'percik-atas' }),
     kecewa: P({ sy: .96, kep: 10, lk: [-8, -4], ln: [8, 4], mata: 'sayu', alat: 'daun' }),
-    tidur: P({ kep: -9, lk: [-15, -5], ln: [15, 5], mata: 'tidur', alat: 'zzz', gerak: 'napas-tidur' }),
+    tidur: P({ rot: -86, dx: 420, dy: -225, kep: 10, panjang: 1.15, lk: [12, 22], ln: [85, 8], kk: [10, 4], kn: [54, -22], mata: 'tidur', alat: 'zzz', gerak: 'napas-tidur' }),
+    rebahan: P({ rot: -70, dx: 340, dy: -195, kep: 28, panjang: 1.2, lk: [-110, -25], ln: [48, -12], kk: [8, 4], kn: [58, -26], mata: 'sayu', gerak: 'napas-tidur' }),
     regang: P({ panjang: 1.65, lk: [-92, -150], ln: [92, 150], kk: [-14, -12], kn: [14, 12], sy: 1.03, mata: 'senang' }),
     meditasi: P({ dy: 115, kk: [-105, 75], kn: [105, -75], lk: [-50, -100], ln: [50, 100], mata: 'tidur' }),
     bendera: P({ dy: 8, panjang: 1.6, ln: [92, 140], lk: [-62, 40], kk: [-32, -20], kn: [32, 20], mata: 'yakin' }),
     jalan: P({ mata: 'biasa', gerak: 'jalan' }),
     jalanCepat: P({ rot: 6, mata: 'yakin', gerak: 'jalan-cepat' }),
-    santai: P({ rot: -4, lk: [-60, 40], ln: [60, -40], kn: [8, -40], mata: 'sayu' }),
+    santai: P({ rot: -70, dx: 340, dy: -195, kep: 28, panjang: 1.2, lk: [-110, -25], ln: [48, -12], kk: [8, 4], kn: [58, -26], mata: 'sayu', gerak: 'napas-tidur' }),
   };
   const ANGKA = ['dx', 'dy', 'rot', 'sx', 'sy', 'kep', 'mahkota', 'panjang'];
 
@@ -100,9 +104,10 @@
       this.alat['percik-tinju'] = percik('M0 -50L40 -90M20 0L80 0M0 50L40 90');
       const teks = (isi, x, y, uk) => { const t = buat('text', { class: 'ixar__alat', x, y, fill: alat, 'font-size': uk, 'font-weight': 800, 'font-family': 'Reign9Display, Oxanium, sans-serif' }, this.akar); t.textContent = isi; return t; };
       this.alat.tanya = teks('?', 1010, 200, 170);
-      this.alat.zzz = buat('g', { class: 'ixar__alat ixar__zzz', fill: alat, 'font-family': 'Reign9Display, Oxanium, sans-serif', 'font-weight': 800 }, this.akar);
+      this.alat.zzz = buat('g', { class: 'ixar__alat ixar__zzz', fill: alat, 'font-family': 'Reign9Display, Oxanium, sans-serif', 'font-weight': 800 }, s);
       [['z', 1000, 230, 70], ['z', 1050, 160, 95], ['Z', 1110, 70, 120]].forEach(([z, x, y, u]) => { const t = buat('text', { x, y, 'font-size': u }, this.alat.zzz); t.textContent = z; });
       this.alat.daun = buat('path', { class: 'ixar__alat', d: 'M1010 420Q1060 380 1080 440Q1040 470 1010 420Z', fill: alat }, this.akar);
+      this.miring = 0; this.ayunDrag = 0;
       // versi bara (layar pembuka): badan diisi butiran api kelap-kelip, warnanya ikut tema lewat --bara-1..4
       if (this.el.hasAttribute('data-ixar-bara')) {
         const id = `bara-${Math.random().toString(36).slice(2, 8)}`, defs = buat('defs', {}), pola = buat('pattern', { id, width: 34, height: 34, patternUnits: 'userSpaceOnUse' }, defs);
@@ -127,33 +132,64 @@
       const cx = r.left + r.width / 2, cy = r.top + r.height * .38;
       this.tujuanLirik = [Math.max(-1, Math.min(1, (x - cx) / 500)), Math.max(-1, Math.min(1, (y - cy) / 400))];
       this.diamSejak = performance.now();
-      if (this.pose === 'tidur' && this.dasar !== 'tidur') this.lakukan('kaget', 700);
+      if (this.pose === 'tidur' && this.dasar !== 'tidur' && !this.el.hasAttribute('data-ixar-otak')) this.lakukan('kaget', 700);
     }
     interaktif() {
       const el = this.el;
       el.setAttribute('role', 'button'); el.setAttribute('tabindex', '0'); el.setAttribute('aria-label', el.dataset.label || 'IXAR, maskot Reign 9');
       const reaksi = ['lompat', 'menang', 'kaget', 'pedang', 'tameng', 'marah', 'regang', 'tonjok'];
       let urut = Math.floor(Math.random() * reaksi.length);
-      const sentuh = () => { this.lakukan(reaksi[urut++ % reaksi.length], 1300); this.diamSejak = performance.now(); };
+      const sentuh = () => {
+        if (this.baruDiseret) return;
+        this.lakukan(reaksi[urut++ % reaksi.length], 1300); this.diamSejak = performance.now();
+      };
       el.addEventListener('click', sentuh);
       el.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); sentuh(); } });
-      el.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse' && ['diam', 'santai', 'intip', 'tidur'].includes(this.pose)) this.lakukan('nyambut', 1600); });
+      el.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse' && ['diam', 'santai', 'rebahan', 'intip', 'tidur'].includes(this.pose) && !this.sedangDiseret) this.lakukan('nyambut', 1600); });
     }
     langkah(t) {
-      const tujuan = POSE[this.pose], n = this.n, k = gerakBoleh ? .16 : 1, w = (t - this.t0) / 1000;
+      const tujuan = POSE[this.pose] || POSE.diam, n = this.n, cepatLerp = ['jatuh', 'mendarat', 'seret', 'lompat'].includes(this.pose) ? .28 : .16;
+      const k = gerakBoleh ? cepatLerp : 1, w = (t - this.t0) / 1000;
       for (const a of ANGKA) n[a] = lerp(n[a], tujuan[a], k);
       for (const a of ['lk', 'ln', 'kk', 'kn']) for (let i = 0; i < 2; i++) n[a][i] = lerp(n[a][i], tujuan[a][i], k);
       // gerak hidup: napas, ayun tangan, gerak khusus pose
       const ln = [...n.ln], lk = [...n.lk], kk = [...n.kk], kn = [...n.kn];
-      let dy = n.dy, sy = n.sy, rot = n.rot, kep = n.kep, mahkota = n.mahkota;
+      let dy = n.dy, sy = n.sy, rot = n.rot + (this.miring || 0), kep = n.kep, mahkota = n.mahkota;
       if (gerakBoleh) {
-        const napas = Math.sin(w * 2.2);
-        sy += napas * .012; dy += napas * -3; kep += Math.sin(w * 1.1) * 1.5; lk[1] -= napas * 3; ln[1] += napas * 3;
-        mahkota = Math.max(0, Math.sin(w * 2.2 + 1)) * 4;
+        const rebahan = Math.abs(n.rot) > 40;
+        const napas = Math.sin(w * (rebahan ? 1.4 : 2.2));
+        sy += napas * .012; if (!rebahan) dy += napas * -3; kep += Math.sin(w * 1.1) * 1.5; lk[1] -= napas * 3; ln[1] += napas * 3;
+        mahkota += Math.max(0, Math.sin(w * 2.2 + 1)) * 4;
         if (tujuan.gerak === 'lambai') ln[1] += Math.sin(w * 11) * 22;
         if (tujuan.gerak === 'tunjuk') { ln[0] += Math.sin(w * 3) * 3; }
         if (tujuan.gerak === 'getar') { rot += Math.sin(w * 40) * 1.2; mahkota += 6 + Math.sin(w * 30) * 6; }
-        if (tujuan.gerak === 'napas-tidur') { sy += Math.sin(w * 1.2) * .015; kep += Math.sin(w * 1.2) * 3; }
+        if (tujuan.gerak === 'napas-tidur') {
+          const f = Math.sin(w * 1.35);
+          sy += f * .018; kep += f * 2.5; kn[0] += f * 3; ln[1] += f * 4;
+        }
+        if (tujuan.gerak === 'jatuh') {
+          // Gerak jatuh bebas: tangan & kaki mengayuh panik di udara, mahkota terangkat angin
+          const f = Math.sin(w * 26), c = Math.cos(w * 26);
+          lk[0] += f * 18; lk[1] += c * 24;
+          ln[0] -= f * 18; ln[1] -= c * 24;
+          kk[0] += f * 28; kk[1] += c * 22;
+          kn[0] -= f * 28; kn[1] -= c * 22;
+          kep += Math.sin(w * 18) * 4;
+          mahkota += 14 + Math.abs(f) * 10;
+        }
+        if (tujuan.gerak === 'seret') {
+          // Saat di-drag: kaki & tangan menjuntai terayun mengikuti arah geseran kursor/jari
+          const ayun = (this.ayunDrag || 0) + Math.sin(w * 9) * 10;
+          kk[0] += ayun * .9; kk[1] += ayun * 1.25;
+          kn[0] += ayun * .9; kn[1] += ayun * 1.25;
+          lk[1] += ayun * .7; ln[1] += ayun * .7;
+          rot += ayun * .35;
+        }
+        if (tujuan.gerak === 'lompat') {
+          const f = Math.sin(w * 12);
+          kk[0] -= f * 10; kn[0] += f * 10;
+          mahkota += 6;
+        }
         if (tujuan.gerak === 'jalan' || tujuan.gerak === 'jalan-cepat') {
           // langkah: kaki maju-mundur gantian, lutut nekuk pas kaki diangkat, tangan ngayun berlawanan
           const cepat = tujuan.gerak === 'jalan-cepat', f = w * (cepat ? 13 : 8.5), a = cepat ? 34 : 24, sf = Math.sin(f), cf = Math.cos(f);
@@ -163,7 +199,7 @@
           dy -= Math.abs(Math.cos(f)) * (cepat ? 16 : 9);
         }
         if (tujuan.gerak === 'kuda') { const f = Math.sin(w * 3.2); dy += f * 6; rot += f * .8; kn[0] += f * 3; kk[0] -= f * 2; }
-        if (['lompat', 'menang'].includes(this.pose)) dy += Math.sin(w * 9) * 14;
+        if (this.pose === 'menang') dy += Math.sin(w * 9) * 14;
       }
       this.akar.setAttribute('transform', `translate(${n.dx} ${dy}) rotate(${rot} ${TAPAK[0]} ${TAPAK[1]}) translate(${TAPAK[0]} ${TAPAK[1]}) scale(${n.sx} ${sy}) translate(${-TAPAK[0]} ${-TAPAK[1]})`);
       // anggota badan
@@ -185,7 +221,11 @@
         if (nama === 'pedang') el.setAttribute('transform', `translate(${kanan.titik[0]} ${kanan.titik[1]}) rotate(${-kanan.sudut + (this.pose === 'serbu' ? 0 : 0)})`);
         if (nama === 'tameng') el.setAttribute('transform', `translate(${kiri.titik[0] + 40} ${kiri.titik[1] - 10}) scale(.9)`);
         if (nama === 'percik-tinju') el.setAttribute('transform', `translate(${kanan.titik[0] + 50} ${kanan.titik[1]})`);
-        if (nama === 'zzz') el.setAttribute('transform', `translate(0 ${-((w * 40) % 60)})`);
+        if (nama === 'zzz') {
+          const rebahan = Math.abs(n.rot) > 40;
+          const zx = rebahan ? -420 : 0, zy = (rebahan ? 360 : 0) - ((w * 40) % 60);
+          el.setAttribute('transform', `translate(${zx} ${zy})`);
+        }
       }
       // ketiduran kalau lama gak ada yang gerak (yang interaktif aja)
       if (this.el.hasAttribute('data-ixar-interaktif') && !this.el.hasAttribute('data-ixar-otak') && this.pose === this.dasar && this.dasar !== 'tidur' && t - this.diamSejak > 25000) this.set('tidur');
@@ -194,9 +234,17 @@
 
   const semua = [];
   const keliatan = new Set();
-  const io = new IntersectionObserver((d) => d.forEach((e) => (e.isIntersecting ? keliatan.add(e.target.ixar) : keliatan.delete(e.target.ixar))), { rootMargin: '100px' });
+  const io = new IntersectionObserver((d) => d.forEach((e) => {
+    if (e.isIntersecting || e.target.hasAttribute('data-ixar-otak')) keliatan.add(e.target.ixar);
+    else keliatan.delete(e.target.ixar);
+  }), { rootMargin: '100px' });
   window.IXAR = {
-    pasang(el) { if (el.ixar) return el.ixar; const x = new Ixar(el); el.ixar = x; semua.push(x); io.observe(el); return x; },
+    pasang(el) {
+      if (el.ixar) return el.ixar;
+      const x = new Ixar(el); el.ixar = x; semua.push(x);
+      if (el.hasAttribute('data-ixar-otak')) keliatan.add(x);
+      io.observe(el); return x;
+    },
     pose: Object.keys(POSE),
   };
   document.querySelectorAll('[data-ixar]').forEach((el) => window.IXAR.pasang(el));
