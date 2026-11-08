@@ -49,6 +49,30 @@ menu.addEventListener('click', (e) => {
   ukur();
 })();
 
+// ---------- aula geser ikut kursor & scroll (lapis dekat geser lebih jauh) ----------
+(() => {
+  const hero = document.querySelector('.hero');
+  const lapis = [...document.querySelectorAll('.lapis')];
+  if (!gerakBoleh || !lapis.length) return;
+  let mx = 0, my = 0, sy = 0, antre = false;
+  const pasang = () => {
+    antre = false;
+    for (const l of lapis) {
+      const k = +l.dataset.dalam;
+      l.style.setProperty('--gx', `${(-mx * k).toFixed(1)}px`);
+      l.style.setProperty('--gy', `${(-my * k + sy * k * .04).toFixed(1)}px`);
+    }
+  };
+  const minta = () => { if (!antre) { antre = true; requestAnimationFrame(pasang); } };
+  hero.addEventListener('pointermove', (e) => {
+    if (e.pointerType !== 'mouse') return;
+    const r = hero.getBoundingClientRect();
+    mx = (e.clientX - r.left) / r.width - .5; my = (e.clientY - r.top) / r.height - .5; minta();
+  });
+  hero.addEventListener('pointerleave', () => { mx = my = 0; minta(); });
+  addEventListener('scroll', () => { sy = Math.min(scrollY, innerHeight); minta(); }, { passive: true });
+})();
+
 // ---------- podium balik pas keliatan ----------
 const podium = document.querySelector('.podium');
 new IntersectionObserver((daftar, o) => {
