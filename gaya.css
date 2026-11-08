@@ -15,7 +15,10 @@
   --isian: var(--tulang);
   --kaki: var(--hitam);
   --logo-teks-tema: var(--tulang);
-  --pita-latar: var(--tulang); --pita-teks: var(--hitam);
+  /* ATURAN LOGO (owner): logo REIGN 9 INTERNATIONAL selalu satu warna. Gelap = putih semua, terang = merah semua. */
+  --logo: #FFFFFF;
+  --nav-latar: var(--darah); --nav-teks: var(--hitam);
+  --pita-latar: #0B0102; --pita-teks: var(--tulang);
   --layar-garis: rgba(0, 0, 0, .22); --cahaya-hero: rgba(218, 22, 23, .28); --cahaya-bawah: rgba(122, 10, 16, .7);
   --bayang-teks: 0 1px 3px #000;
   --judul: 'Oxanium', 'Uncut Sans', sans-serif;
@@ -29,13 +32,13 @@
 @media (prefers-color-scheme: light) {
   :root:not([data-tema="gelap"]) {
     --latar: #F7F1EA; --latar-2: #EFE3D6; --teks: #1A0A0B; --teks-redup: #6B5A55;
-    --garis: rgba(26, 10, 11, .16); --isian: #fff; --kaki: #EFE3D6; --logo-teks-tema: #0B0102; color-scheme: light; --pita-latar: #0B0102; --pita-teks: var(--tulang);
+    --garis: rgba(26, 10, 11, .16); --isian: #fff; --kaki: #EFE3D6; --logo-teks-tema: #0B0102; color-scheme: light; --logo: var(--darah); --nav-latar: #F7F1EA; --nav-teks: #1A0A0B; --pita-latar: var(--tulang); --pita-teks: #1A0A0B;
     --layar-garis: rgba(122, 10, 16, .05); --cahaya-hero: rgba(218, 22, 23, .14); --cahaya-bawah: rgba(218, 22, 23, .12); --bayang-teks: none;
   }
 }
 :root[data-tema="terang"] {
   --latar: #F7F1EA; --latar-2: #EFE3D6; --teks: #1A0A0B; --teks-redup: #6B5A55;
-  --garis: rgba(26, 10, 11, .16); --isian: #fff; --kaki: #EFE3D6; --logo-teks-tema: #0B0102; color-scheme: light; --pita-latar: #0B0102; --pita-teks: var(--tulang);
+  --garis: rgba(26, 10, 11, .16); --isian: #fff; --kaki: #EFE3D6; --logo-teks-tema: #0B0102; color-scheme: light; --logo: var(--darah); --nav-latar: #F7F1EA; --nav-teks: #1A0A0B; --pita-latar: var(--tulang); --pita-teks: #1A0A0B;
     --layar-garis: rgba(122, 10, 16, .05); --cahaya-hero: rgba(218, 22, 23, .14); --cahaya-bawah: rgba(218, 22, 23, .12); --bayang-teks: none;
 }
 
@@ -87,25 +90,25 @@ h1, h2, h3, p { margin: 0; }
   position: sticky; top: 0; z-index: 30;
   display: flex; align-items: center; justify-content: space-between;
   height: 64px; padding: 0 16px;
-  background: var(--darah); color: var(--hitam);
+  background: var(--nav-latar); color: var(--nav-teks); border-bottom: 2px solid var(--darah);
 }
-.nav__logo svg { height: 34px; width: auto; color: var(--hitam); }
+.nav__logo svg { height: 34px; width: auto; color: var(--logo); }
 .nav__buka { width: 48px; height: 48px; display: grid; place-content: center; gap: 5px; background: none; border: 0; cursor: pointer; }
-.nav__buka i { display: block; width: 24px; height: 3px; background: var(--hitam); transition: transform var(--cepat), opacity var(--cepat); }
+.nav__buka i { display: block; width: 24px; height: 3px; background: var(--nav-teks); transition: transform var(--cepat), opacity var(--cepat); }
 .nav__buka[aria-expanded="true"] i:nth-child(2) { transform: translateY(8px) rotate(45deg); }
 .nav__buka[aria-expanded="true"] i:nth-child(3) { opacity: 0; }
 .nav__buka[aria-expanded="true"] i:nth-child(4) { transform: translateY(-8px) rotate(-45deg); }
 .nav__menu {
   position: absolute; left: 0; right: 0; top: 64px;
   display: none; flex-direction: column;
-  background: var(--darah); border-top: 2px solid var(--hitam);
+  background: var(--nav-latar); border-top: 2px solid var(--darah);
 }
 .nav__menu.buka { display: flex; }
 .nav__menu a {
   padding: 16px; font: 700 22px/1 var(--judul); letter-spacing: .04em; text-transform: uppercase; text-decoration: none;
   border-bottom: 2px solid rgba(0, 0, 0, .18);
 }
-.nav__menu a:hover { background: var(--hitam); color: var(--darah); }
+.nav__menu a:hover { background: var(--hitam); color: #fff; }
 
 @media (min-width: 860px) {
   .nav { padding: 0 max(24px, calc((100vw - var(--lebar)) / 2)); height: 72px; }
@@ -121,7 +124,7 @@ h1, h2, h3, p { margin: 0; }
 
 .nav__tema {
   width: 44px; height: 44px; display: grid; place-items: center; margin-left: auto; margin-right: 4px;
-  background: none; border: 0; color: var(--hitam); cursor: pointer;
+  background: none; border: 0; color: var(--nav-teks); cursor: pointer;
 }
 .nav__tema { position: relative; overflow: hidden; }
 .nav__tema svg {
@@ -175,7 +178,7 @@ h1, h2, h3, p { margin: 0; }
 .hero__logo { /* logo tegak penuh: pedang + REIGN 9 + INTERNATIONAL, digambar ulang pakai bara */
   position: relative; width: min(400px, 74vw, calc((100svh - 330px) * .795)); aspect-ratio: 188.61 / 237.24;
 }
-.hero__logo svg { width: 100%; height: 100%; color: var(--darah); filter: drop-shadow(0 0 24px rgba(218, 22, 23, .45)); }
+.hero__logo svg { width: 100%; height: 100%; color: var(--logo); filter: drop-shadow(0 0 24px rgba(218, 22, 23, .45)); }
 .hero__teks > p { max-width: 34ch; margin: 22px auto 0; color: var(--teks-redup); }
 .hero__aksi { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 26px; }
 
@@ -189,7 +192,7 @@ h1, h2, h3, p { margin: 0; }
 .pita { background: var(--pita-latar); color: var(--pita-teks); overflow: hidden; padding: 14px 0; border-block: 3px solid var(--darah); }
 .pita__jalan { display: flex; align-items: center; gap: 28px; width: max-content; animation: jalan 38s linear infinite; }
 .pita span { font: 700 22px/1 var(--judul); letter-spacing: .04em; text-transform: uppercase; white-space: nowrap; }
-.pita svg { width: 18px; height: 30px; color: var(--darah); flex: none; }
+.pita svg { width: 18px; height: 30px; color: var(--logo); flex: none; }
 @keyframes jalan { to { transform: translateX(-50%); } }
 @media (prefers-reduced-motion: reduce) { .pita__jalan { animation: none; } }
 
@@ -243,25 +246,28 @@ h1, h2, h3, p { margin: 0; }
 .bendera__tiang::before { /* bola kecil di ujung tiang */
   content: ''; position: absolute; top: -6px; left: -3.5px; width: 10px; height: 10px; border-radius: 50%; background: var(--tiang);
 }
-.bendera__kain {
-  position: absolute; top: 6px; left: 3px; width: 128px; height: 74px; padding: 12px 14px;
-  display: grid; place-items: center; overflow: hidden;
-  background: var(--kain); box-shadow: inset 0 0 0 1px var(--kain-garis);
-  transform-origin: left center;
-  clip-path: polygon(0 0, 100% 0, 92% 50%, 100% 100%, 0 100%); /* ujung kain berpotongan kayak panji */
+.bendera__kain { /* kain dipotong jadi irisan (lewat app.js), tiap irisan ngayun bergiliran = gelombang merambat */
+  position: absolute; top: 6px; left: 3px; width: 128px; height: 74px; display: flex;
 }
-.bendera__kain svg { width: 100%; height: auto; color: var(--darah); } /* logo satu warna: merah penuh */
-.bendera__kain::after { /* kilap kain yang ikut bergelombang */
-  content: ''; position: absolute; inset: 0;
-  background: linear-gradient(100deg, transparent 20%, rgba(255, 255, 255, .14) 40%, transparent 55%, rgba(0, 0, 0, .12) 75%, transparent 90%);
-  background-size: 220% 100%;
+.bendera__kain > svg { display: none; } /* logo asli dipakai buat isi tiap irisan */
+.kain-iris { position: relative; flex: 1; height: 100%; overflow: hidden; }
+.kain-iris__isi {
+  position: absolute; top: 0; left: calc(var(--i) * -100%); width: calc(var(--n) * 100%); height: 100%;
+  display: grid; place-items: center; padding: 12px 14px; background: var(--kain); box-shadow: inset 0 0 0 1px var(--kain-garis);
+}
+.kain-iris__isi svg { width: 100%; height: auto; color: var(--logo); }
+.kain-iris::after { /* bayangan lipatan yang ikut gelombang */
+  content: ''; position: absolute; inset: 0; background: #000; opacity: 0; pointer-events: none;
 }
 @media (prefers-reduced-motion: no-preference) {
-  .bendera__kain { animation: kibar 3.2s ease-in-out infinite; }
-  .bendera__kain::after { animation: kilap 3.2s linear infinite; }
+  .kain-iris { animation: ombak 1.8s ease-in-out infinite; animation-delay: calc(var(--i) * -.065s); }
+  .kain-iris::after { animation: lipat 1.8s ease-in-out infinite; animation-delay: calc(var(--i) * -.065s); }
 }
-@keyframes kibar { 0%, 100% { transform: skewY(0) scaleX(1); } 30% { transform: skewY(-3deg) scaleX(.97); } 65% { transform: skewY(2deg) scaleX(.99); } }
-@keyframes kilap { from { background-position: 120% 0; } to { background-position: -100% 0; } }
+@keyframes ombak {
+  0%, 100% { transform: translateY(calc(var(--ayun) * -1px)); }
+  50% { transform: translateY(calc(var(--ayun) * 1px)); }
+}
+@keyframes lipat { 0%, 100% { opacity: 0; } 25% { opacity: .07; } 50% { opacity: .02; } 75% { opacity: .1; } }
 .pakai-rubah .bendera { display: none; }
 .podium__catatan { grid-column: 1 / -1; font-size: 14px; color: var(--teks-redup); margin-top: 10px; }
 .kartu { padding: 24px; display: grid; gap: 8px; min-height: 140px; align-content: center; }
@@ -317,9 +323,9 @@ a.baris:hover .baris__latar, a.baris:focus-visible .baris__latar { opacity: 1; }
   a.baris:hover .baris__latar span { animation: jalan 9s linear infinite; }
 }
 a.baris:hover, a.baris:focus-visible { border-color: var(--darah); color: #fff; }
-.baris__ikon { width: 44px; height: 52px; display: grid; place-items: center; font: 700 26px/1 var(--judul); color: var(--darah); transition: color .3s; }
+.baris__ikon { width: 44px; height: 52px; display: grid; place-items: center; font: 700 26px/1 var(--judul); color: var(--logo); transition: color .3s; }
 .baris__ikon svg { height: 52px; width: auto; }
-a.baris:hover .baris__ikon { color: var(--hitam); }
+a.baris:hover .baris__ikon { color: #fff; }
 .baris__nama { font: 700 24px/1.1 var(--judul); text-transform: uppercase; }
 .baris__tim { font: 600 14px/1.2 var(--badan); color: var(--teks-redup); text-align: right; }
 a.baris:hover .baris__tim { color: #fff; }
@@ -375,7 +381,7 @@ a.baris:hover .baris__panah { transform: translateX(4px); }
 
 /* ---------- kaki ---------- */
 .kaki { background: var(--kaki); padding: 48px 16px 32px; display: grid; gap: 28px; }
-.kaki__logo { height: 44px; width: auto; color: var(--darah); } /* logo resmi: merah penuh di dua tema */
+.kaki__logo { height: 44px; width: auto; color: var(--logo); }
 .kaki__menu { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 24px; max-width: 320px; }
 .kaki__menu a { text-decoration: none; padding: 10px 0; font-weight: 600; }
 .kaki__menu a:hover { color: var(--darah); }

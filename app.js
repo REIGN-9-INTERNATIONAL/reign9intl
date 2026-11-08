@@ -12,7 +12,7 @@ const VERSI = (document.currentScript && new URL(document.currentScript.src).sea
 const temaSekarang = () => document.documentElement.dataset.tema || (matchMedia('(prefers-color-scheme: light)').matches ? 'terang' : 'gelap');
 const pasangTema = (t) => {
   document.documentElement.dataset.tema = t;
-  document.querySelector('meta[name=theme-color]')?.setAttribute('content', '#DA1617');
+  document.querySelector('meta[name=theme-color]')?.setAttribute('content', t === 'terang' ? '#F7F1EA' : '#DA1617');
   try { localStorage.setItem('tema', t); } catch (e) {}
 };
 document.querySelector('.nav__tema').addEventListener('click', (e) => {
@@ -185,6 +185,19 @@ menu.addEventListener('click', (e) => {
   }
 })();
 
+// ---------- bendera juara 1: kain dipotong jadi irisan biar bisa bergelombang ----------
+document.querySelectorAll('.bendera__kain').forEach((kain) => {
+  const logo = kain.querySelector('svg'), N = 30;
+  kain.style.setProperty('--n', N);
+  for (let i = 0; i < N; i++) {
+    const iris = document.createElement('span'), isi = document.createElement('span');
+    iris.className = 'kain-iris'; isi.className = 'kain-iris__isi';
+    // makin jauh dari tiang, ayunan makin lebar (dekat tiang kain nyaris diam)
+    iris.style.setProperty('--i', i); iris.style.setProperty('--ayun', (Math.pow(i / (N - 1), 1.3) * 5).toFixed(2));
+    isi.append(logo.cloneNode(true)); iris.append(isi); kain.append(iris);
+  }
+});
+
 // ---------- podium balik pas keliatan ----------
 const podium = document.querySelector('.podium');
 new IntersectionObserver((daftar, o) => {
@@ -221,7 +234,7 @@ new IntersectionObserver((daftar, o) => {
       const g = c.createRadialGradient(1060, 250, 20, 1060, 250, 620);
       g.addColorStop(0, '#DA1617'); g.addColorStop(.55, '#7A0A10'); g.addColorStop(1, '#170406');
       c.fillStyle = g; c.fillRect(0, 0, W, H);
-      logo(simbol, 930, 40, 420, 'rgba(0,0,0,.55)');
+      logo(simbol, 930, 40, 420, 'rgba(255,255,255,.14)');
       garisLayar();
       return { teks: '#F3E9DC', aksen: '#DA1617' };
     },
@@ -229,7 +242,7 @@ new IntersectionObserver((daftar, o) => {
       c.fillStyle = '#DA1617'; c.fillRect(0, 0, W, H);
       c.fillStyle = '#000';
       for (let i = 0; i < 9; i++) c.fillRect(780 + i * 78, 0, 30, H);
-      logo(simbol, 1150, 60, 380, '#F3E9DC');
+      logo(simbol, 1150, 60, 380, '#FFFFFF');
       return { teks: '#000', aksen: '#F3E9DC' };
     },
     malam() {
@@ -237,7 +250,7 @@ new IntersectionObserver((daftar, o) => {
       c.strokeStyle = 'rgba(218,22,23,.35)'; c.lineWidth = 2;
       for (let x = -H; x < W; x += 36) { c.beginPath(); c.moveTo(x, H); c.lineTo(x + H, 0); c.stroke(); }
       c.fillStyle = '#000'; c.fillRect(0, 0, 820, H);
-      logo(simbol, 1080, 50, 400, '#DA1617');
+      logo(simbol, 1080, 50, 400, '#FFFFFF');
       return { teks: '#F3E9DC', aksen: '#DA1617' };
     },
   };
@@ -250,7 +263,7 @@ new IntersectionObserver((daftar, o) => {
     while (c.measureText(tag).width > 760 && ukuran > 50) { ukuran -= 6; c.font = `700 ${ukuran}px Oxanium`; }
     c.fillStyle = warna.teks; c.textBaseline = 'alphabetic';
     c.fillText(tag, 72, 300);
-    logo(datar, 76, 340, 92, warna.aksen === '#000' ? '#000' : '#DA1617');
+    logo(datar, 76, 340, 92, '#FFFFFF'); // banner selalu berlatar gelap/merah: logo putih (aturan logo)
   };
   document.querySelectorAll('[name=gaya]').forEach((r) => r.addEventListener('change', gambar));
   isian.addEventListener('input', gambar);
