@@ -8,9 +8,11 @@
 <meta property="og:title" content="Reign 9 International">
 <meta property="og:description" content="Komunitas Honor of Kings. Bikin banner gamertag-mu dan gabung bareng kami.">
 <meta property="og:image" content="gambar/share.jpg">
-<meta name="theme-color" content="#170406">
+<meta name="theme-color" content="#DA1617">
+<meta name="color-scheme" content="dark light">
+<script>try { const t = localStorage.getItem('tema'); if (t) document.documentElement.dataset.tema = t; } catch (e) {}</script>
 <link rel="icon" href="gambar/favicon.svg" type="image/svg+xml">
-<link rel="preload" href="font/jersey-10-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="font/oxanium-500.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="font/font.css">
 <link rel="stylesheet" href="gaya.css">
 </head>
@@ -19,8 +21,12 @@
 
 <header class="nav" id="atas">
   <a class="nav__logo" href="#atas" aria-label="Reign 9 International, ke atas">
-    <svg viewBox="0 0 432.51 167.24" aria-hidden="true"><use href="gambar/logo.svg#datar"/></svg>
+    <svg viewBox="0 0 428.51 163.23" aria-hidden="true"><use href="gambar/logo.svg#datar"/></svg>
   </a>
+  <button class="nav__tema" type="button" aria-label="Ganti mode terang/gelap">
+    <svg class="matahari" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M4.6 19.4l2.1-2.1M17.3 6.7l2.1-2.1" stroke="currentColor" stroke-width="2.2" stroke-linecap="square"/></svg>
+    <svg class="bulan" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z" fill="currentColor"/></svg>
+  </button>
   <button class="nav__buka" aria-expanded="false" aria-controls="menu">
     <span class="sr">Buka menu</span><i></i><i></i><i></i>
   </button>
@@ -34,11 +40,6 @@
 
 <main id="isi">
   <section class="hero" aria-labelledby="judul-hero">
-    <div class="hero__aula" aria-hidden="true">
-      <img class="lapis" data-dalam="6" src="gambar/aula-belakang.svg" alt="" width="1600" height="900">
-      <img class="lapis" data-dalam="16" src="gambar/aula-tengah.svg" alt="" width="1600" height="900">
-      <img class="lapis" data-dalam="30" src="gambar/aula-depan.svg" alt="" width="1600" height="900">
-    </div>
     <canvas class="hero__bara" aria-hidden="true"></canvas>
     <div class="hero__sudut hero__sudut--kiri" aria-hidden="true">
       <span>R9//HOK-DIV</span><span>SEASON 01</span><b></b>
@@ -47,8 +48,7 @@
       <span class="kode-batang"></span><span>REIGN-9-INTL</span>
     </div>
     <div class="hero__pedang" aria-hidden="true">
-      <svg viewBox="0 0 109.63 187.98"><use href="gambar/logo.svg#simbol"/></svg>
-      <span class="hero__kilat"></span>
+      <svg viewBox="0 0 105.63 183.98"><use href="gambar/logo.svg#simbol"/></svg>
     </div>
     <div class="hero__teks">
       <h1 id="judul-hero"><span>Reign 9</span><span>International</span></h1>
@@ -80,8 +80,7 @@
     <div class="podium" data-muncul>
       <div class="podium__kotak podium__kotak--2"><b>2nd</b><small>place</small><strong>–</strong></div>
       <div class="podium__kotak podium__kotak--1">
-        <svg class="podium__pedang" viewBox="0 0 109.63 187.98" aria-hidden="true"><use href="gambar/logo.svg#simbol"/></svg>
-        <span class="podium__bendera" aria-hidden="true"><span>9</span></span>
+        <span class="rubah-wadah podium__rubah" data-rubah aria-hidden="true"></span>
         <b>1st</b><small>place</small><strong>–</strong>
       </div>
       <div class="podium__kotak podium__kotak--3"><b>3rd</b><small>place</small><strong>–</strong></div>
@@ -105,7 +104,7 @@
       <li>
         <a class="baris" href="#gabung">
           <span class="baris__latar" aria-hidden="true"><span>Honor of Kings ✦ Honor of Kings ✦ Honor of Kings ✦ Honor of Kings ✦ </span></span>
-          <span class="baris__ikon" aria-hidden="true"><svg viewBox="0 0 109.63 187.98"><use href="gambar/logo.svg#simbol"/></svg></span>
+          <span class="baris__ikon" aria-hidden="true"><svg viewBox="0 0 105.63 183.98"><use href="gambar/logo.svg#simbol"/></svg></span>
           <span class="baris__nama">Honor of Kings</span>
           <span class="baris__tim">Main roster</span>
           <svg class="baris__panah" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.5"/></svg>
@@ -149,6 +148,7 @@
     <div class="gabung__sudut" aria-hidden="true"><span>R9//REKRUT</span><span class="kode-batang"></span></div>
     <h2 id="judul-gabung" class="judul judul--tengah">Gabung Reign 9</h2>
     <form class="gabung__form" novalidate>
+      <span class="rubah-intip" aria-hidden="true"><span class="rubah-wadah" data-rubah></span></span>
       <label class="isian isian--terang"><span>Nama</span><input name="nama" required autocomplete="name"></label>
       <label class="isian isian--terang"><span>Nickname HoK</span><input name="nick" required autocomplete="nickname"></label>
       <label class="isian isian--terang"><span>Role utama</span>
@@ -164,7 +164,7 @@
 </main>
 
 <footer class="kaki">
-  <svg class="kaki__logo" viewBox="0 0 432.51 167.24" aria-label="Reign 9 International"><use href="gambar/logo.svg#datar"/></svg>
+  <svg class="kaki__logo" viewBox="0 0 428.51 163.23" aria-label="Reign 9 International"><use href="gambar/logo.svg#datar"/></svg>
   <nav class="kaki__menu" aria-label="Menu bawah">
     <a href="#roster">Roster</a><a href="#tentang">Tentang</a><a href="#banner">Banner</a><a href="#gabung">Gabung</a>
   </nav>

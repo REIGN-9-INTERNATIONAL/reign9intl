@@ -1,8 +1,11 @@
-/* jersey-10 */
-@font-face { font-family: 'Jersey 10'; font-style: normal; font-weight: 400; font-display: swap; src: url('jersey-10-400.woff2') format('woff2'); }
-/* akhir jersey-10 */
-/* chakra-petch */
-@font-face { font-family: 'Chakra Petch'; font-style: normal; font-weight: 400; font-display: swap; src: url('chakra-petch-400.woff2') format('woff2'); }
-@font-face { font-family: 'Chakra Petch'; font-style: normal; font-weight: 600; font-display: swap; src: url('chakra-petch-600.woff2') format('woff2'); }
-@font-face { font-family: 'Chakra Petch'; font-style: normal; font-weight: 700; font-display: swap; src: url('chakra-petch-700.woff2') format('woff2'); }
-/* akhir chakra-petch */
+/* oxanium */
+@font-face { font-family: 'Oxanium'; font-style: normal; font-weight: 500; font-display: swap; src: url('oxanium-500.woff2') format('woff2'); }
+@font-face { font-family: 'Oxanium'; font-style: normal; font-weight: 600; font-display: swap; src: url('oxanium-500.woff2') format('woff2'); }
+@font-face { font-family: 'Oxanium'; font-style: normal; font-weight: 700; font-display: swap; src: url('oxanium-500.woff2') format('woff2'); }
+/* akhir oxanium */
+/* uncut-sans (OFL, github.com/kaspernordkvist/uncut_sans) */
+@font-face { font-family: 'Uncut Sans'; font-style: normal; font-weight: 400; font-display: swap; src: url('uncut-sans-400.woff2') format('woff2'); }
+@font-face { font-family: 'Uncut Sans'; font-style: normal; font-weight: 500; font-display: swap; src: url('uncut-sans-500.woff2') format('woff2'); }
+@font-face { font-family: 'Uncut Sans'; font-style: normal; font-weight: 600; font-display: swap; src: url('uncut-sans-600.woff2') format('woff2'); }
+@font-face { font-family: 'Uncut Sans'; font-style: normal; font-weight: 700; font-display: swap; src: url('uncut-sans-700.woff2') format('woff2'); }
+/* akhir uncut-sans */

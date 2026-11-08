@@ -1,8 +1,16 @@
-// Reign 9: menu HP, bara di hero, podium balik, pembuat banner, form gabung lewat WhatsApp.
+// Reign 9: menu HP, bara jadi logo di hero, podium balik, pembuat banner, form gabung lewat WhatsApp.
 // Nomor WA admin diisi owner (format 62xxxxxxxxxx). Kosong = form ngasih tau belum dipasang.
 const WA_ADMIN = '';
 
 const gerakBoleh = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// ---------- tombol tema terang/gelap (pilihan disimpen di perangkat pengunjung) ----------
+document.querySelector('.nav__tema').addEventListener('click', () => {
+  const sekarang = document.documentElement.dataset.tema || (matchMedia('(prefers-color-scheme: light)').matches ? 'terang' : 'gelap');
+  const baru = sekarang === 'terang' ? 'gelap' : 'terang';
+  document.documentElement.dataset.tema = baru;
+  try { localStorage.setItem('tema', baru); } catch (e) {}
+});
 
 // ---------- menu HP ----------
 const tombolMenu = document.querySelector('.nav__buka');
@@ -16,61 +24,125 @@ menu.addEventListener('click', (e) => {
   if (e.target.closest('a')) { tombolMenu.setAttribute('aria-expanded', 'false'); menu.classList.remove('buka'); }
 });
 
-// ---------- bara naik di hero ----------
-(() => {
+// ---------- bara ngumpul jadi logo R9 (hero) ----------
+// Titik logo diambil dari bentuk simbol di sprite. Bara naik dari bawah, muter, terus nempel ke titiknya.
+// Kursor/jari nyebarin bara di sekitarnya; dilepas = balik ke bentuk logo. Gerak dikurangi = logo diam (SVG).
+(async () => {
   const kanvas = document.querySelector('.hero__bara');
+  const wadah = document.querySelector('.hero__pedang');
   if (!kanvas || !gerakBoleh) return;
+  document.documentElement.classList.add('bara-hidup');
   const c = kanvas.getContext('2d');
-  let w, h, bara = [], jalan = true;
-  const ukur = () => {
-    const r = devicePixelRatio > 1 ? 2 : 1;
-    w = kanvas.clientWidth; h = kanvas.clientHeight;
-    kanvas.width = w * r; kanvas.height = h * r; c.setTransform(r, 0, 0, r, 0, 0);
-    bara = Array.from({ length: Math.round(w / 14) }, () => baru(true));
-  };
-  const baru = (acak) => ({
-    x: Math.random() * w, y: acak ? Math.random() * h : h + 10,
-    r: Math.random() * 2 + .6, v: Math.random() * .6 + .25, goyang: Math.random() * 6.28, umur: Math.random() * .5 + .5,
-  });
-  const gambar = () => {
-    if (!jalan) return;
-    c.clearRect(0, 0, w, h);
-    for (const b of bara) {
-      b.y -= b.v; b.goyang += .02; b.x += Math.sin(b.goyang) * .35;
-      const a = Math.max(0, Math.min(1, b.y / h)) * b.umur;
-      c.fillStyle = `rgba(255, ${90 + b.r * 40 | 0}, 60, ${a})`;
-      c.beginPath(); c.arc(b.x, b.y, b.r, 0, 6.29); c.fill();
-      if (b.y < -10) Object.assign(b, baru(false));
+  const sprite = await fetch('gambar/logo.svg').then((r) => r.text()).catch(() => '');
+  const m = sprite.match(/id="simbol" viewBox="([^"]+)">(.*?)<\/symbol>/);
+  if (!m) { document.documentElement.classList.remove('bara-hidup'); return; }
+  const vb = m[1].split(' ').map(Number), bentuk = [...m[2].matchAll(/ d="([^"]+)"/g)].map((x) => new Path2D(x[1]));
+  const WARNA = ['#ffd27a', '#ff9a3c', '#ff5a2a', '#da1617', '#ff7a4d'];
+  let w, h, butir = [], lepas = [], px = -999, py = -999, jalan = true, mulai = performance.now();
+
+  const titikLogo = () => {
+    const r = wadah.getBoundingClientRect(), k = kanvas.getBoundingClientRect();
+    const lw = Math.round(r.width), lh = Math.round(r.height);
+    const o = new OffscreenCanvas(lw, lh), oc = o.getContext('2d');
+    const s = lh / vb[3];
+    oc.translate((lw - vb[2] * s) / 2, 0); oc.scale(s, s); oc.translate(-vb[0], -vb[1]);
+    bentuk.forEach((b) => oc.fill(b, 'evenodd'));
+    const data = oc.getImageData(0, 0, lw, lh).data, jarak = lw < 200 ? 3 : 4, hasil = [];
+    for (let y = 0; y < lh; y += jarak) for (let x = 0; x < lw; x += jarak) {
+      if (data[(y * lw + x) * 4 + 3] > 128) hasil.push([r.left - k.left + x, r.top - k.top + y]);
     }
+    return hasil;
+  };
+  const ukur = () => {
+    const rasio = Math.min(devicePixelRatio || 1, 2);
+    w = kanvas.clientWidth; h = kanvas.clientHeight;
+    kanvas.width = w * rasio; kanvas.height = h * rasio; c.setTransform(rasio, 0, 0, rasio, 0, 0);
+    const titik = titikLogo();
+    butir = titik.map(([tx, ty], i) => butir[i] ? Object.assign(butir[i], { tx, ty }) : {
+      x: Math.random() * w, y: h + Math.random() * h * .6, vx: 0, vy: 0, tx, ty,
+      r: Math.random() * 1.1 + .9, warna: WARNA[i % WARNA.length], tunda: Math.random() * 900, kedip: Math.random() * 6.28,
+    });
+    lepas = Array.from({ length: Math.round(w / 16) }, () => baraLepas(true));
+  };
+  const baraLepas = (acak) => ({
+    x: Math.random() * w, y: acak ? Math.random() * h : h + 10, r: Math.random() * 1.8 + .5,
+    v: Math.random() * .6 + .25, goyang: Math.random() * 6.28, umur: Math.random() * .5 + .4,
+  });
+  const gambar = (t) => {
+    if (!jalan) return;
+    const umur = t - mulai;
+    c.clearRect(0, 0, w, h);
+    c.globalCompositeOperation = 'lighter';
+    for (const b of lepas) {
+      b.y -= b.v; b.goyang += .02; b.x += Math.sin(b.goyang) * .35;
+      c.globalAlpha = Math.max(0, Math.min(1, b.y / h)) * b.umur;
+      c.fillStyle = '#ff5a2a'; c.beginPath(); c.arc(b.x, b.y, b.r, 0, 6.29); c.fill();
+      if (b.y < -10) Object.assign(b, baraLepas(false));
+    }
+    for (const b of butir) {
+      if (umur > b.tunda) {
+        // pegas ke titik logo + putaran kecil biar kerasa kayak bara ketiup
+        const dx = b.tx - b.x, dy = b.ty - b.y;
+        b.vx += dx * .012 - dy * .002; b.vy += dy * .012 + dx * .002;
+        const ex = b.x - px, ey = b.y - py, d2 = ex * ex + ey * ey;
+        if (d2 < 6400) { const f = (6400 - d2) / 6400 * 2.4, d = Math.sqrt(d2) || 1; b.vx += ex / d * f; b.vy += ey / d * f; }
+        b.vx *= .86; b.vy *= .86;
+      } else { b.vy -= .02; }
+      b.x += b.vx; b.y += b.vy; b.kedip += .08;
+      c.globalAlpha = .65 + Math.sin(b.kedip) * .35;
+      c.fillStyle = b.warna; c.fillRect(b.x - b.r, b.y - b.r, b.r * 2, b.r * 2);
+    }
+    c.globalAlpha = 1; c.globalCompositeOperation = 'source-over';
     requestAnimationFrame(gambar);
   };
-  new IntersectionObserver(([e]) => { jalan = e.isIntersecting; if (jalan) gambar(); }).observe(kanvas);
-  addEventListener('resize', ukur);
-  ukur();
+  const hero = kanvas.closest('.hero');
+  hero.addEventListener('pointermove', (e) => { const k = kanvas.getBoundingClientRect(); px = e.clientX - k.left; py = e.clientY - k.top; });
+  hero.addEventListener('pointerleave', () => { px = py = -999; });
+  hero.addEventListener('pointerup', (e) => { if (e.pointerType !== 'mouse') px = py = -999; });
+  new IntersectionObserver(([e]) => { const tadi = jalan; jalan = e.isIntersecting; if (jalan && !tadi) requestAnimationFrame(gambar); }).observe(kanvas);
+  let tunggu; addEventListener('resize', () => { clearTimeout(tunggu); tunggu = setTimeout(ukur, 150); });
+  await document.fonts.ready;
+  ukur(); requestAnimationFrame(gambar);
 })();
 
-// ---------- aula geser ikut kursor & scroll (lapis dekat geser lebih jauh) ----------
-(() => {
-  const hero = document.querySelector('.hero');
-  const lapis = [...document.querySelectorAll('.lapis')];
-  if (!gerakBoleh || !lapis.length) return;
-  let mx = 0, my = 0, sy = 0, antre = false;
-  const pasang = () => {
-    antre = false;
-    for (const l of lapis) {
-      const k = +l.dataset.dalam;
-      l.style.setProperty('--gx', `${(-mx * k).toFixed(1)}px`);
-      l.style.setProperty('--gy', `${(-my * k + sy * k * .04).toFixed(1)}px`);
-    }
-  };
-  const minta = () => { if (!antre) { antre = true; requestAnimationFrame(pasang); } };
-  hero.addEventListener('pointermove', (e) => {
-    if (e.pointerType !== 'mouse') return;
-    const r = hero.getBoundingClientRect();
-    mx = (e.clientX - r.left) / r.width - .5; my = (e.clientY - r.top) / r.height - .5; minta();
+// ---------- maskot rubah ekor sembilan (BELUM DISETUJUI OWNER: cuma muncul di pratinjau lokal pakai ?rubah) ----------
+(async () => {
+  if (!new URLSearchParams(location.search).has('rubah')) {
+    // tanpa maskot: podium pakai pedang R9, rubah ngintip di form dibuang
+    document.querySelector('.rubah-intip')?.remove();
+    const podium = document.querySelector('.podium__rubah');
+    if (podium) podium.outerHTML = '<svg class="podium__pedang" viewBox="0 0 105.63 183.98" aria-hidden="true"><use href="gambar/logo.svg#simbol"/></svg><span class="podium__bendera" aria-hidden="true"><span>9</span></span>';
+    return;
+  }
+  document.documentElement.classList.add('pakai-rubah');
+  const tempat = [...document.querySelectorAll('[data-rubah]')];
+  if (!tempat.length) return;
+  const svg = await fetch('gambar/rubah.svg').then((r) => r.text()).catch(() => '');
+  tempat.forEach((el) => { el.innerHTML = svg; });
+  const lirik = (el, dx, dy) => el.querySelectorAll('.pupil').forEach((p) => {
+    p.style.transform = `translate(${Math.max(-3.5, Math.min(3.5, dx)).toFixed(2)}px, ${Math.max(-2, Math.min(2, dy)).toFixed(2)}px)`;
   });
-  hero.addEventListener('pointerleave', () => { mx = my = 0; minta(); });
-  addEventListener('scroll', () => { sy = Math.min(scrollY, innerHeight); minta(); }, { passive: true });
+  addEventListener('pointermove', (e) => {
+    for (const el of tempat) {
+      const r = el.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > innerHeight) continue;
+      lirik(el, (e.clientX - (r.left + r.width / 2)) / 50, (e.clientY - (r.top + r.height * .4)) / 70);
+    }
+  }, { passive: true });
+  tempat.forEach((el) => {
+    const kedip = () => { el.classList.add('kedip'); setTimeout(() => el.classList.remove('kedip'), 150); setTimeout(kedip, 2500 + Math.random() * 4000); };
+    setTimeout(kedip, 2000 + Math.random() * 2000);
+  });
+  // rubah di form: nongol pas form keliatan, ngeliat kolom yang lagi diisi
+  const intip = document.querySelector('.rubah-intip');
+  if (intip) {
+    const form = intip.closest('form');
+    new IntersectionObserver((d, o) => { if (d.some((e) => e.isIntersecting)) { intip.classList.add('muncul'); o.disconnect(); } }, { threshold: .3 }).observe(form);
+    form.addEventListener('focusin', (e) => {
+      const a = intip.getBoundingClientRect(), b = e.target.getBoundingClientRect();
+      lirik(intip, (b.left + b.width / 2 - (a.left + a.width / 2)) / 30, 3);
+    });
+  }
 })();
 
 // ---------- podium balik pas keliatan ----------
@@ -88,17 +160,17 @@ new IntersectionObserver((daftar, o) => {
   // Ambil bentuk logo dari sprite, biar banner pakai vektor asli.
   const sprite = await fetch('gambar/logo.svg').then((r) => r.text()).catch(() => '');
   const bentuk = (id) => {
-    const m = sprite.match(new RegExp(`id="${id}" viewBox="([^"]+)"><path[^>]* d="([^"]+)"`));
-    return m ? { vb: m[1].split(' ').map(Number), p: new Path2D(m[2]) } : null;
+    const m = sprite.match(new RegExp(`id="${id}" viewBox="([^"]+)">(.*?)</symbol>`));
+    return m ? { vb: m[1].split(' ').map(Number), p: [...m[2].matchAll(/ d="([^"]+)"/g)].map((x) => new Path2D(x[1])) } : null;
   };
   const simbol = bentuk('simbol'), datar = bentuk('datar');
-  await document.fonts.load('80px "Jersey 10"');
+  await document.fonts.load('700 80px Oxanium');
 
   const logo = (b, x, y, tinggi, warna) => {
     if (!b) return;
     const s = tinggi / b.vb[3];
     c.save(); c.translate(x, y); c.scale(s, s); c.translate(-b.vb[0], -b.vb[1]);
-    c.fillStyle = warna; c.fill(b.p, 'evenodd'); c.restore();
+    c.fillStyle = warna; b.p.forEach((p) => c.fill(p, 'evenodd')); c.restore();
   };
   const garisLayar = () => {
     c.fillStyle = 'rgba(0,0,0,.18)';
@@ -133,9 +205,9 @@ new IntersectionObserver((daftar, o) => {
     const pilih = document.querySelector('[name=gaya]:checked').value;
     const warna = gaya[pilih]();
     const tag = (isian.value.trim() || 'GAMERTAG').toUpperCase();
-    let ukuran = 210;
-    c.font = `${ukuran}px "Jersey 10"`;
-    while (c.measureText(tag).width > 760 && ukuran > 60) { ukuran -= 6; c.font = `${ukuran}px "Jersey 10"`; }
+    let ukuran = 150;
+    c.font = `700 ${ukuran}px Oxanium`;
+    while (c.measureText(tag).width > 760 && ukuran > 50) { ukuran -= 6; c.font = `700 ${ukuran}px Oxanium`; }
     c.fillStyle = warna.teks; c.textBaseline = 'alphabetic';
     c.fillText(tag, 72, 300);
     logo(datar, 76, 340, 92, warna.aksen === '#000' ? '#000' : '#DA1617');
