@@ -49,6 +49,62 @@ menu.addEventListener('click', (e) => {
   ukur();
 })();
 
+// ---------- maskot: pedang R9 bermata (mata di lubang huruf R & 9) ----------
+const MATA = [[29.7, 93.4], [79.7, 93.4]];
+const maskot = [...document.querySelectorAll('[data-maskot]')].map((el) => {
+  el.innerHTML = `<svg viewBox="0 0 109.63 187.98" aria-hidden="true"><use href="gambar/logo.svg#simbol"/>${MATA.map(([x, y]) =>
+    `<g class="mata"><ellipse cx="${x}" cy="${y}" rx="7.4" ry="5.8" fill="#F3E9DC"/><circle class="pupil" cx="${x}" cy="${y + .8}" r="3.4" fill="#000"/><rect class="kelopak" x="${x - 8.5}" y="${y - 7}" width="17" height="5" fill="currentColor"/></g>`).join('')}</svg>`;
+  if (el.dataset.maskot === 'tidur') el.classList.add('merem');
+  return el;
+});
+const lirik = (el, dx, dy) => el.querySelectorAll('.pupil').forEach((p) => {
+  p.style.transform = `translate(${Math.max(-3, Math.min(3, dx)).toFixed(2)}px, ${Math.max(-1.6, Math.min(1.6, dy)).toFixed(2)}px)`;
+});
+// kedip acak, tiap maskot jadwalnya sendiri
+maskot.forEach((el) => {
+  const kedip = () => {
+    if (!el.classList.contains('merem')) { el.classList.add('kedip'); setTimeout(() => el.classList.remove('kedip'), 140); }
+    setTimeout(kedip, 2500 + Math.random() * 3500);
+  };
+  setTimeout(kedip, 3000 + Math.random() * 2000);
+});
+// mata ngikutin kursor
+addEventListener('pointermove', (e) => {
+  for (const el of maskot) {
+    if (el.classList.contains('merem')) continue;
+    const r = el.getBoundingClientRect();
+    lirik(el, (e.clientX - (r.left + r.width / 2)) / 60, (e.clientY - (r.top + r.height * .5)) / 90);
+  }
+}, { passive: true });
+// maskot hero bangun abis pedang nancep: buka mata, lirik kiri-kanan
+(() => {
+  const hero = document.querySelector('.maskot--hero');
+  if (!hero) return;
+  const bangun = gerakBoleh ? 2000 : 0;
+  setTimeout(() => {
+    hero.classList.remove('merem');
+    if (!gerakBoleh) return;
+    setTimeout(() => lirik(hero, -3, 0), 500);
+    setTimeout(() => lirik(hero, 3, 0), 1100);
+    setTimeout(() => lirik(hero, 0, 0), 1700);
+  }, bangun);
+  // ditowel = loncat kaget
+  hero.parentElement.addEventListener('click', () => {
+    hero.classList.remove('kaget'); void hero.offsetWidth; hero.classList.add('kaget');
+  });
+})();
+// maskot intip di form: muncul pas form keliatan, ngeliat kolom yang lagi diisi
+(() => {
+  const intip = document.querySelector('.maskot--intip');
+  if (!intip) return;
+  new IntersectionObserver((d, o) => { if (d.some((e) => e.isIntersecting)) { intip.classList.add('muncul'); o.disconnect(); } }, { threshold: .3 })
+    .observe(intip.closest('form'));
+  intip.closest('form').addEventListener('focusin', (e) => {
+    const a = intip.getBoundingClientRect(), b = e.target.getBoundingClientRect();
+    lirik(intip, (b.left + b.width / 2 - (a.left + a.width / 2)) / 40, 3);
+  });
+})();
+
 // ---------- aula geser ikut kursor & scroll (lapis dekat geser lebih jauh) ----------
 (() => {
   const hero = document.querySelector('.hero');
