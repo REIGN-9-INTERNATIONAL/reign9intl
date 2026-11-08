@@ -14,7 +14,9 @@
   --kartu: rgba(255, 255, 255, .05); --logo: var(--putih);
   --tombol: var(--merah); --tombol-teks: var(--putih);
   --podium: var(--merah-tua); --podium-teks: var(--putih);
-  --ixar: var(--putih); --ixar-mata: #1A0204; --ixar-alat: var(--merah);
+  /* IXAR di tema gelap: siluet hitam, pinggiran bercahaya merah, mata jendela nyala api */
+  --ixar: #0B0102; --ixar-mata: #FF3A24; --ixar-alat: var(--merah);
+  --ixar-sinar: drop-shadow(0 0 1.5px rgba(255, 58, 36, .95)) drop-shadow(0 0 16px rgba(218, 22, 23, .4));
   --isian: rgba(255, 255, 255, .08); --isian-teks: var(--putih);
   --hero-tengah: rgba(218, 22, 23, .22);
   --bara-1: #da1617; --bara-2: #ff3b26; --bara-3: #b30d10; --bara-4: #ff8a3c;
@@ -27,7 +29,7 @@
     --kartu: rgba(255, 255, 255, .3); --logo: var(--hitam);
     --tombol: var(--hitam); --tombol-teks: var(--putih);
     --podium: var(--hitam); --podium-teks: var(--putih);
-    --ixar: var(--hitam); --ixar-mata: #FFD3DC; --ixar-alat: var(--hitam);
+    --ixar: var(--hitam); --ixar-mata: #FFD3DC; --ixar-alat: var(--hitam); --ixar-sinar: none;
     --isian: rgba(255, 255, 255, .55); --isian-teks: var(--hitam);
     --hero-tengah: rgba(255, 255, 255, .45);
     --bara-1: #000; --bara-2: #da1617; --bara-3: #1a0102; --bara-4: #a80309;
@@ -40,7 +42,7 @@
   --kartu: rgba(255, 255, 255, .3); --logo: var(--hitam);
   --tombol: var(--hitam); --tombol-teks: var(--putih);
   --podium: var(--hitam); --podium-teks: var(--putih);
-  --ixar: var(--hitam); --ixar-mata: #FFD3DC; --ixar-alat: var(--hitam);
+  --ixar: var(--hitam); --ixar-mata: #FFD3DC; --ixar-alat: var(--hitam); --ixar-sinar: none;
   --isian: rgba(255, 255, 255, .55); --isian-teks: var(--hitam);
   --hero-tengah: rgba(255, 255, 255, .45);
   --bara-1: #000; --bara-2: #da1617; --bara-3: #1a0102; --bara-4: #a80309;
@@ -175,6 +177,7 @@ button { font: inherit; color: inherit; }
 
 /* ---------- IXAR umum ---------- */
 [data-ixar] { display: block; color: var(--ixar); }
+[data-ixar]:not(.hero__ixar) .ixar { filter: var(--ixar-sinar, none); }
 .ixar { width: 100%; height: auto; overflow: visible; }
 .ixar__mata { fill: var(--ixar-mata); }
 .ixar__alat { transition: opacity .25s; }
@@ -375,7 +378,6 @@ button { font: inherit; color: inherit; }
 .kaki__menu { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 24px; max-width: 360px; }
 .kaki__menu a { text-decoration: none; padding: 9px 0; font: 700 14px/1 var(--judul); text-transform: uppercase; letter-spacing: .08em; }
 .kaki__menu a:hover { color: var(--merah); }
-.kaki__ixar { position: absolute; right: 16px; top: -64px; width: 96px; color: var(--putih); --ixar-mata: var(--hitam); --ixar-alat: var(--merah); }
 .kaki__hak { font-size: 14px; color: rgba(255, 255, 255, .7); border-top: 1px solid rgba(255, 255, 255, .14); padding-top: 18px; }
 @media (min-width: 860px) { .kaki { grid-template-columns: 1fr auto; padding: 56px var(--tepi) 36px; align-items: center; } .kaki__hak { grid-column: 1 / -1; } .kaki__ixar { right: var(--tepi); } }
 
@@ -393,3 +395,25 @@ button { font: inherit; color: inherit; }
 /* menu yang lagi digelantungin IXAR */
 .disentuh-ixar { animation: disentuh .5s ease-in-out infinite alternate; }
 @keyframes disentuh { to { transform: translateY(3px); color: var(--putih); } }
+
+/* ---------- rapih ala nmss: IXAR cuma di momen penting, judul tegas di tengah, contact blok penuh ---------- */
+.roster .kepala-bagian, .news .kepala-bagian, .jadwal .kepala-bagian, .banner .kepala-bagian { margin-inline: auto; text-align: center; justify-items: center; }
+.kepala-bagian p { margin-inline: auto; }
+.news .kepala-bagian { position: relative; padding-top: 128px; }
+.news__ixar { position: absolute; top: 0; left: 50%; width: 96px; margin-left: -48px; }
+.kartu-pemain__tanpa { place-items: center; color: var(--teks); opacity: .22; }
+.kartu-pemain__tanpa svg { width: 42%; height: auto; }
+.ethos { padding-block: 90px; }
+.ethos__pilar li { background: var(--kartu); }
+.shop { grid-template-columns: auto 1fr; }
+.shop__logo { width: clamp(60px, 9vw, 110px); height: auto; color: var(--logo); }
+.kontak { background: var(--podium) !important; color: var(--podium-teks); --teks: var(--podium-teks); --teks-redup: rgba(255, 255, 255, .78); --garis: rgba(255, 255, 255, .28); --isian: rgba(255, 255, 255, .1); --isian-teks: var(--putih); }
+.kontak .tombol--hitam { background: var(--putih); color: var(--hitam); }
+.wilayah, .fakta, .banner__kerja { border-radius: 0; }
+/* banner: pratinjau lebar di atas, 5 pilihan berjejer, nama + unduh sebaris */
+.banner__kerja { grid-template-columns: 1fr !important; }
+.banner__pilih { grid-template-columns: repeat(5, minmax(0, 1fr)) !important; }
+.banner__pilih legend { margin-bottom: 10px; }
+.banner__pilih img { height: auto; }
+.banner__atur { gap: 16px; }
+@media (min-width: 700px) { .banner__atur { grid-template-columns: 1fr 1fr; align-items: end; } .banner__pilih { grid-column: 1 / -1; } }

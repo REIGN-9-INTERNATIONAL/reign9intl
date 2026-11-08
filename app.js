@@ -356,13 +356,12 @@ function gambarData() {
     const role = p.role ? R9.t(`role.${p.role}`) : '';
     return `<li class="kartu-pemain ${coach ? 'kartu-pemain--coach' : ''}"><div class="kartu-pemain__isi">
       <span class="lencana-role">${esc(coach ? R9.t('roster.coach') : role || R9.t('roster.player'))}</span>
-      ${p.foto ? `<img class="kartu-pemain__foto" src="${esc(p.foto)}" alt="${esc(p.nickname)}" loading="lazy" width="400" height="500">` : `<div class="kartu-pemain__tanpa"><span data-ixar="${coach ? 'pedang' : ['diam', 'tunjuk', 'tameng', 'pedang'][p.id % 4]}"></span></div>`}
+      ${p.foto ? `<img class="kartu-pemain__foto" src="${esc(p.foto)}" alt="${esc(p.nickname)}" loading="lazy" width="400" height="500">` : `<div class="kartu-pemain__tanpa"><svg viewBox="0 0 105.63 183.98" aria-hidden="true"><use href="gambar/logo.svg#simbol"/></svg></div>`}
       <div class="kartu-pemain__info"><span class="kartu-pemain__nama">${esc(p.nickname)}</span>
         <span class="kartu-pemain__role">${BENDERA[p.negara] || ''}${esc([coach && role !== R9.t('role.Pelatih') ? role : '', R9.t(`negara.${p.negara || 'ID'}`)].filter(Boolean).join(' · '))}</span>
         ${p.instagram ? `<a class="kartu-pemain__ig" href="https://www.instagram.com/${encodeURIComponent(p.instagram)}/" target="_blank" rel="noopener">@${esc(p.instagram)}</a>` : ''}</div>
     </div></li>`;
   }).join('');
-  $$('[data-roster] [data-ixar]').forEach((el) => window.IXAR?.pasang(el));
   const hitung = {}; aktif.forEach((p) => { hitung[p.negara || 'ID'] = (hitung[p.negara || 'ID'] || 0) + 1; });
   $('[data-hitung-negara]').textContent = aktif.length ? `${aktif.length} ${R9.t('roster.pemain')} · ${Object.entries(hitung).map(([k, v]) => `${R9.t(`negara.${k}`)} ${v}`).join(' · ')}` : '';
   const alumni = d.pemain?.nonaktif || [];

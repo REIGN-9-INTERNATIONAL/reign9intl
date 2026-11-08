@@ -1,0 +1,76 @@
+{
+ "diperbarui": "2026-11-08T15:29:55.384Z",
+ "pemain": {
+  "aktif": [
+   {
+    "id": 1,
+    "nickname": "g",
+    "role": "",
+    "divisi": "Honor of Kings",
+    "instagram": "",
+    "gabung": "",
+    "negara": "ID",
+    "jenis": "pemain",
+    "foto": ""
+   }
+  ],
+  "nonaktif": []
+ },
+ "event": [
+  {
+   "id": 1,
+   "jenis": "Turnamen",
+   "mulai": "2026-11-12",
+   "selesai": "",
+   "link": "",
+   "hadiah": 0,
+   "nama": {
+    "id": "jk",
+    "en": "jk",
+    "zh": "jk简体中文（大陆）"
+   },
+   "tempat": {
+    "id": "jn",
+    "en": "jn",
+    "zh": "jn简体中文（大陆）"
+   },
+   "keterangan": {
+    "id": "",
+    "en": "",
+    "zh": ""
+   },
+   "hasil": {
+    "id": "",
+    "en": "",
+    "zh": ""
+   }
+  }
+ ],
+ "prestasi": [
+  {
+   "id": 1,
+   "tanggal": "2026-11-08",
+   "hadiah": 5,
+   "divisi": "Honor of Kings",
+   "bukti": "",
+   "juara": 0,
+   "turnamen": {
+    "id": "hh",
+    "en": "hh",
+    "zh": "hh"
+   },
+   "peringkat": {
+    "id": "n",
+    "en": "n",
+    "zh": "n"
+   }
+  }
+ ],
+ "news": [],
+ "ringkas": {
+  "juara1": 0,
+  "juara2": 0,
+  "juara3": 0,
+  "totalHadiah": 5
+ }
+}
