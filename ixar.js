@@ -39,6 +39,7 @@
     bendera: P({ dy: 8, panjang: 1.6, ln: [92, 140], lk: [-62, 40], kk: [-32, -20], kn: [32, 20], mata: 'yakin', alat: 'panji-r9', gerak: 'kuda' }),
     jalan: P({ mata: 'biasa', gerak: 'jalan' }),
     jalanCepat: P({ rot: 6, mata: 'yakin', gerak: 'jalan-cepat' }),
+    baca: P({ kep: 8, lk: [-30, 95], ln: [30, -95], mata: 'sayu' }),
     santai: P({ rot: -70, dx: 340, dy: -195, kep: 28, panjang: 1.2, lk: [-110, -25], ln: [48, -12], kk: [8, 4], kn: [58, -26], mata: 'sayu', gerak: 'napas-tidur' }),
     // ---------- POSE KHUSUS TIAP BAGIAN MENU WEBSITE ----------
     // 1. #rosters: Pro Player fokus push rank / tanding HoK pegang gaming handheld + headset
@@ -81,7 +82,7 @@
 
   class Ixar {
     constructor(el) {
-      this.el = el; this.dasar = el.dataset.ixar || 'diam'; this.pose = this.dasar;
+      this.el = el; this.dasar = POSE[el.dataset.ixar] ? el.dataset.ixar : 'diam'; this.pose = this.dasar; // pose gak dikenal → diam (biar gak error)
       this.n = { ...POSE[this.pose], lk: [...POSE[this.pose].lk], ln: [...POSE[this.pose].ln], kk: [...POSE[this.pose].kk], kn: [...POSE[this.pose].kn] };
       this.lirikX = 0; this.lirikY = 0; this.tujuanLirik = [0, 0]; this.buka = 1; this.diamSejak = performance.now(); this.t0 = performance.now();
       this.bangun();

@@ -18,6 +18,11 @@ const VERSI = (document.currentScript && new URL(document.currentScript.src, loc
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+// keamanan data dari admin sebelum masuk HTML: ID cuma angka, tautan cuma http/https (dicek pakai pembaca URL)
+const idAman = (v) => (/^\d{1,10}$/.test(String(v ?? '')) ? String(v) : '');
+const tautanAman = (v) => { if (!v) return ''; try { const u = new URL(String(v), location.href); return ['https:', 'http:'].includes(u.protocol) ? u.href : ''; } catch { return ''; } };
+// cegah situs ini ditempel di iframe situs lain (lapisan tambahan; header frame-ancestors gak bisa dipasang di GitHub Pages)
+if (window.top !== window.self) { try { window.top.location.replace(window.self.location.href); } catch (e) { document.documentElement.hidden = true; } }
 
 // ---------- sistem keamanan R9: anti-copy, anti-bajak, & anti-scraper ----------
 (() => {
@@ -1028,7 +1033,8 @@ const DIVISI_MANAGEMENT_RESMI = [
 // Resolusi URL media (foto pemain, gambar news, & dokumentasi prestasi) langsung ke server live admin.reign9.site
 function urlMedia(jalur) {
   if (!jalur) return '';
-  if (/^(https?:|data:|blob:)/i.test(jalur)) return jalur;
+  if (/^(data:image\/|blob:)/i.test(jalur)) return jalur;
+  if (/^https?:/i.test(jalur)) { try { const u = new URL(jalur); return ['admin.reign9.site', 'reign9.site', 'www.reign9.site'].includes(u.hostname) && u.protocol === 'https:' ? u.href : ''; } catch { return ''; } }
   const bersih = String(jalur).replace(/^\/+/, '');
   if (bersih.startsWith('gambar/roster/') || bersih.startsWith('gambar/news/') || bersih.startsWith('gambar/prestasi/')) {
     return `${ADMIN}/${bersih}`;
@@ -1174,7 +1180,7 @@ function kelompokkanTim(daftar, status) {
 }
 
 function renderKartuBerita(n) {
-  return `<a class="berita" href="news.html?id=${encodeURIComponent(n.id)}">
+  return `<a class="berita" href="news.html?id=${idAman(n.id)}">
     ${n.gambar ? `<img src="${esc(urlMedia(n.gambar))}" alt="${esc(R9.teks(n.judul))}" loading="lazy" width="800" height="450">` : ''}
     <span class="berita__isi">
       <time datetime="${esc(n.tanggal)}">${esc(R9.tanggal(n.tanggal))}</time>
@@ -1256,7 +1262,7 @@ function gambarData() {
   if (wadahChampion) {
     const juaraUtama = (d.prestasi || []).find((p) => p.juara === 1) || (d.prestasi || [])[0];
     if (juaraUtama) {
-      wadahChampion.innerHTML = `<button type="button" class="kartu-champion" data-buka-prestasi="${juaraUtama.id}">
+      wadahChampion.innerHTML = `<button type="button" class="kartu-champion" data-buka-prestasi="${idAman(juaraUtama.id)}">
         <span class="kartu-champion__lencana">🏆 ${esc(R9.teks(juaraUtama.peringkat))}</span>
         <span class="kartu-champion__info">
           <span class="kartu-champion__judul">${esc(R9.teks(juaraUtama.turnamen))}</span>
@@ -1419,9 +1425,9 @@ function gambarData() {
       <p class="event__meta">${esc([R9.t(`jenis.${v.jenis}`), R9.teks(v.tempat), v.selesai && v.selesai !== v.mulai ? `${R9.tanggal(v.mulai)} – ${R9.tanggal(v.selesai)}` : ''].filter(Boolean).join(' · '))}</p>
       ${R9.teks(v.keterangan) ? `<p>${esc(R9.teks(v.keterangan))}</p>` : ''}
       ${R9.teks(v.hasil) || v.hadiah ? `<p class="event__meta">${R9.teks(v.hasil) ? `${esc(R9.t('jadwal.hasil'))}: <strong>${esc(R9.teks(v.hasil))}</strong>` : ''}${v.hadiah ? ` · ${esc(R9.t('jadwal.hadiah'))}: <strong>${esc(R9.rupiah(v.hadiah))}</strong>` : ''}</p>` : ''}
-      ${(v.link || v.stream) ? `<div class="event__aksi">
-        ${v.link ? `<a href="${esc(v.link)}" target="_blank" rel="noopener">${esc(R9.t('jadwal.daftar'))}</a>` : ''}
-        ${v.stream ? `<a href="${esc(v.stream)}" target="_blank" rel="noopener">▶ ${esc(R9.t('jadwal.tonton'))}</a>` : ''}
+      ${(tautanAman(v.link) || tautanAman(v.stream)) ? `<div class="event__aksi">
+        ${tautanAman(v.link) ? `<a href="${esc(tautanAman(v.link))}" target="_blank" rel="noopener">${esc(R9.t('jadwal.daftar'))}</a>` : ''}
+        ${tautanAman(v.stream) ? `<a href="${esc(tautanAman(v.stream))}" target="_blank" rel="noopener">▶ ${esc(R9.t('jadwal.tonton'))}</a>` : ''}
       </div>` : ''}
     </div>
   </li>`;
@@ -1434,7 +1440,7 @@ function gambarData() {
 
   if ($('[data-prestasi]')) {
     $('[data-prestasi]').innerHTML = (d.prestasi || []).map((p) => `<li>
-      <button type="button" class="prestasi" data-buka-prestasi="${p.id}">
+      <button type="button" class="prestasi" data-buka-prestasi="${idAman(p.id)}">
         <span class="prestasi__lencana">🏆 ${esc(R9.teks(p.peringkat))}</span>
         <span class="prestasi__nama">${esc(R9.teks(p.turnamen))}<small>${esc([R9.tanggal(p.tanggal), p.divisi].filter(Boolean).join(' · '))}</small></span>
         <span class="prestasi__kanan">
