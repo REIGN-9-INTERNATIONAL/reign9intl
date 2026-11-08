@@ -709,3 +709,11 @@ button { font: inherit; color: inherit; }
 #contact .isian input:focus, #contact .isian select:focus, #contact .isian textarea:focus { border-color: var(--pita-aksen-teks); }
 #contact .tombol { background: var(--pita-aksen-teks); color: var(--pita-aksen); }
 @media (min-width: 700px) { #contact .kontak__form { grid-template-columns: 1fr 1fr; } #contact .isian--lebar, #contact .kontak__form .tombol, #contact .kontak__info { grid-column: 1 / -1; } #contact .kontak__form .tombol { justify-self: start; } }
+
+/* podium: IXAR lompat juara 3→2→1 lalu nancepin bendera */
+.podium { position: relative; }
+.podium__ixar { position: absolute; left: 0; top: 0; width: clamp(84px, 9vw, 116px); z-index: 3; opacity: 0; transition: opacity .3s; }
+.podium__ixar.tampil { opacity: 1; }
+.podium__bendera { transform-origin: bottom center; transform: scaleY(0); transition: transform .55s cubic-bezier(.2, 1.4, .4, 1); }
+.podium__bendera.tancap { transform: scaleY(1); }
+@media (prefers-reduced-motion: reduce) { .podium__ixar { opacity: 1; } .podium__bendera { transition: none; } }

@@ -132,20 +132,26 @@ $$('[data-bahasa]').forEach((t) => t.addEventListener('click', () => pasangBahas
 // ---------- tema ----------
 const temaSekarang = () => document.documentElement.dataset.tema || (matchMedia('(prefers-color-scheme: light)').matches ? 'terang' : 'gelap');
 const pasangTema = (t) => { document.documentElement.dataset.tema = t; try { localStorage.setItem('tema', t); } catch (e) {} document.dispatchEvent(new Event('r9:tema')); };
-$('.tema').addEventListener('click', (e) => {
+// ganti tema tanpa kedip: lingkaran warna tema baru nutup layar dari tombol, tema diganti di balik tutupan, lalu tutupan memudar.
+// (View Transitions bikin layar kedip di sebagian HP, jadi gak dipakai.)
+const LATAR_TEMA = { gelap: '#0B0203', terang: '#FFE3E9' };
+let lagiGantiTema = false;
+$('.tema').addEventListener('click', async (e) => {
+  if (lagiGantiTema) return;
   const baru = temaSekarang() === 'terang' ? 'gelap' : 'terang';
   if (!gerakBoleh) return pasangTema(baru);
-  if (!document.startViewTransition) {
-    document.documentElement.classList.add('ganti-tema'); pasangTema(baru);
-    return setTimeout(() => document.documentElement.classList.remove('ganti-tema'), 500);
-  }
+  lagiGantiTema = true;
   const r = e.currentTarget.getBoundingClientRect(), x = r.left + r.width / 2, y = r.top + r.height / 2;
-  const jari = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
-  document.documentElement.style.setProperty('--vt-x', `${x}px`); document.documentElement.style.setProperty('--vt-y', `${y}px`);
-  document.startViewTransition(() => pasangTema(baru)).ready.then(() => {
-    document.documentElement.animate({ clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${jari}px at ${x}px ${y}px)`] },
-      { duration: 700, easing: 'cubic-bezier(.65, 0, .35, 1)', fill: 'forwards', pseudoElement: '::view-transition-new(root)' });
-  });
+  const jari = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y)) + 20;
+  const tutup = document.createElement('div');
+  tutup.setAttribute('aria-hidden', 'true');
+  Object.assign(tutup.style, { position: 'fixed', inset: '0', zIndex: '9999', pointerEvents: 'none', background: LATAR_TEMA[baru], clipPath: `circle(0px at ${x}px ${y}px)` });
+  document.body.append(tutup);
+  await tutup.animate({ clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${jari}px at ${x}px ${y}px)`] }, { duration: 520, easing: 'cubic-bezier(.65, 0, .35, 1)', fill: 'forwards' }).finished;
+  pasangTema(baru);
+  await new Promise((ok) => requestAnimationFrame(() => requestAnimationFrame(ok)));
+  await tutup.animate({ opacity: [1, 0] }, { duration: 320, easing: 'ease-out', fill: 'forwards' }).finished;
+  tutup.remove(); lagiGantiTema = false;
 });
 
 // ---------- menu HP ----------
@@ -986,6 +992,40 @@ $$('.bendera__kain').forEach((kain) => {
 const podium = $('.podium');
 if (podium) {
   new IntersectionObserver((d, o) => { if (d.some((e) => e.isIntersecting)) { podium.classList.add('keliatan'); o.disconnect(); } }, { threshold: .15 }).observe(podium);
+
+// ---------- podium: IXAR bawa panji R9, lompat juara 3 → 2 → 1, nancepin bendera, berdiri gagah (klik = ulang) ----------
+(() => {
+  const pod = $('.podium'), ix = $('.podium__ixar'), bendera = $('.podium__bendera');
+  if (!pod || !ix) return;
+  const kotak = (n) => $(`.podium__kotak--${n}`, pod);
+  // posisi IXAR (kiri-atas, relatif ke podium) supaya kakinya pas di atas kotak juara n
+  const titik = (n, geser = 0) => { const p = pod.getBoundingClientRect(), k = kotak(n).getBoundingClientRect(), w = ix.offsetWidth, h = ix.offsetHeight;
+    return [k.left - p.left + k.width / 2 - w / 2 + geser, k.top - p.top - h * .97]; };
+  let main = false;
+  const lompat = (dari, ke, ms) => ix.animate([
+    { transform: `translate(${dari[0]}px, ${dari[1]}px)` },
+    { transform: `translate(${(dari[0] + ke[0]) / 2}px, ${Math.min(dari[1], ke[1]) - 90}px)`, offset: .5 },
+    { transform: `translate(${ke[0]}px, ${ke[1]}px)` }], { duration: ms, easing: 'cubic-bezier(.33, 0, .3, 1)', fill: 'forwards' }).finished;
+  const tunggu = (ms) => new Promise((ok) => setTimeout(ok, ms));
+  async function adegan() {
+    if (main || !ix.ixar) return; main = true;
+    const akhir = titik(1, -ix.offsetWidth * .62);
+    if (!gerakBoleh) { ix.style.transform = `translate(${akhir[0]}px, ${akhir[1]}px)`; bendera?.classList.add('tancap'); ix.ixar.dasar = 'pegangTiang'; ix.ixar.set('pegangTiang'); main = false; return; }
+    bendera?.classList.remove('tancap'); ix.ixar.dasar = 'penjaga'; ix.ixar.set('penjaga');
+    const a = titik(3), b = titik(2), c = titik(1, -ix.offsetWidth * .2);
+    ix.style.transform = `translate(${a[0]}px, ${a[1]}px)`; ix.classList.add('tampil');
+    await tunggu(500);
+    ix.ixar.set('lompatPanji'); await lompat(a, b, 650); ix.ixar.set('penjaga'); await tunggu(280);
+    ix.ixar.set('lompatPanji'); await lompat(b, c, 700); ix.ixar.set('menang'); await tunggu(500);
+    // nancepin bendera: panji di tangan ilang, tiang di juara 1 naik & kainnya berkibar
+    ix.ixar.set('tonjok'); await tunggu(220); bendera?.classList.add('tancap');
+    await ix.animate([{ transform: `translate(${c[0]}px, ${c[1]}px)` }, { transform: `translate(${akhir[0]}px, ${akhir[1]}px)` }], { duration: 300, fill: 'forwards' }).finished;
+    ix.ixar.dasar = 'pegangTiang'; ix.ixar.set('pegangTiang'); main = false;
+  }
+  new IntersectionObserver((d, o) => { if (d.some((e) => e.isIntersecting)) { o.disconnect(); setTimeout(adegan, 300); } }, { threshold: .35 }).observe(pod);
+  ix.addEventListener('click', () => setTimeout(adegan, 50));
+  addEventListener('resize', () => { if (!main && bendera?.classList.contains('tancap')) { const t = titik(1, -ix.offsetWidth * .62); ix.getAnimations().forEach((x) => x.cancel()); ix.style.transform = `translate(${t[0]}px, ${t[1]}px)`; } });
+})();
 }
 
 // ---------- Command Deck IXAR (#ixar): Filter Tab, Kartu Pose, & Tombol 200 Cuitan ----------

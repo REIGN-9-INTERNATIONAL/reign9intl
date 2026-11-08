@@ -40,6 +40,8 @@
     jalan: P({ mata: 'biasa', gerak: 'jalan' }),
     jalanCepat: P({ rot: 6, mata: 'yakin', gerak: 'jalan-cepat' }),
     baca: P({ kep: 8, lk: [-30, 95], ln: [30, -95], mata: 'sayu' }),
+    lompatPanji: P({ dy: -40, panjang: 1.3, ln: [100, 150], lk: [-100, -120], kk: [-70, 15], kn: [70, -15], mata: 'senang', alat: 'panji-r9' }),
+    pegangTiang: P({ dy: 8, panjang: 1.6, ln: [92, 140], lk: [-62, 40], kk: [-32, -20], kn: [32, 20], mata: 'yakin', gerak: 'kuda' }),
     santai: P({ rot: -70, dx: 340, dy: -195, kep: 28, panjang: 1.2, lk: [-110, -25], ln: [48, -12], kk: [8, 4], kn: [58, -26], mata: 'sayu', gerak: 'napas-tidur' }),
     // ---------- POSE KHUSUS TIAP BAGIAN MENU WEBSITE ----------
     // 1. #rosters: Pro Player fokus push rank / tanding HoK pegang gaming handheld + headset
