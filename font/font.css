@@ -1,11 +1,44 @@
-/* oxanium */
+/* Reign 9 Display (Font Resmi R9) */
+@font-face {
+  font-family: 'Reign9Display';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('Reign9Display-Regular.otf') format('opentype'),
+       url('Reign9Display-Regular.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Reign9Display';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('Reign9Display-Regular.otf') format('opentype'),
+       url('Reign9Display-Regular.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Reign9Display';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('Reign9Display-Regular.otf') format('opentype'),
+       url('Reign9Display-Regular.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Reign9Display';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('Reign9Display-Regular.otf') format('opentype'),
+       url('Reign9Display-Regular.ttf') format('truetype');
+}
+
+/* oxanium (cadangan) */
 @font-face { font-family: 'Oxanium'; font-style: normal; font-weight: 500; font-display: swap; src: url('oxanium-500.woff2') format('woff2'); }
 @font-face { font-family: 'Oxanium'; font-style: normal; font-weight: 600; font-display: swap; src: url('oxanium-500.woff2') format('woff2'); }
 @font-face { font-family: 'Oxanium'; font-style: normal; font-weight: 700; font-display: swap; src: url('oxanium-500.woff2') format('woff2'); }
-/* akhir oxanium */
-/* uncut-sans (OFL, github.com/kaspernordkvist/uncut_sans) */
+
+/* uncut-sans (badan teks) */
 @font-face { font-family: 'Uncut Sans'; font-style: normal; font-weight: 400; font-display: swap; src: url('uncut-sans-400.woff2') format('woff2'); }
 @font-face { font-family: 'Uncut Sans'; font-style: normal; font-weight: 500; font-display: swap; src: url('uncut-sans-500.woff2') format('woff2'); }
 @font-face { font-family: 'Uncut Sans'; font-style: normal; font-weight: 600; font-display: swap; src: url('uncut-sans-600.woff2') format('woff2'); }
 @font-face { font-family: 'Uncut Sans'; font-style: normal; font-weight: 700; font-display: swap; src: url('uncut-sans-700.woff2') format('woff2'); }
-/* akhir uncut-sans */

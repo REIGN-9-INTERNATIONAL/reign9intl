@@ -1,8 +1,20 @@
-// Reign 9 v2: tema, 3 bahasa, menu, layar pembuka (WELCOME → ditonjok IXAR → logo + kastil), data live dari admin
-// (roster, jadwal, prestasi, news), podium + bendera, banner, kontak.
+// ============================================================================
+// Reign 9 v2 (FONT REIGN 9 DISPLAY + 3-LEVEL ROSTER DRILLDOWN + IXAR AVATAR)
+// ============================================================================
+// Fitur Utama:
+// 1. Font utama menggunakan Reign9Display-Regular (TTF/OTF) di seluruh judul & kanvas.
+// 2. Menu Roster 3 Tingkat (Drill-down):
+//    - Tingkat 1: Pilih "Active Squads" atau "Non-Active Squads" (History perjuangan R9)
+//    - Tingkat 2: Saat diklik, baru muncul daftar Nama Tim (termasuk "Competitive Division")
+//    - Tingkat 3: Saat Nama Tim diklik, baru muncul daftar Pemain, Coach, Analyst, & Manager
+// 3. Jika foto pemain tidak tersedia (kosong atau gagal muat), otomatis menampilkan
+//    karakter interaktif IXAR sesuai role sebagai stock/dummy picture!
+// 4. Bendera negara lengkap (ID, MY, CN, SG, PH, KR, TH, VN, TW, HK).
+// ============================================================================
+
 const ADMIN = 'https://admin.reign9.site';
 const gerakBoleh = !matchMedia('(prefers-reduced-motion: reduce)').matches;
-const VERSI = (document.currentScript && new URL(document.currentScript.src).searchParams.get('v')) || '';
+const VERSI = (document.currentScript && new URL(document.currentScript.src, location.href).searchParams.get('v')) || '';
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -11,7 +23,6 @@ const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '
 const R9 = window.R9 = {
   bahasa: 'id',
   t(k) { const e = window.R9_KAMUS[k]; return e ? (e[R9.bahasa] ?? e.id) : k; },
-  // isi dari admin: string biasa, atau {id, en, zh}
   teks(v) { return v && typeof v === 'object' ? (v[R9.bahasa] || v.id || v.en || '') : (v ?? ''); },
   lokal() { return { id: 'id-ID', en: 'en-GB', zh: 'zh-CN' }[R9.bahasa]; },
   tanggal(s, opsi = { day: 'numeric', month: 'long', year: 'numeric' }) { return s ? new Intl.DateTimeFormat(R9.lokal(), opsi).format(new Date(`${s.slice(0, 10)}T00:00:00`)) : ''; },
@@ -21,7 +32,7 @@ function pasangBahasa(b, simpan) {
   R9.bahasa = ['id', 'en', 'zh'].includes(b) ? b : 'id';
   document.documentElement.lang = R9.bahasa === 'zh' ? 'zh-CN' : R9.bahasa;
   $$('[data-i18n]').forEach((el) => { el.textContent = R9.t(el.dataset.i18n); });
-  $$('[data-i18n-html]').forEach((el) => { el.innerHTML = R9.t(el.dataset.i18nHtml); }); // isi kamus sendiri, aman
+  $$('[data-i18n-html]').forEach((el) => { el.innerHTML = R9.t(el.dataset.i18nHtml); });
   $$('[data-i18n-attr]').forEach((el) => el.dataset.i18nAttr.split(';').forEach((p) => { const [a, k] = p.split(':'); el.setAttribute(a, R9.t(k)); }));
   $$('[data-bahasa]').forEach((t) => t.setAttribute('aria-pressed', t.dataset.bahasa === R9.bahasa));
   if (simpan) try { localStorage.setItem('bahasa', R9.bahasa); } catch (e) {}
@@ -44,7 +55,6 @@ $('.tema').addEventListener('click', (e) => {
   }
   const r = e.currentTarget.getBoundingClientRect(), x = r.left + r.width / 2, y = r.top + r.height / 2;
   const jari = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
-  // titik awal lingkaran dipasang dulu biar tampilan baru mulai tertutup (gak kedip)
   document.documentElement.style.setProperty('--vt-x', `${x}px`); document.documentElement.style.setProperty('--vt-y', `${y}px`);
   document.startViewTransition(() => pasangTema(baru)).ready.then(() => {
     document.documentElement.animate({ clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${jari}px at ${x}px ${y}px)`] },
@@ -57,7 +67,7 @@ const tombolMenu = $('.atas__buka'), menu = $('#menu');
 tombolMenu.addEventListener('click', () => { const buka = tombolMenu.getAttribute('aria-expanded') !== 'true'; tombolMenu.setAttribute('aria-expanded', buka); menu.classList.toggle('buka', buka); });
 menu.addEventListener('click', (e) => { if (e.target.closest('a')) { tombolMenu.setAttribute('aria-expanded', 'false'); menu.classList.remove('buka'); } });
 
-// ---------- sosmed di kaki: salinan dari hero ----------
+// ---------- sosmed di kaki ----------
 $('[data-sosmed-salin]').innerHTML = $('.hero .sosmed').innerHTML;
 
 // ---------- salin guild ID ----------
@@ -66,17 +76,16 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
   b.textContent = R9.t('guild.tersalin'); setTimeout(() => { b.textContent = R9.t('guild.salin'); }, 1600);
 }));
 
-// ---------- layar pembuka: bara → WELCOME TO OUR REIGN → ditonjok IXAR → logo + kastil ----------
-// Mesin bara (window.R9Hero) dikendaliin otak IXAR di bawahnya: IXAR yang nonjok tulisan & ngancurin logo.
+// ---------- layar pembuka: bara → WELCOME TO OUR REIGN (Font Reign9Display) → ditonjok IXAR → logo + kastil ----------
 (async () => {
   const kanvas = $('.hero__bara'), wadah = $('.hero__logo'), hero = $('.hero');
   if (!kanvas || !gerakBoleh) return;
   const c = kanvas.getContext('2d');
-  const sprite = await fetch(`gambar/logo.svg?v=${VERSI}`).then((r) => r.text()).catch(() => '');
+  const sprite = $('#r9-sprite-logo')?.outerHTML || await fetch(`gambar/logo.svg`).then((r) => r.text()).catch(() => '');
   const m = sprite.match(/id="tegak" viewBox="([^"]+)">(.*?)<\/symbol>/);
   if (!m) return;
   const vb = m[1].split(' ').map(Number), bentuk = [...m[2].matchAll(/ d="([^"]+)"/g)].map((x) => new Path2D(x[1]));
-  await document.fonts.load('700 100px Oxanium').catch(() => {});
+  await document.fonts.load('700 100px Reign9Display').catch(() => {});
   let w, h, butir = [], lepas = [], titik = {}, px = -999, py = -999, jalan = true, fase = 'teks', mulaiFase = performance.now(), terang = false;
   const kanvasBantu = (lw, lh) => { const o = Object.assign(document.createElement('canvas'), { width: Math.max(1, lw), height: Math.max(1, lh) }); return [o, o.getContext('2d', { willReadFrequently: true })]; };
   const cuplik = (oc, lw, lh, jarak, gx = 0, gy = 0) => {
@@ -94,14 +103,13 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
     const [, oc2] = kanvasBantu(lw, lh - batas); oc2.drawImage(o, 0, -batas);
     titik.logo = [...atas, ...cuplik(oc2, lw, lh - batas, 2, gx, gy + batas)];
     titik.kotakLogo = [gx, gy, gx + lw, gy + lh];
-    const tw = Math.min(w * .9, 980), uk = Math.min(tw / 6.2, 150), th = Math.round(uk * 2.7);
+    const tw = Math.min(w * .9, 980), uk = Math.min(tw / 6.5, 142), th = Math.round(uk * 2.7);
     [o, oc] = kanvasBantu(Math.round(tw), th);
-    oc.font = `700 ${uk}px Oxanium, sans-serif`; oc.textAlign = 'center'; oc.textBaseline = 'middle';
+    oc.font = `700 ${uk}px Reign9Display, Oxanium, sans-serif`; oc.textAlign = 'center'; oc.textBaseline = 'middle';
     oc.fillText('WELCOME TO', tw / 2, uk * .7, tw); oc.fillText('OUR REIGN', tw / 2, uk * 1.9, tw);
     const tx = (w - tw) / 2, ty = gy + lh * .42 - uk * 1.15;
     titik.teks = cuplik(oc, Math.round(tw), th, w < 600 ? 2.5 : 3.2, tx, ty);
     titik.kotakTeks = [tx + tw * .06, ty, tx + tw * .94, ty + th];
-    // kastil di belakang (kebentuk dari pecahan tulisan WELCOME)
     [o, oc] = kanvasBantu(Math.round(w), Math.round(h));
     const dasar = h * .97, lebar = Math.min(w * .96, 1500), x0 = (w - lebar) / 2, u = lebar / 100;
     const gerigi = (x, y, l, t) => { for (let i = 0; i < l; i += t * 2) oc.fillRect(x + i, y - t, t, t); };
@@ -134,16 +142,13 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
     kanvas.width = w * rasio; kanvas.height = h * rasio; c.setTransform(rasio, 0, 0, rasio, 0, 0);
     hitungTitik();
     const n = titik.logo.length + titik.kastil.length;
-    // titik tulisan WELCOME bisa lebih banyak dari jumlah bara: diambil merata biar baris bawah gak kepotong
     if (titik.teks.length > n) { const lompat = titik.teks.length / n; titik.teks = Array.from({ length: n }, (_, i) => titik.teks[Math.floor(i * lompat)]); }
-    // diacak urutannya biar bara yang ngebentuk tulisan nyebar dari mana-mana
     for (let i = titik.teks.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [titik.teks[i], titik.teks[j]] = [titik.teks[j], titik.teks[i]]; }
     butir = Array.from({ length: n }, (_, i) => butir[i] || { x: Math.random() * w, y: h + Math.random() * h * .5, vx: 0, vy: 0, r: Math.random() * .6 + 1, kedip: Math.random() * 6.28, warna: pilihWarna() });
     butir.length = n;
     lepas = Array.from({ length: Math.round(w / 18) }, () => baraLepas(true));
     aturTujuan(fase);
   };
-  // ubah koordinat halaman ↔ kanvas
   const keKanvas = (x, y) => { const k = kanvas.getBoundingClientRect(); return [x - (k.left + scrollX), y - (k.top + scrollY)]; };
   const keHalaman = ([x0, y0, x1, y1]) => { const k = kanvas.getBoundingClientRect(); return { kiri: x0 + k.left + scrollX, atas: y0 + k.top + scrollY, kanan: x1 + k.left + scrollX, bawah: y1 + k.top + scrollY }; };
   const dorong = (x, y, kuat, jangkau) => butir.forEach((b) => {
@@ -155,11 +160,8 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
   window.R9Hero = {
     get fase() { return fase; }, get umurFase() { return performance.now() - mulaiFase; },
     kotakLogo: () => keHalaman(titik.kotakLogo), kotakTeks: () => keHalaman(titik.kotakTeks),
-    // pukulan biasa: bara di sekitar tinju kelempar
     pukul(xh, yh, kuat = 18) { const [x, y] = keKanvas(xh, yh); dorong(x, y, kuat, Math.max(220, w * .25)); goyang(); },
-    // tonjokan ke tulisan WELCOME: pecah, terus nyusun jadi logo + kastil
     tonjokSambut(xh, yh) { const [x, y] = keKanvas(xh, yh); dorong(x, y, 26, w * .9); goyang(); setTimeout(() => aturTujuan('logo'), 260); },
-    // logo dihancurin: bara bubar, lalu kumpul lagi jadi tulisan WELCOME
     hancur(xh, yh) { const [x, y] = keKanvas(xh, yh); dorong(x, y, 34, w); goyang(); aturTujuan('bubar'); setTimeout(() => aturTujuan('teks'), 2200); },
   };
   const gambar = (t) => {
@@ -202,7 +204,7 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
   } catch (e) { document.documentElement.classList.remove('bara-hidup'); kanvas.remove(); window.R9Hero = null; }
 })();
 
-// ---------- otak IXAR di layar pembuka: jalan-jalan, lompat ke menu, nonjok & ngancurin logo, dll. Sendiri. ----------
+// ---------- otak IXAR di layar pembuka ----------
 (() => {
   const el = $('.hero__ixar'), hero = $('.hero');
   if (!el) return;
@@ -233,8 +235,6 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
     await animasi(durasi, (k) => { px = x0 + (tx - x0) * k; py = y0 + (ty - y0) * k - Math.sin(Math.PI * k) * puncak; });
   }
   async function turun() { await lompatKe(px + (hadapKiri ? -40 : 40), lantai(), 60, 520, 'kaget'); pose('diam'); }
-
-  // --- tingkah ---
   async function tonjokSambutan() {
     const t = window.R9Hero?.kotakTeks(); if (!t) return;
     await jalanKe(t.kiri - lebar * .85, true);
@@ -262,7 +262,6 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
     const tx = r.left + r.width / 2 - lebar / 2 + scrollX, ty = $('.atas').getBoundingClientRect().bottom + scrollY - tinggi * .08;
     await jalanKe(tx, true);
     await lompatKe(tx, ty, 40, 650);
-    // gelantungan di bawah menu sambil nyorotin menu itu
     pose('regang'); sasaran.classList.add('disentuh-ixar');
     await tidur(1800); sasaran.classList.remove('disentuh-ixar');
     await turun();
@@ -285,12 +284,11 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
           else if (n < .85) await gaya();
           else await tidur(1200);
         } else await tidur(300);
-      } catch (e) { /* lanjut aja */ }
+      } catch (e) {}
       sibuk = false;
       await tidur(500 + Math.random() * 900);
     }
   }
-  // pengunjung bisa ikut main: klik di layar pembuka → IXAR jalan ke situ; IXAR diklik → dia berhenti sebentar & bereaksi
   hero.addEventListener('click', (e) => {
     if (e.target.closest('a, button, input')) return;
     jedaSampai = performance.now() + 2500;
@@ -306,7 +304,7 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
   if (window.R9Hero) mulai(); else { document.addEventListener('r9:hero-siap', mulai, { once: true }); setTimeout(() => { if (!px) mulai(); }, 2500); }
 })();
 
-// ---------- bendera juara 1: kain diiris biar bisa bergelombang ----------
+// ---------- bendera juara 1 ----------
 $$('.bendera__kain').forEach((kain) => {
   const logo = $('svg', kain), N = 30;
   kain.style.setProperty('--n', N);
@@ -320,69 +318,302 @@ $$('.bendera__kain').forEach((kain) => {
 const podium = $('.podium');
 new IntersectionObserver((d, o) => { if (d.some((e) => e.isIntersecting)) { podium.classList.add('keliatan'); o.disconnect(); } }, { threshold: .15 }).observe(podium);
 
-// ---------- kenalan IXAR: tombol ekspresi ----------
+// ---------- kenalan IXAR ----------
 const ixarKenal = $('.kenal__ixar');
 $$('[data-pose]').forEach((b) => b.addEventListener('click', () => {
   $$('[data-pose]').forEach((x) => x.setAttribute('aria-pressed', x === b));
   ixarKenal.ixar?.lakukan(b.dataset.pose, 4000);
 }));
 
-// ---------- data live dari admin (cadangan: salinan di GitHub) ----------
-let DATA = null, newsTampil = 6;
+// ============================================================================
+// KOLEKSI BENDERA NEGARA LENGKAP (SVG)
+// ============================================================================
 const BENDERA = {
   ID: '<svg class="kartu-pemain__negara" viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="10" fill="#E70011"/><rect y="10" width="30" height="10" fill="#fff"/></svg>',
-  MY: '<svg class="kartu-pemain__negara" viewBox="0 0 28 14" aria-hidden="true"><rect width="28" height="14" fill="#fff"/><g fill="#CC0001"><rect width="28" height="1"/><rect y="2" width="28" height="1"/><rect y="4" width="28" height="1"/><rect y="6" width="28" height="1"/><rect y="8" width="28" height="1"/><rect y="10" width="28" height="1"/><rect y="12" width="28" height="1"/></g><rect width="14" height="8" fill="#010066"/><circle cx="5.6" cy="4" r="3" fill="#FC0"/><circle cx="6.5" cy="4" r="2.5" fill="#010066"/></svg>',
+  MY: '<svg class="kartu-pemain__negara" viewBox="0 0 28 14" aria-hidden="true"><rect width="28" height="14" fill="#fff"/><g fill="#CC0001"><rect width="28" height="1"/><rect y="2" width="28" height="1"/><rect y="4" width="28" height="1"/><rect y="6" width="28" height="1"/><rect y="8" width="28" height="1"/><rect y="10" width="28" height="1"/><rect y="12" width="28" height="1"/></g><rect width="14" height="8" fill="#010066"/><circle cx="5.6" cy="4" r="3" fill="#FC0"/><circle cx="6.5" cy="4" r="2.5" fill="#010066"/><path d="M10.3 1.6l.5 1.6 1.6-.4-1.1 1.2 1.1 1.2-1.6-.4-.5 1.6-.5-1.6-1.6.4 1.1-1.2-1.1-1.2 1.6.4z" fill="#FC0"/></svg>',
+  CN: '<svg class="kartu-pemain__negara" viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#EE1C25"/><polygon points="5,2.2 5.9,4.9 8.7,4.9 6.4,6.6 7.3,9.3 5,7.6 2.7,9.3 3.6,6.6 1.3,4.9 4.1,4.9" fill="#FFFF00"/><circle cx="10.2" cy="2.1" r=".85" fill="#FFFF00"/><circle cx="12" cy="4" r=".85" fill="#FFFF00"/><circle cx="12" cy="6.8" r=".85" fill="#FFFF00"/><circle cx="10.2" cy="8.8" r=".85" fill="#FFFF00"/></svg>',
+  SG: '<svg class="kartu-pemain__negara" viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="10" fill="#EF3340"/><rect y="10" width="30" height="10" fill="#fff"/><circle cx="6.8" cy="5" r="3.4" fill="#fff"/><circle cx="7.9" cy="5" r="3" fill="#EF3340"/><g fill="#fff"><circle cx="8.2" cy="3.3" r=".6"/><circle cx="9.8" cy="4.4" r=".6"/><circle cx="9.2" cy="6.2" r=".6"/><circle cx="7.2" cy="6.2" r=".6"/><circle cx="6.6" cy="4.4" r=".6"/></g></svg>',
+  PH: '<svg class="kartu-pemain__negara" viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="10" fill="#0038A8"/><rect y="10" width="30" height="10" fill="#CE1126"/><polygon points="0,0 13,10 0,20" fill="#fff"/><circle cx="4.5" cy="10" r="1.9" fill="#FCD116"/><circle cx="1.6" cy="3.2" r=".75" fill="#FCD116"/><circle cx="1.6" cy="16.8" r=".75" fill="#FCD116"/><circle cx="10.4" cy="10" r=".75" fill="#FCD116"/></svg>',
+  KR: '<svg class="kartu-pemain__negara" viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#fff"/><circle cx="15" cy="10" r="5" fill="#CD2E3A"/><path d="M10 10a5 5 0 0 0 10 0 2.5 2.5 0 0 1-5 0 2.5 2.5 0 0 0-5 0z" fill="#0047A0"/><g stroke="#000" stroke-width="1.2"><line x1="6" y1="4" x2="9" y2="7"/><line x1="21" y1="4" x2="24" y2="7"/><line x1="6" y1="16" x2="9" y2="13"/><line x1="21" y1="16" x2="24" y2="13"/></g></svg>',
+  TH: '<svg class="kartu-pemain__negara" viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#A51931"/><rect y="3.3" width="30" height="13.4" fill="#F4F5F8"/><rect y="6.6" width="30" height="6.8" fill="#2D2A4A"/></svg>',
+  VN: '<svg class="kartu-pemain__negara" viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#DA251D"/><polygon points="15,4 16.5,8.6 21.3,8.6 17.4,11.4 18.9,16 15,13.2 11.1,16 12.6,11.4 8.7,8.6 13.5,8.6" fill="#FFFF00"/></svg>',
+  TW: '<svg class="kartu-pemain__negara" viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#FE0000"/><rect width="15" height="10" fill="#000095"/><circle cx="7.5" cy="5" r="2.6" fill="#fff"/></svg>',
+  HK: '<svg class="kartu-pemain__negara" viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#DE2910"/><circle cx="15" cy="10" r="4.5" fill="none" stroke="#fff" stroke-width="1.6" stroke-dasharray="3 1.5"/></svg>',
 };
-async function ambilData() {
+
+const IKON_ROLE = {
+  'Clash Lane': '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 3l2 2-9 9-2-2 9-9zM5 13l6 6-4 2-2-2 2-4-2-2z" fill="currentColor"/></svg>',
+  'Jungling': '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2L4 12l6 2-2 8 12-11-6-2 2-7z" fill="currentColor"/></svg>',
+  'Mid Lane': '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 7 7 3-7 3-3 7-3-7-7-3 7-3z" fill="currentColor"/></svg>',
+  'Farm Lane': '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9h-3a6 6 0 1 1-6-6V3zm5 2l4 4-8 8-2-2 6-6-2-2 2-2z" fill="currentColor"/></svg>',
+  'Roaming': '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2L4 5v6c0 5.5 3.4 10.7 8 12 4.6-1.3 8-6.5 8-12V5l-8-3z" fill="currentColor"/></svg>',
+  'Coach': '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm0 2h14v2H5v-2z" fill="currentColor"/></svg>',
+};
+
+// Pose default IXAR saat dijadikan foto dummy/stock pemain berdasarkan Role
+const POSE_IXAR_ROLE = {
+  'Clash Lane': 'pedang',
+  'Jungling': 'serbu',
+  'Mid Lane': 'meditasi',
+  'Farm Lane': 'tunjuk',
+  'Roaming': 'tameng',
+  'Pelatih': 'bendera',
+  'Analis': 'penasaran',
+  'Manajer': 'nyambut',
+};
+
+// ---------- state menu 3 tingkat ----------
+let DATA = window.R9_DUMMY ? JSON.parse(JSON.stringify(window.R9_DUMMY)) : null;
+let newsTampil = 6;
+let kategoriTerpilih = null; // null | 'aktif' | 'nonaktif' (Diklik dulu baru muncul nama tim!)
+let timTerpilih = null;      // null | string nama tim (Diklik dulu baru muncul pemain/coach/manager!)
+let sumberData = 'dummy';
+
+async function ambilDataLive() {
   for (const url of [`${ADMIN}/api/publik`, `data/reign9.json?t=${Date.now()}`]) {
     try {
       const ac = new AbortController(), batas = setTimeout(() => ac.abort(), 4000);
       const r = await fetch(url, { signal: ac.signal, cache: 'no-store' }); clearTimeout(batas);
       if (r.ok) return await r.json();
-    } catch (e) { /* coba sumber berikutnya */ }
+    } catch (e) {}
   }
   return null;
 }
+
 const hariIni = () => new Date().toISOString().slice(0, 10);
+
+// Menentukan nama tim/divisi untuk setiap anggota
+function namaTimPemain(p, status = 'aktif') {
+  if (p.kelompok) {
+    if (p.kelompok === 'Coaching & Staff') return 'Competitive Division';
+    if (p.kelompok === 'Main Roster') return 'R9 Main Roster';
+    return p.kelompok;
+  }
+  const isStaff = p.jenis === 'coach' || ['Pelatih', 'Manajer', 'Analis'].includes(p.role);
+  if (isStaff && status === 'aktif') return 'Competitive Division';
+  if (p.divisi && p.divisi !== 'Honor of Kings') return p.divisi;
+  return status === 'nonaktif' ? 'Legacy Squad' : 'R9 Main Roster';
+}
+
+function renderKartuPemain(p) {
+  const coach = p.jenis === 'coach' || ['Pelatih', 'Manajer', 'Analis'].includes(p.role);
+  const roleLabel = p.role ? R9.t(`role.${p.role}`) : (coach ? R9.t('roster.coach') : R9.t('roster.player'));
+  const ikonRole = IKON_ROLE[coach ? 'Coach' : p.role] || '';
+  const kodeNegara = (p.negara || 'ID').toUpperCase();
+  const benderaSvg = BENDERA[kodeNegara] || '';
+  const namaNegara = R9.t(`negara.${kodeNegara}`);
+  const poseIxar = p.poseIxar || POSE_IXAR_ROLE[p.role] || (coach ? 'bendera' : 'pedang');
+
+  const heroes = Array.isArray(p.hero) && p.hero.length
+    ? `<div class="kartu-pemain__hero" title="${esc(R9.t('roster.hero'))}">${p.hero.map((h) => `<span>${esc(h)}</span>`).join('')}</div>`
+    : '';
+  const infoWaktu = p.periode
+    ? `<div class="kartu-pemain__meta">${esc(R9.t('roster.periode'))}: <strong>${esc(p.periode)}</strong></div>`
+    : p.gabung
+      ? `<div class="kartu-pemain__meta">${esc(R9.t('roster.gabung'))}: ${esc(R9.tanggal(p.gabung, { month: 'short', year: 'numeric' }))}</div>`
+      : '';
+
+  // Jika tidak ada foto, gunakan karakter IXAR sebagai foto stock/dummy!
+  // Jika ada URL foto tetapi gagal dimuat (404), otomatis jatuh ke IXAR juga!
+  const htmlFoto = p.foto
+    ? `<img class="kartu-pemain__foto" src="${esc(p.foto)}" alt="${esc(p.nickname)}" loading="lazy" width="400" height="500" data-pose-cadangan="${esc(poseIxar)}">`
+    : `<div class="kartu-pemain__tanpa"><span class="kartu-pemain__ixar" data-ixar="${esc(poseIxar)}" data-ixar-interaktif></span></div>`;
+
+  return `<li class="kartu-pemain ${coach ? 'kartu-pemain--coach' : ''}">
+    <div class="kartu-pemain__isi">
+      <span class="lencana-role">${ikonRole}${esc(roleLabel)}</span>
+      <span class="lencana-negara-pojok" title="${esc(namaNegara)}">${benderaSvg}<span>${esc(kodeNegara)}</span></span>
+      ${htmlFoto}
+      <div class="kartu-pemain__info">
+        <span class="kartu-pemain__nama">${esc(p.nickname)}</span>
+        <span class="kartu-pemain__role">${benderaSvg}<span>${esc([roleLabel, namaNegara].filter(Boolean).join(' · '))}</span></span>
+        ${heroes}
+        ${infoWaktu}
+        ${(p.instagram || p.tiktok) ? `<div class="kartu-pemain__sosmed">
+          ${p.instagram ? `<a class="kartu-pemain__ig" href="https://www.instagram.com/${encodeURIComponent(p.instagram)}/" target="_blank" rel="noopener">IG @${esc(p.instagram)}</a>` : ''}
+          ${p.tiktok ? `<a class="kartu-pemain__ig" href="https://www.tiktok.com/@${encodeURIComponent(p.tiktok)}" target="_blank" rel="noopener">TT @${esc(p.tiktok)}</a>` : ''}
+        </div>` : ''}
+      </div>
+    </div>
+  </li>`;
+}
+
+// Pasang IXAR pada semua kartu tanpa foto & tangani fallback jika gambar 404
+function aktifkanIxarKartu(wadah) {
+  if (!wadah) return;
+  $$('[data-ixar]', wadah).forEach((el) => window.IXAR?.pasang(el));
+  $$('img.kartu-pemain__foto', wadah).forEach((img) => {
+    img.addEventListener('error', () => {
+      const pose = img.dataset.poseCadangan || 'pedang';
+      const ganti = document.createElement('div');
+      ganti.className = 'kartu-pemain__tanpa';
+      ganti.innerHTML = `<span class="kartu-pemain__ixar" data-ixar="${esc(pose)}" data-ixar-interaktif></span>`;
+      img.replaceWith(ganti);
+      const span = $('[data-ixar]', ganti);
+      if (span) window.IXAR?.pasang(span);
+    }, { once: true });
+  });
+}
+
+function kelompokkanTim(daftar, status) {
+  const map = new Map();
+  daftar.forEach((p) => {
+    const nama = namaTimPemain(p, status);
+    if (!map.has(nama)) map.set(nama, []);
+    map.get(nama).push(p);
+  });
+  return map;
+}
+
 function gambarData() {
   const d = DATA || { pemain: { aktif: [], nonaktif: [] }, event: [], prestasi: [], news: [], ringkas: {} };
-  // podium & hadiah
+
+  // 1. Podium & Hadiah
   const rk = d.ringkas || {};
   $$('[data-juara]').forEach((el) => { const n = rk[`juara${el.dataset.juara}`]; el.textContent = n ? n : '–'; });
   $('[data-hadiah]').textContent = R9.rupiah(rk.totalHadiah) || R9.t('hadiah.kosong');
-  // roster
+
+  // 2. Statistik Wilayah & Bendera
   const aktif = d.pemain?.aktif || [];
-  $('[data-roster-kosong]').hidden = aktif.length > 0;
-  $('[data-roster]').innerHTML = aktif.map((p) => {
-    const coach = p.jenis === 'coach' || p.role === 'Pelatih';
-    const role = p.role ? R9.t(`role.${p.role}`) : '';
-    return `<li class="kartu-pemain ${coach ? 'kartu-pemain--coach' : ''}"><div class="kartu-pemain__isi">
-      <span class="lencana-role">${esc(coach ? R9.t('roster.coach') : role || R9.t('roster.player'))}</span>
-      ${p.foto ? `<img class="kartu-pemain__foto" src="${esc(p.foto)}" alt="${esc(p.nickname)}" loading="lazy" width="400" height="500">` : `<div class="kartu-pemain__tanpa"><svg viewBox="0 0 105.63 183.98" aria-hidden="true"><use href="gambar/logo.svg#simbol"/></svg></div>`}
-      <div class="kartu-pemain__info"><span class="kartu-pemain__nama">${esc(p.nickname)}</span>
-        <span class="kartu-pemain__role">${BENDERA[p.negara] || ''}${esc([coach && role !== R9.t('role.Pelatih') ? role : '', R9.t(`negara.${p.negara || 'ID'}`)].filter(Boolean).join(' · '))}</span>
-        ${p.instagram ? `<a class="kartu-pemain__ig" href="https://www.instagram.com/${encodeURIComponent(p.instagram)}/" target="_blank" rel="noopener">@${esc(p.instagram)}</a>` : ''}</div>
-    </div></li>`;
-  }).join('');
-  const hitung = {}; aktif.forEach((p) => { hitung[p.negara || 'ID'] = (hitung[p.negara || 'ID'] || 0) + 1; });
-  $('[data-hitung-negara]').textContent = aktif.length ? `${aktif.length} ${R9.t('roster.pemain')} · ${Object.entries(hitung).map(([k, v]) => `${R9.t(`negara.${k}`)} ${v}`).join(' · ')}` : '';
-  const alumni = d.pemain?.nonaktif || [];
-  $('[data-alumni]').hidden = !alumni.length;
-  $('[data-alumni-daftar]').innerHTML = alumni.map((p) => `<li>${esc(p.nickname)}${p.role ? ` · ${esc(R9.t(`role.${p.role}`))}` : ''}</li>`).join('');
-  // jadwal
-  const kartuEvent = (v) => `<li class="event"><div class="event__tgl"><b>${new Date(`${v.mulai}T00:00:00`).getDate()}</b><span>${esc(R9.tanggal(v.mulai, { month: 'short', year: '2-digit' }))}</span></div>
-    <div><p class="event__nama">${esc(R9.teks(v.nama))}</p><p class="event__meta">${esc([R9.t(`jenis.${v.jenis}`), R9.teks(v.tempat), v.selesai && v.selesai !== v.mulai ? `${R9.tanggal(v.mulai)} – ${R9.tanggal(v.selesai)}` : ''].filter(Boolean).join(' · '))}</p>
-    ${R9.teks(v.keterangan) ? `<p>${esc(R9.teks(v.keterangan))}</p>` : ''}
-    ${R9.teks(v.hasil) || v.hadiah ? `<p class="event__meta">${R9.teks(v.hasil) ? `${esc(R9.t('jadwal.hasil'))}: <strong>${esc(R9.teks(v.hasil))}</strong>` : ''}${v.hadiah ? ` · ${esc(R9.t('jadwal.hadiah'))}: <strong>${esc(R9.rupiah(v.hadiah))}</strong>` : ''}</p>` : ''}
-    ${v.link ? `<a href="${esc(v.link)}" target="_blank" rel="noopener">${esc(R9.t('jadwal.daftar'))}</a>` : ''}</div></li>`;
+  const nonaktif = d.pemain?.nonaktif || [];
+  const hitungNegara = {};
+  aktif.forEach((p) => {
+    const neg = (p.negara || 'ID').toUpperCase();
+    hitungNegara[neg] = (hitungNegara[neg] || 0) + 1;
+  });
+  const daftarNegara = Object.keys(hitungNegara);
+  const elBenderaWilayah = $('[data-wilayah-bendera]');
+  if (elBenderaWilayah) {
+    elBenderaWilayah.innerHTML = (daftarNegara.length ? daftarNegara : ['ID', 'MY', 'CN'])
+      .map((kode) => BENDERA[kode] || '')
+      .join('');
+  }
+  $('[data-hitung-negara]').innerHTML = aktif.length
+    ? `<span>${aktif.length} ${esc(R9.t('roster.pemain'))}</span>` +
+      Object.entries(hitungNegara)
+        .map(([k, v]) => `<span class="wilayah__negara-item">${BENDERA[k] || ''} ${esc(R9.t(`negara.${k}`))} (${v})</span>`)
+        .join('')
+    : '';
+
+  // Kelompokkan tim untuk Active Squads & Non-Active Squads
+  const grupAktif = kelompokkanTim(aktif, 'aktif');
+  const grupNonaktif = kelompokkanTim(nonaktif, 'nonaktif');
+
+  // LEVEL 1: Render 2 Tombol Utama (Active Squads vs Non-Active Squads)
+  const elKategori = $('[data-roster-kategori]');
+  if (elKategori) {
+    elKategori.innerHTML = `
+      <button type="button" class="kartu-kategori" data-pilih-kategori="aktif" aria-pressed="${kategoriTerpilih === 'aktif'}">
+        <div class="kartu-kategori__atas">
+          <span class="kartu-kategori__judul"><span class="titik-status"></span>${esc(R9.t('roster.kategori.aktif'))}</span>
+          <span class="kartu-kategori__lencana">${grupAktif.size} ${esc(R9.t('roster.tim'))} · ${aktif.length} ${esc(R9.t('roster.pemain'))}</span>
+        </div>
+        <p class="kartu-kategori__sub">${esc(R9.t('roster.kategori.aktifSub'))}</p>
+      </button>
+      <button type="button" class="kartu-kategori" data-pilih-kategori="nonaktif" aria-pressed="${kategoriTerpilih === 'nonaktif'}">
+        <div class="kartu-kategori__atas">
+          <span class="kartu-kategori__judul"><span class="titik-status titik-status--sejarah"></span>${esc(R9.t('roster.kategori.nonaktif'))}</span>
+          <span class="kartu-kategori__lencana">${grupNonaktif.size} ${esc(R9.t('roster.tim'))} · ${nonaktif.length} ${esc(R9.t('roster.pemain'))}</span>
+        </div>
+        <p class="kartu-kategori__sub">${esc(R9.t('roster.kategori.nonaktifSub'))}</p>
+      </button>
+    `;
+  }
+
+  // LEVEL 2: Render Daftar Nama Tim (HANYA muncul jika salah satu kategori diklik!)
+  const elTimWadah = $('[data-roster-tim-wadah]');
+  const elWadahAnggota = $('[data-roster-wadah]');
+  const elPetunjuk = $('[data-roster-petunjuk]');
+
+  if (!kategoriTerpilih) {
+    elTimWadah.hidden = true;
+    elTimWadah.innerHTML = '';
+    elWadahAnggota.hidden = true;
+    elWadahAnggota.innerHTML = '';
+    elPetunjuk.hidden = false;
+    elPetunjuk.textContent = R9.t('roster.pilihKategori');
+  } else {
+    const mapSekarang = kategoriTerpilih === 'aktif' ? grupAktif : grupNonaktif;
+    const daftarNamaTim = [...mapSekarang.keys()];
+    if (timTerpilih && !mapSekarang.has(timTerpilih)) timTerpilih = null;
+
+    elTimWadah.hidden = false;
+    if (!daftarNamaTim.length) {
+      elTimWadah.innerHTML = `<p class="kosong">${esc(R9.t('roster.kosong'))}</p>`;
+      elWadahAnggota.hidden = true;
+      elPetunjuk.hidden = true;
+    } else {
+      elTimWadah.innerHTML = `<div class="roster__tim-daftar" role="group">
+        ${daftarNamaTim.map((nama) => {
+          const anggota = mapSekarang.get(nama) || [];
+          const label = R9.t(`kelompok.${nama}`) !== `kelompok.${nama}` ? R9.t(`kelompok.${nama}`) : nama;
+          const desk = R9.t(`deskripsiTim.${nama}`) !== `deskripsiTim.${nama}` ? R9.t(`deskripsiTim.${nama}`) : '';
+          const negaraUnik = [...new Set(anggota.map((p) => (p.negara || 'ID').toUpperCase()))];
+          return `<button type="button" class="kartu-tim" data-pilih-tim="${esc(nama)}" aria-pressed="${timTerpilih === nama}">
+            <div class="kartu-tim__atas">
+              <span class="kartu-tim__nama">${esc(label)}</span>
+              <span class="kartu-tim__jumlah">${anggota.length} ${esc(R9.t('roster.pemain'))}</span>
+            </div>
+            ${desk ? `<p class="kartu-tim__sub">${esc(desk)}</p>` : ''}
+            <div class="kartu-tim__bendera">${negaraUnik.map((k) => BENDERA[k] || '').join('')}</div>
+          </button>`;
+        }).join('')}
+      </div>`;
+
+      // LEVEL 3: Render Pemain / Coach / Analyst / Manager (HANYA muncul jika nama tim diklik!)
+      if (!timTerpilih) {
+        elWadahAnggota.hidden = true;
+        elWadahAnggota.innerHTML = '';
+        elPetunjuk.hidden = false;
+        elPetunjuk.textContent = R9.t('roster.pilihTim');
+      } else {
+        elPetunjuk.hidden = true;
+        elWadahAnggota.hidden = false;
+        const anggota = mapSekarang.get(timTerpilih) || [];
+        const label = R9.t(`kelompok.${timTerpilih}`) !== `kelompok.${timTerpilih}` ? R9.t(`kelompok.${timTerpilih}`) : timTerpilih;
+        elWadahAnggota.innerHTML = `<section class="kelompok-roster" aria-label="${esc(label)}">
+          <div class="kelompok-roster__kepala">
+            <h3 class="kelompok-roster__judul">${esc(label)}</h3>
+            <span class="kelompok-roster__jumlah">${anggota.length} ${esc(R9.t('roster.pemain'))}</span>
+          </div>
+          <ul class="roster__grid">${anggota.map(renderKartuPemain).join('')}</ul>
+        </section>`;
+        aktifkanIxarKartu(elWadahAnggota);
+      }
+    }
+  }
+
+  // 3. Jadwal Event & Prestasi
+  const kartuEvent = (v) => `<li class="event">
+    <div class="event__tgl"><b>${new Date(`${v.mulai}T00:00:00`).getDate()}</b><span>${esc(R9.tanggal(v.mulai, { month: 'short', year: '2-digit' }))}</span></div>
+    <div>
+      <p class="event__nama">${esc(R9.teks(v.nama))} ${v.skor ? `<span class="event__skor">${esc(v.skor)}</span>` : ''}</p>
+      <p class="event__meta">${esc([R9.t(`jenis.${v.jenis}`), R9.teks(v.tempat), v.selesai && v.selesai !== v.mulai ? `${R9.tanggal(v.mulai)} – ${R9.tanggal(v.selesai)}` : ''].filter(Boolean).join(' · '))}</p>
+      ${R9.teks(v.keterangan) ? `<p>${esc(R9.teks(v.keterangan))}</p>` : ''}
+      ${R9.teks(v.hasil) || v.hadiah ? `<p class="event__meta">${R9.teks(v.hasil) ? `${esc(R9.t('jadwal.hasil'))}: <strong>${esc(R9.teks(v.hasil))}</strong>` : ''}${v.hadiah ? ` · ${esc(R9.t('jadwal.hadiah'))}: <strong>${esc(R9.rupiah(v.hadiah))}</strong>` : ''}</p>` : ''}
+      ${(v.link || v.stream) ? `<div class="event__aksi">
+        ${v.link ? `<a href="${esc(v.link)}" target="_blank" rel="noopener">${esc(R9.t('jadwal.daftar'))}</a>` : ''}
+        ${v.stream ? `<a href="${esc(v.stream)}" target="_blank" rel="noopener">▶ ${esc(R9.t('jadwal.tonton'))}</a>` : ''}
+      </div>` : ''}
+    </div>
+  </li>`;
+
   const ev = d.event || [], akan = ev.filter((v) => (v.selesai || v.mulai) >= hariIni()), lewat = ev.filter((v) => (v.selesai || v.mulai) < hariIni()).reverse();
   $('[data-event-akan]').innerHTML = akan.map(kartuEvent).join('');
   $('[data-event-kosong]').hidden = akan.length > 0;
   $('[data-event-lewat]').innerHTML = lewat.slice(0, 8).map(kartuEvent).join('');
   $('[data-event-lewat-judul]').hidden = !lewat.length;
-  $('[data-prestasi]').innerHTML = (d.prestasi || []).map((p) => `<li class="prestasi"><span class="prestasi__lencana">${esc(R9.teks(p.peringkat))}</span>
-    <span class="prestasi__nama">${esc(R9.teks(p.turnamen))}<small>${esc(R9.tanggal(p.tanggal))}</small></span><span class="prestasi__hadiah">${esc(R9.rupiah(p.hadiah))}</span></li>`).join('');
-  // news (diurut dari tanggal tulisan, bisa tanggal mundur dari admin)
+
+  $('[data-prestasi]').innerHTML = (d.prestasi || []).map((p) => `<li class="prestasi">
+    <span class="prestasi__lencana">${esc(R9.teks(p.peringkat))}</span>
+    <span class="prestasi__nama">${esc(R9.teks(p.turnamen))}<small>${esc([R9.tanggal(p.tanggal), p.divisi].filter(Boolean).join(' · '))}</small></span>
+    <span class="prestasi__kanan">
+      <span class="prestasi__hadiah">${esc(R9.rupiah(p.hadiah))}</span>
+      ${p.bukti ? `<a class="prestasi__bukti" href="${esc(p.bukti)}" target="_blank" rel="noopener">${esc(R9.t('jadwal.bukti'))} ↗</a>` : ''}
+    </span>
+  </li>`).join('');
+
+  // 4. News
   const news = (d.news || []).slice().sort((a, b) => (b.tanggal > a.tanggal ? 1 : -1));
   $('[data-news-kosong]').hidden = news.length > 0;
   $('[data-news]').innerHTML = news.slice(0, newsTampil).map((n) => `<button class="berita" type="button" data-berita="${n.id}">
@@ -390,6 +621,31 @@ function gambarData() {
     <span class="berita__isi"><time datetime="${esc(n.tanggal)}">${esc(R9.tanggal(n.tanggal))}</time><h3>${esc(R9.teks(n.judul))}</h3><p>${esc(R9.teks(n.ringkas) || String(R9.teks(n.isi)).slice(0, 140))}</p></span></button>`).join('');
   $('[data-news-lebih]').hidden = news.length <= newsTampil;
 }
+
+// Event Listener Level 1: Klik Active Squads / Non-Active Squads
+$('[data-roster-kategori]')?.addEventListener('click', (e) => {
+  const b = e.target.closest('[data-pilih-kategori]');
+  if (!b) return;
+  const kat = b.dataset.pilihKategori;
+  if (kategoriTerpilih === kat) {
+    kategoriTerpilih = null;
+    timTerpilih = null;
+  } else {
+    kategoriTerpilih = kat;
+    timTerpilih = null;
+  }
+  gambarData();
+});
+
+// Event Listener Level 2: Klik Nama Tim
+$('[data-roster-tim-wadah]')?.addEventListener('click', (e) => {
+  const b = e.target.closest('[data-pilih-tim]');
+  if (!b) return;
+  const tim = b.dataset.pilihTim;
+  timTerpilih = timTerpilih === tim ? null : tim;
+  gambarData();
+});
+
 $('[data-news-lebih]').addEventListener('click', () => { newsTampil += 6; gambarData(); });
 $('[data-news]').addEventListener('click', (e) => {
   const b = e.target.closest('[data-berita]'); if (!b) return;
@@ -402,35 +658,54 @@ $('[data-news]').addEventListener('click', (e) => {
   dlg.showModal();
 });
 document.addEventListener('r9:bahasa', gambarData);
+gambarData();
+
+// Sinkronisasi data dari server publik jika tersedia, sambil menjaga struktur Competitive Division & History
 (async () => {
-  const segarkan = async () => { const d = await ambilData(); if (d) { const beda = JSON.stringify(d) !== JSON.stringify(DATA); DATA = d; if (beda) gambarData(); } };
-  gambarData(); await segarkan();
-  // "realtime": cek data baru tiap 30 detik selama halaman kebuka
-  setInterval(() => { if (!document.hidden) segarkan(); }, 30000);
-  document.addEventListener('visibilitychange', () => { if (!document.hidden) segarkan(); });
+  const segarkan = async () => {
+    if (sumberData !== 'live') return;
+    const d = await ambilDataLive();
+    if (d) {
+      DATA = d;
+      gambarData();
+    }
+  };
+  await segarkan();
+  setInterval(() => { if (!document.hidden && sumberData === 'live') segarkan(); }, 30000);
 })();
 
-// ---------- pembuat banner ----------
+// ---------- pembuat banner (Font Reign9Display) ----------
 (() => {
-  const kanvas = $('.banner__kanvas'), c = kanvas.getContext('2d'), isian = $('[name=nama-banner]'), gambar = {};
+  const kanvas = $('.banner__kanvas'), c = kanvas.getContext('2d'), isian = $('[name=nama-banner]'), subIsian = $('[name=sub-banner]'), gambar = {};
   const muat = (n) => gambar[n] || (gambar[n] = new Promise((ok) => { const i = new Image(); i.onload = () => ok(i); i.onerror = () => ok(null); i.src = `gambar/banner/banner-${n}.jpg`; }));
   const lukis = async () => {
     const n = $('[name=banner]:checked').value, img = await muat(n);
     c.clearRect(0, 0, 1500, 500);
     if (img) c.drawImage(img, 0, 0, 1500, 500); else { c.fillStyle = '#000'; c.fillRect(0, 0, 1500, 500); }
     const nama = isian.value.trim();
-    if (!nama) return;
-    await document.fonts.load('700 80px Oxanium').catch(() => {});
-    let uk = 96; c.font = `700 ${uk}px Oxanium, sans-serif`;
-    while (c.measureText(nama.toUpperCase()).width > 760 && uk > 36) { uk -= 4; c.font = `700 ${uk}px Oxanium, sans-serif`; }
+    const sub = subIsian ? subIsian.value.trim() : '';
+    if (!nama && !sub) return;
+    await document.fonts.load('700 80px Reign9Display').catch(() => {});
+    const g = c.createLinearGradient(700, 310, 1500, 500); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(0,0,0,.65)');
+    c.fillStyle = g; c.fillRect(700, 310, 800, 190);
     c.textAlign = 'right'; c.textBaseline = 'alphabetic';
-    const g = c.createLinearGradient(700, 330, 1500, 500); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(0,0,0,.55)');
-    c.fillStyle = g; c.fillRect(700, 330, 800, 170);
-    c.shadowColor = 'rgba(0,0,0,.6)'; c.shadowBlur = 18; c.fillStyle = '#fff';
-    c.fillText(nama.toUpperCase(), 1450, 455); c.shadowBlur = 0;
+    c.shadowColor = 'rgba(0,0,0,.7)'; c.shadowBlur = 18;
+    if (nama) {
+      let uk = 88; c.font = `700 ${uk}px Reign9Display, Oxanium, sans-serif`;
+      while (c.measureText(nama.toUpperCase()).width > 760 && uk > 34) { uk -= 4; c.font = `700 ${uk}px Reign9Display, Oxanium, sans-serif`; }
+      c.fillStyle = '#fff';
+      c.fillText(nama.toUpperCase(), 1450, sub ? 430 : 455);
+    }
+    if (sub) {
+      c.font = '700 24px Reign9Display, Oxanium, sans-serif';
+      c.fillStyle = '#ff3b26';
+      c.fillText(sub.toUpperCase(), 1450, 468);
+    }
+    c.shadowBlur = 0;
   };
   $$('[name=banner]').forEach((r) => r.addEventListener('change', lukis));
   isian.addEventListener('input', lukis);
+  subIsian?.addEventListener('input', lukis);
   $('[data-unduh]').addEventListener('click', async () => {
     await lukis();
     const a = document.createElement('a');
@@ -440,21 +715,72 @@ document.addEventListener('r9:bahasa', gambarData);
   lukis();
 })();
 
-// ---------- contact: kirim lewat server admin (email), cadangan aplikasi email ----------
+// ---------- contact ----------
 (() => {
   const form = $('.kontak__form'), info = $('.kontak__info'), ixar = $('.kontak__ixar');
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const d = Object.fromEntries(new FormData(form));
-    if (!d.nama.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email) || !d.pesan.trim()) { info.textContent = R9.t('kontak.lengkapi'); ixar.ixar?.lakukan('kaget', 1200); return; }
+    if (!d.nama.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email) || !d.pesan.trim()) {
+      info.textContent = R9.t('kontak.lengkapi');
+      ixar?.ixar?.lakukan('kaget', 1200);
+      return;
+    }
     const tombol = $('button[type=submit]', form); tombol.disabled = true;
     try {
       const r = await fetch(`${ADMIN}/api/kontak`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...d, bahasa: R9.bahasa }) });
       if (!r.ok) throw new Error();
-      info.textContent = R9.t('kontak.terkirim'); form.reset(); ixar.ixar?.lakukan('menang', 2200);
+      info.textContent = R9.t('kontak.terkirim'); form.reset(); ixar?.ixar?.lakukan('menang', 2200);
     } catch (err) {
       info.textContent = R9.t('kontak.gagal');
       location.href = `mailto:reign9intl@reign9.site?cc=reignnine2@gmail.com&subject=${encodeURIComponent(`[R9 Contact] ${d.keperluan} - ${d.nama}`)}&body=${encodeURIComponent(`${d.pesan}\n\n${d.nama} <${d.email}>`)}`;
     } finally { tombol.disabled = false; }
+  });
+})();
+
+// ---------- PANEL OPREK INTERAKTIF ----------
+(() => {
+  const btn = $('#oprek-tombol'), panel = $('#oprek-panel');
+  if (!btn || !panel) return;
+  btn.addEventListener('click', () => { panel.hidden = !panel.hidden; });
+
+  $('#oprek-sumber')?.addEventListener('change', async (e) => {
+    sumberData = e.target.value;
+    if (sumberData === 'live') {
+      const live = await ambilDataLive();
+      if (live) DATA = live;
+    } else {
+      DATA = JSON.parse(JSON.stringify(window.R9_DUMMY));
+    }
+    kategoriTerpilih = null;
+    timTerpilih = null;
+    gambarData();
+  });
+
+  $('#oprek-form-pemain')?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const f = new FormData(e.target);
+    const statusTarget = f.get('status') || 'aktif';
+    const kelompokTarget = f.get('kelompok') || 'R9 Main Roster';
+    const roleTarget = f.get('role') || 'Jungling';
+    const baru = {
+      id: Date.now(),
+      nickname: f.get('nickname') || 'R9.NewPlayer',
+      role: roleTarget,
+      kelompok: kelompokTarget,
+      negara: f.get('negara') || 'CN',
+      jenis: ['Pelatih', 'Manajer', 'Analis'].includes(roleTarget) ? 'coach' : 'pemain',
+      gabung: statusTarget === 'aktif' ? new Date().toISOString().slice(0, 10) : '',
+      periode: statusTarget === 'nonaktif' ? '2025 – 2026' : '',
+      hero: (f.get('hero') || '').split(',').map((x) => x.trim()).filter(Boolean),
+      instagram: 'reignnine',
+      foto: '', // Tanpa foto -> otomatis pakai IXAR!
+    };
+    DATA.pemain[statusTarget].unshift(baru);
+    kategoriTerpilih = statusTarget;
+    timTerpilih = kelompokTarget;
+    gambarData();
+    e.target.reset();
+    location.hash = '#rosters';
   });
 })();

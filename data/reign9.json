@@ -1,76 +1,276 @@
 {
- "diperbarui": "2026-11-08T15:29:55.384Z",
- "pemain": {
-  "aktif": [
-   {
-    "id": 1,
-    "nickname": "g",
-    "role": "",
-    "divisi": "Honor of Kings",
-    "instagram": "",
-    "gabung": "",
-    "negara": "ID",
-    "jenis": "pemain",
-    "foto": ""
-   }
-  ],
-  "nonaktif": []
- },
- "event": [
-  {
-   "id": 1,
-   "jenis": "Turnamen",
-   "mulai": "2026-11-12",
-   "selesai": "",
-   "link": "",
-   "hadiah": 0,
-   "nama": {
-    "id": "jk",
-    "en": "jk",
-    "zh": "jk简体中文（大陆）"
-   },
-   "tempat": {
-    "id": "jn",
-    "en": "jn",
-    "zh": "jn简体中文（大陆）"
-   },
-   "keterangan": {
-    "id": "",
-    "en": "",
-    "zh": ""
-   },
-   "hasil": {
-    "id": "",
-    "en": "",
-    "zh": ""
-   }
-  }
- ],
- "prestasi": [
-  {
-   "id": 1,
-   "tanggal": "2026-11-08",
-   "hadiah": 5,
-   "divisi": "Honor of Kings",
-   "bukti": "",
-   "juara": 0,
-   "turnamen": {
-    "id": "hh",
-    "en": "hh",
-    "zh": "hh"
-   },
-   "peringkat": {
-    "id": "n",
-    "en": "n",
-    "zh": "n"
-   }
-  }
- ],
- "news": [],
- "ringkas": {
-  "juara1": 0,
-  "juara2": 0,
-  "juara3": 0,
-  "totalHadiah": 5
- }
+  "diperbarui": "2026-11-08T18:00:00.000Z",
+  "ringkas": {
+    "juara1": 3,
+    "juara2": 2,
+    "juara3": 1,
+    "totalHadiah": 45000000
+  },
+  "pemain": {
+    "aktif": [
+      {
+        "id": 1,
+        "nickname": "R9.Yeyan",
+        "role": "Jungling",
+        "kelompok": "R9 Main Roster",
+        "divisi": "Honor of Kings",
+        "negara": "CN",
+        "jenis": "pemain",
+        "poseIxar": "serbu",
+        "gabung": "2026-01-15",
+        "instagram": "reignnine",
+        "tiktok": "reignnine",
+        "hero": ["Lam", "Jing", "Pei"],
+        "foto": ""
+      },
+      {
+        "id": 2,
+        "nickname": "R9.Grandair",
+        "role": "Mid Lane",
+        "kelompok": "R9 Main Roster",
+        "divisi": "Honor of Kings",
+        "negara": "ID",
+        "jenis": "pemain",
+        "poseIxar": "meditasi",
+        "gabung": "2026-02-01",
+        "instagram": "reignnine",
+        "tiktok": "",
+        "hero": ["Mai Shiranui", "Shangguan", "Yuhuan"],
+        "foto": ""
+      },
+      {
+        "id": 3,
+        "nickname": "R9.inv1nciblE",
+        "role": "Farm Lane",
+        "kelompok": "R9 Main Roster",
+        "divisi": "Honor of Kings",
+        "negara": "CN",
+        "jenis": "pemain",
+        "poseIxar": "tunjuk",
+        "gabung": "2026-03-10",
+        "instagram": "",
+        "tiktok": "reignnine",
+        "hero": ["Arli", "Marco Polo", "Loong"],
+        "foto": ""
+      },
+      {
+        "id": 4,
+        "nickname": "R9.J4",
+        "role": "Clash Lane",
+        "kelompok": "R9 Main Roster",
+        "divisi": "Honor of Kings",
+        "negara": "ID",
+        "jenis": "pemain",
+        "poseIxar": "pedang",
+        "gabung": "2026-02-12",
+        "instagram": "reignnine",
+        "tiktok": "",
+        "hero": ["Charlotte", "Biron", "Dharma"],
+        "foto": ""
+      },
+      {
+        "id": 5,
+        "nickname": "R9.Putt",
+        "role": "Roaming",
+        "kelompok": "R9 Main Roster",
+        "divisi": "Honor of Kings",
+        "negara": "ID",
+        "jenis": "pemain",
+        "poseIxar": "tameng",
+        "gabung": "2026-05-19",
+        "instagram": "",
+        "tiktok": "",
+        "hero": ["Dolia", "Zhang Fei", "Da Qiao"],
+        "foto": ""
+      },
+      {
+        "id": 6,
+        "nickname": "R9.Zeph",
+        "role": "Jungling",
+        "kelompok": "R9 Malaysia",
+        "divisi": "Honor of Kings",
+        "negara": "MY",
+        "jenis": "pemain",
+        "poseIxar": "serbu",
+        "gabung": "2026-04-01",
+        "instagram": "reignnine",
+        "tiktok": "",
+        "hero": ["Musashi", "Han Xin", "Zilong"],
+        "foto": ""
+      },
+      {
+        "id": 7,
+        "nickname": "R9.Kael",
+        "role": "Farm Lane",
+        "kelompok": "R9 Malaysia",
+        "divisi": "Honor of Kings",
+        "negara": "MY",
+        "jenis": "pemain",
+        "poseIxar": "tunjuk",
+        "gabung": "2026-04-05",
+        "instagram": "",
+        "tiktok": "",
+        "hero": ["Lady Sun", "Consort Yu", "Hou Yi"],
+        "foto": ""
+      },
+      {
+        "id": 8,
+        "nickname": "R9.Valkyrie",
+        "role": "Mid Lane",
+        "kelompok": "R9 Malaysia",
+        "divisi": "Honor of Kings",
+        "negara": "SG",
+        "jenis": "pemain",
+        "poseIxar": "meditasi",
+        "gabung": "2026-06-10",
+        "instagram": "",
+        "tiktok": "",
+        "hero": ["Angela", "Xiao Qiao", "Daji"],
+        "foto": ""
+      },
+      {
+        "id": 9,
+        "nickname": "R9.YLAMONA",
+        "role": "Clash Lane",
+        "kelompok": "R9 Malaysia",
+        "divisi": "Honor of Kings",
+        "negara": "ID",
+        "jenis": "pemain",
+        "poseIxar": "pedang",
+        "gabung": "2026-05-19",
+        "instagram": "",
+        "tiktok": "",
+        "hero": ["Allain", "Mayene", "Dun"],
+        "foto": ""
+      },
+      {
+        "id": 10,
+        "nickname": "R9.Sovereign",
+        "role": "Pelatih",
+        "kelompok": "Competitive Division",
+        "divisi": "Honor of Kings",
+        "negara": "ID",
+        "jenis": "coach",
+        "poseIxar": "bendera",
+        "gabung": "2025-11-11",
+        "instagram": "reignnine",
+        "tiktok": "",
+        "hero": ["Head Coach", "Draft & Macro Strategy"],
+        "foto": ""
+      },
+      {
+        "id": 11,
+        "nickname": "R9.Lin",
+        "role": "Analis",
+        "kelompok": "Competitive Division",
+        "divisi": "Honor of Kings",
+        "negara": "CN",
+        "jenis": "coach",
+        "poseIxar": "penasaran",
+        "gabung": "2026-02-20",
+        "instagram": "",
+        "tiktok": "",
+        "hero": ["Lead Analyst", "Scrim & Telemetry Data"],
+        "foto": ""
+      },
+      {
+        "id": 12,
+        "nickname": "R9.Ray",
+        "role": "Manajer",
+        "kelompok": "Competitive Division",
+        "divisi": "Honor of Kings",
+        "negara": "MY",
+        "jenis": "coach",
+        "poseIxar": "nyambut",
+        "gabung": "2026-01-10",
+        "instagram": "reignnine",
+        "tiktok": "",
+        "hero": ["Team Manager", "Player Operations"],
+        "foto": ""
+      }
+    ],
+    "nonaktif": [
+      {
+        "id": 101,
+        "nickname": "R9.Aether",
+        "role": "Jungling",
+        "kelompok": "R9 Genesis (2025)",
+        "divisi": "Honor of Kings",
+        "negara": "ID",
+        "jenis": "pemain",
+        "poseIxar": "pedang",
+        "periode": "Nov 2025 – Mar 2026",
+        "hero": ["Li Bai", "Nakoruru"],
+        "foto": ""
+      },
+      {
+        "id": 102,
+        "nickname": "R9.Kuro",
+        "role": "Roaming",
+        "kelompok": "R9 Genesis (2025)",
+        "divisi": "Honor of Kings",
+        "negara": "MY",
+        "jenis": "pemain",
+        "poseIxar": "tameng",
+        "periode": "Nov 2025 – Apr 2026",
+        "hero": ["Gui Guzi", "Donghuang"],
+        "foto": ""
+      },
+      {
+        "id": 103,
+        "nickname": "R9.Vanguard",
+        "role": "Pelatih",
+        "kelompok": "R9 Genesis (2025)",
+        "divisi": "Honor of Kings",
+        "negara": "ID",
+        "jenis": "coach",
+        "poseIxar": "bendera",
+        "periode": "Nov 2025 – Feb 2026",
+        "hero": ["Founding Coach"],
+        "foto": ""
+      },
+      {
+        "id": 104,
+        "nickname": "R9.Shiro",
+        "role": "Mid Lane",
+        "kelompok": "R9 Valkyrie",
+        "divisi": "Honor of Kings",
+        "negara": "PH",
+        "jenis": "pemain",
+        "poseIxar": "meditasi",
+        "periode": "Jan 2026 – Jun 2026",
+        "hero": ["Princess Frost", "Milady"],
+        "foto": ""
+      },
+      {
+        "id": 105,
+        "nickname": "R9.Ryu",
+        "role": "Clash Lane",
+        "kelompok": "R9 Valkyrie",
+        "divisi": "Honor of Kings",
+        "negara": "ID",
+        "jenis": "pemain",
+        "poseIxar": "tonjok",
+        "periode": "Jan 2026 – Jun 2026",
+        "hero": ["Lu Bu", "Sun Ce"],
+        "foto": ""
+      },
+      {
+        "id": 106,
+        "nickname": "R9.velia",
+        "role": "Manajer",
+        "kelompok": "R9 Valkyrie",
+        "divisi": "Honor of Kings",
+        "negara": "SG",
+        "jenis": "coach",
+        "poseIxar": "nyambut",
+        "periode": "Jan 2026 – Jun 2026",
+        "hero": ["Squad Manager"],
+        "foto": ""
+      }
+    ]
+  },
+  "event": [],
+  "prestasi": [],
+  "news": []
 }

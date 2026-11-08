@@ -98,9 +98,9 @@
       this.alat['percik-atas'] = percik('M560 40L520 -10M600 10L590 -50M980 40L1020 -10M940 10L950 -50');
       this.alat['percik-kiri'] = percik('M520 470L460 440M530 410L490 360M560 380L560 320');
       this.alat['percik-tinju'] = percik('M0 -50L40 -90M20 0L80 0M0 50L40 90');
-      const teks = (isi, x, y, uk) => { const t = buat('text', { class: 'ixar__alat', x, y, fill: alat, 'font-size': uk, 'font-weight': 800, 'font-family': 'Oxanium, sans-serif' }, this.akar); t.textContent = isi; return t; };
+      const teks = (isi, x, y, uk) => { const t = buat('text', { class: 'ixar__alat', x, y, fill: alat, 'font-size': uk, 'font-weight': 800, 'font-family': 'Reign9Display, Oxanium, sans-serif' }, this.akar); t.textContent = isi; return t; };
       this.alat.tanya = teks('?', 1010, 200, 170);
-      this.alat.zzz = buat('g', { class: 'ixar__alat ixar__zzz', fill: alat, 'font-family': 'Oxanium, sans-serif', 'font-weight': 800 }, this.akar);
+      this.alat.zzz = buat('g', { class: 'ixar__alat ixar__zzz', fill: alat, 'font-family': 'Reign9Display, Oxanium, sans-serif', 'font-weight': 800 }, this.akar);
       [['z', 1000, 230, 70], ['z', 1050, 160, 95], ['Z', 1110, 70, 120]].forEach(([z, x, y, u]) => { const t = buat('text', { x, y, 'font-size': u }, this.alat.zzz); t.textContent = z; });
       this.alat.daun = buat('path', { class: 'ixar__alat', d: 'M1010 420Q1060 380 1080 440Q1040 470 1010 420Z', fill: alat }, this.akar);
       // versi bara (layar pembuka): badan diisi butiran api kelap-kelip, warnanya ikut tema lewat --bara-1..4
