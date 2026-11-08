@@ -202,7 +202,7 @@ h1, h2, h3, p { margin: 0; }
 .tentang__kiri p { max-width: 40ch; }
 .podium {
   display: grid; grid-template-columns: repeat(3, 1fr); align-items: end; gap: 0;
-  padding-top: 110px; position: relative;
+  padding-top: 160px; position: relative;
 }
 .podium__kotak { background: var(--hitam); text-align: center; padding: 14px 6px 18px; display: grid; justify-items: center; gap: 2px; position: relative; }
 .podium__kotak b { font: 700 20px/1 var(--judul); text-transform: uppercase; color: var(--darah); }
@@ -211,7 +211,6 @@ h1, h2, h3, p { margin: 0; }
 .podium__kotak--1 { min-height: 190px; }
 .podium__kotak--2 { min-height: 150px; }
 .podium__kotak--3 { min-height: 120px; }
-.podium__pedang { position: absolute; bottom: 100%; left: 50%; width: 52px; height: auto; margin-left: -26px; color: var(--darah); }
 /* ---------- maskot rubah ---------- */
 .rubah-wadah { display: block; }
 .rubah-wadah svg { display: block; width: 100%; height: auto; overflow: visible; }
@@ -233,14 +232,37 @@ h1, h2, h3, p { margin: 0; }
 }
 .rubah-intip .rubah-wadah { transform: translateY(100%); transition: transform .8s cubic-bezier(.2, 1.4, .4, 1); }
 .rubah-intip.muncul .rubah-wadah { transform: translateY(14%); }
-.podium__bendera { position: absolute; bottom: 100%; left: calc(50% + 30px); width: 3px; height: 84px; background: var(--tulang); }
-.podium__bendera span {
-  position: absolute; top: 0; left: 3px; width: 34px; height: 26px; display: grid; place-items: center;
-  background: var(--hitam); color: var(--tulang); font: 700 16px/1 var(--judul);
-  transform-origin: left center;
+/* bendera juara 1: logo REIGN 9 INTERNATIONAL, tiang & kain ikut tema */
+.podium { --tiang: var(--tulang); --kain: #0B0102; --kain-garis: rgba(243, 233, 220, .14); --bendera-teks: var(--tulang); }
+:root[data-tema="terang"] .podium { --tiang: #1A0A0B; --kain: #FFFFFF; --kain-garis: rgba(26, 10, 11, .12); --bendera-teks: #0B0102; }
+@media (prefers-color-scheme: light) {
+  :root:not([data-tema="gelap"]) .podium { --tiang: #1A0A0B; --kain: #FFFFFF; --kain-garis: rgba(26, 10, 11, .12); --bendera-teks: #0B0102; }
 }
-@media (prefers-reduced-motion: no-preference) { .podium__bendera span { animation: kibar 2.4s ease-in-out infinite; } }
-@keyframes kibar { 50% { transform: skewY(-6deg) scaleX(.9); } }
+.bendera { position: absolute; bottom: 100%; left: 50%; width: 3px; height: 148px; margin-left: -1.5px; }
+.bendera__tiang { position: absolute; inset: 0; background: var(--tiang); }
+.bendera__tiang::before { /* bola kecil di ujung tiang */
+  content: ''; position: absolute; top: -6px; left: -3.5px; width: 10px; height: 10px; border-radius: 50%; background: var(--tiang);
+}
+.bendera__kain {
+  position: absolute; top: 6px; left: 3px; width: 128px; height: 74px; padding: 12px 14px;
+  display: grid; place-items: center; overflow: hidden;
+  background: var(--kain); box-shadow: inset 0 0 0 1px var(--kain-garis);
+  transform-origin: left center;
+  clip-path: polygon(0 0, 100% 0, 92% 50%, 100% 100%, 0 100%); /* ujung kain berpotongan kayak panji */
+}
+.bendera__kain svg { width: 100%; height: auto; --logo-simbol: var(--darah); --logo-teks: var(--bendera-teks); }
+.bendera__kain::after { /* kilap kain yang ikut bergelombang */
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(100deg, transparent 20%, rgba(255, 255, 255, .14) 40%, transparent 55%, rgba(0, 0, 0, .12) 75%, transparent 90%);
+  background-size: 220% 100%;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .bendera__kain { animation: kibar 3.2s ease-in-out infinite; }
+  .bendera__kain::after { animation: kilap 3.2s linear infinite; }
+}
+@keyframes kibar { 0%, 100% { transform: skewY(0) scaleX(1); } 30% { transform: skewY(-3deg) scaleX(.97); } 65% { transform: skewY(2deg) scaleX(.99); } }
+@keyframes kilap { from { background-position: 120% 0; } to { background-position: -100% 0; } }
+.pakai-rubah .bendera { display: none; }
 .podium__catatan { grid-column: 1 / -1; font-size: 14px; color: var(--teks-redup); margin-top: 10px; }
 .kartu { padding: 24px; display: grid; gap: 8px; min-height: 140px; align-content: center; }
 .kartu h3 { font: 600 15px/1.2 var(--badan); letter-spacing: .04em; }

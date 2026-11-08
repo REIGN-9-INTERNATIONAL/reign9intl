@@ -151,8 +151,7 @@ menu.addEventListener('click', (e) => {
   if (!new URLSearchParams(location.search).has('rubah')) {
     // tanpa maskot: podium pakai pedang R9, rubah ngintip di form dibuang
     document.querySelector('.rubah-intip')?.remove();
-    const podium = document.querySelector('.podium__rubah');
-    if (podium) podium.outerHTML = '<svg class="podium__pedang" viewBox="0 0 105.63 183.98" aria-hidden="true"><use href="gambar/logo.svg#simbol"/></svg><span class="podium__bendera" aria-hidden="true"><span>9</span></span>';
+    document.querySelector('.podium__rubah')?.remove();
     return;
   }
   document.documentElement.classList.add('pakai-rubah');
