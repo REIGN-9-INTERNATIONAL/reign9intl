@@ -4,12 +4,32 @@ const WA_ADMIN = '';
 
 const gerakBoleh = !matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-// ---------- tombol tema terang/gelap (pilihan disimpen di perangkat pengunjung) ----------
-document.querySelector('.nav__tema').addEventListener('click', () => {
-  const sekarang = document.documentElement.dataset.tema || (matchMedia('(prefers-color-scheme: light)').matches ? 'terang' : 'gelap');
-  const baru = sekarang === 'terang' ? 'gelap' : 'terang';
-  document.documentElement.dataset.tema = baru;
-  try { localStorage.setItem('tema', baru); } catch (e) {}
+// ---------- tema terang/gelap ----------
+// Bawaan ngikutin setelan perangkat; pilihan lewat tombol disimpen di perangkat pengunjung.
+// Ganti tema: tema baru nyebar berbentuk lingkaran dari tombol (View Transitions), browser lama warna memudar.
+const temaSekarang = () => document.documentElement.dataset.tema || (matchMedia('(prefers-color-scheme: light)').matches ? 'terang' : 'gelap');
+const pasangTema = (t) => {
+  document.documentElement.dataset.tema = t;
+  document.querySelector('meta[name=theme-color]')?.setAttribute('content', '#DA1617');
+  try { localStorage.setItem('tema', t); } catch (e) {}
+};
+document.querySelector('.nav__tema').addEventListener('click', (e) => {
+  const baru = temaSekarang() === 'terang' ? 'gelap' : 'terang';
+  if (!gerakBoleh) return pasangTema(baru);
+  if (!document.startViewTransition) {
+    document.documentElement.classList.add('ganti-tema');
+    pasangTema(baru);
+    return setTimeout(() => document.documentElement.classList.remove('ganti-tema'), 500);
+  }
+  const r = e.currentTarget.getBoundingClientRect();
+  const x = r.left + r.width / 2, y = r.top + r.height / 2;
+  const jari = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+  document.startViewTransition(() => pasangTema(baru)).ready.then(() => {
+    document.documentElement.animate(
+      { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${jari}px at ${x}px ${y}px)`] },
+      { duration: 700, easing: 'cubic-bezier(.65, 0, .35, 1)', pseudoElement: '::view-transition-new(root)' },
+    );
+  });
 });
 
 // ---------- menu HP ----------
@@ -80,10 +100,11 @@ menu.addEventListener('click', (e) => {
     if (!jalan) return;
     const umur = t - mulai;
     c.clearRect(0, 0, w, h);
-    c.globalCompositeOperation = 'lighter';
+    const terang = temaSekarang() === 'terang';
+    c.globalCompositeOperation = terang ? 'source-over' : 'lighter';
     for (const b of lepas) {
       b.y -= b.v; b.goyang += .02; b.x += Math.sin(b.goyang) * .35;
-      c.globalAlpha = Math.max(0, Math.min(1, b.y / h)) * b.umur;
+      c.globalAlpha = Math.max(0, Math.min(1, b.y / h)) * b.umur * (terang ? .55 : 1);
       c.fillStyle = '#ff2a1a'; c.beginPath(); c.arc(b.x, b.y, b.r, 0, 6.29); c.fill();
       if (b.y < -10) Object.assign(b, baraLepas(false));
     }
@@ -98,7 +119,7 @@ menu.addEventListener('click', (e) => {
         b.vx *= .86; b.vy *= .86;
       } else { b.vy -= .02; }
       b.x += b.vx; b.y += b.vy; b.kedip += .08;
-      c.globalAlpha = .75 + Math.sin(b.kedip) * .25;
+      c.globalAlpha = terang ? .93 + Math.sin(b.kedip) * .07 : .75 + Math.sin(b.kedip) * .25;
       c.fillStyle = b.warna; c.fillRect(b.x - b.r, b.y - b.r, b.r * 2, b.r * 2);
     }
     c.globalAlpha = 1; c.globalCompositeOperation = 'source-over';
