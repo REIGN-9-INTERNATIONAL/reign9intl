@@ -29,27 +29,34 @@ menu.addEventListener('click', (e) => {
 // Kursor/jari nyebarin bara di sekitarnya; dilepas = balik ke bentuk logo. Gerak dikurangi = logo diam (SVG).
 (async () => {
   const kanvas = document.querySelector('.hero__bara');
-  const wadah = document.querySelector('.hero__pedang');
+  const wadah = document.querySelector('.hero__logo');
   if (!kanvas || !gerakBoleh) return;
   document.documentElement.classList.add('bara-hidup');
   const c = kanvas.getContext('2d');
   const sprite = await fetch('gambar/logo.svg').then((r) => r.text()).catch(() => '');
-  const m = sprite.match(/id="simbol" viewBox="([^"]+)">(.*?)<\/symbol>/);
+  const m = sprite.match(/id="tegak" viewBox="([^"]+)">(.*?)<\/symbol>/);
   if (!m) { document.documentElement.classList.remove('bara-hidup'); return; }
   const vb = m[1].split(' ').map(Number), bentuk = [...m[2].matchAll(/ d="([^"]+)"/g)].map((x) => new Path2D(x[1]));
-  const WARNA = ['#ffd27a', '#ff9a3c', '#ff5a2a', '#da1617', '#ff7a4d'];
+  // dominan merah; oranye & kuning cuma sedikit buat kesan inti api
+  const WARNA = [['#da1617', 34], ['#ff1f1f', 22], ['#b30d10', 18], ['#ff3b26', 14], ['#ff6a2a', 8], ['#ffb04a', 4]];
+  const pilihWarna = () => { let n = Math.random() * 100; for (const [w, b] of WARNA) { if ((n -= b) < 0) return w; } return WARNA[0][0]; };
   let w, h, butir = [], lepas = [], px = -999, py = -999, jalan = true, mulai = performance.now();
 
   const titikLogo = () => {
     const r = wadah.getBoundingClientRect(), k = kanvas.getBoundingClientRect();
     const lw = Math.round(r.width), lh = Math.round(r.height);
     const o = new OffscreenCanvas(lw, lh), oc = o.getContext('2d');
-    const s = lh / vb[3];
+    const s = Math.min(lw / vb[2], lh / vb[3]);
     oc.translate((lw - vb[2] * s) / 2, 0); oc.scale(s, s); oc.translate(-vb[0], -vb[1]);
     bentuk.forEach((b) => oc.fill(b, 'evenodd'));
-    const data = oc.getImageData(0, 0, lw, lh).data, jarak = lw < 200 ? 3 : 4, hasil = [];
-    for (let y = 0; y < lh; y += jarak) for (let x = 0; x < lw; x += jarak) {
-      if (data[(y * lw + x) * 4 + 3] > 128) hasil.push([r.left - k.left + x, r.top - k.top + y]);
+    // tulisan (di bawah pedang) dicuplik lebih rapat biar huruf INTERNATIONAL yang tipis tetap kebaca
+    const data = oc.getImageData(0, 0, lw, lh).data, batasTeks = (355 - vb[1]) * s, hasil = [];
+    const jarakSimbol = lw < 320 ? 3 : 3.5, jarakTeks = 2;
+    for (let y = 0; y < lh; y += (y < batasTeks ? jarakSimbol : jarakTeks)) {
+      const j = y < batasTeks ? jarakSimbol : jarakTeks;
+      for (let x = 0; x < lw; x += j) {
+        if (data[(Math.round(y) * lw + Math.round(x)) * 4 + 3] > 128) hasil.push([r.left - k.left + x, r.top - k.top + y, y >= batasTeks]);
+      }
     }
     return hasil;
   };
@@ -58,9 +65,10 @@ menu.addEventListener('click', (e) => {
     w = kanvas.clientWidth; h = kanvas.clientHeight;
     kanvas.width = w * rasio; kanvas.height = h * rasio; c.setTransform(rasio, 0, 0, rasio, 0, 0);
     const titik = titikLogo();
-    butir = titik.map(([tx, ty], i) => butir[i] ? Object.assign(butir[i], { tx, ty }) : {
+    butir = titik.map(([tx, ty, teks], i) => butir[i] ? Object.assign(butir[i], { tx, ty }) : {
       x: Math.random() * w, y: h + Math.random() * h * .6, vx: 0, vy: 0, tx, ty,
-      r: Math.random() * 1.1 + .9, warna: WARNA[i % WARNA.length], tunda: Math.random() * 900, kedip: Math.random() * 6.28,
+      r: teks ? Math.random() * .35 + .9 : Math.random() * .9 + 1.05, warna: pilihWarna(),
+      tunda: Math.random() * 900 + (teks ? 350 : 0), kedip: Math.random() * 6.28,
     });
     lepas = Array.from({ length: Math.round(w / 16) }, () => baraLepas(true));
   };
@@ -76,9 +84,10 @@ menu.addEventListener('click', (e) => {
     for (const b of lepas) {
       b.y -= b.v; b.goyang += .02; b.x += Math.sin(b.goyang) * .35;
       c.globalAlpha = Math.max(0, Math.min(1, b.y / h)) * b.umur;
-      c.fillStyle = '#ff5a2a'; c.beginPath(); c.arc(b.x, b.y, b.r, 0, 6.29); c.fill();
+      c.fillStyle = '#ff2a1a'; c.beginPath(); c.arc(b.x, b.y, b.r, 0, 6.29); c.fill();
       if (b.y < -10) Object.assign(b, baraLepas(false));
     }
+    c.globalCompositeOperation = 'source-over'; // butir logo gak ditumpuk 'lighter' biar merahnya gak pudar jadi oranye
     for (const b of butir) {
       if (umur > b.tunda) {
         // pegas ke titik logo + putaran kecil biar kerasa kayak bara ketiup
@@ -89,7 +98,7 @@ menu.addEventListener('click', (e) => {
         b.vx *= .86; b.vy *= .86;
       } else { b.vy -= .02; }
       b.x += b.vx; b.y += b.vy; b.kedip += .08;
-      c.globalAlpha = .65 + Math.sin(b.kedip) * .35;
+      c.globalAlpha = .75 + Math.sin(b.kedip) * .25;
       c.fillStyle = b.warna; c.fillRect(b.x - b.r, b.y - b.r, b.r * 2, b.r * 2);
     }
     c.globalAlpha = 1; c.globalCompositeOperation = 'source-over';
