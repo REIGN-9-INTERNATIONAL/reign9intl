@@ -19,8 +19,8 @@
 <link rel="icon" href="gambar/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="font/Reign9Display-Regular.ttf" as="font" type="font/ttf" crossorigin>
 <link rel="preload" href="font/oxanium-500.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="font/font.css?v=26110903">
-<link rel="stylesheet" href="gaya.css?v=26110903">
+<link rel="stylesheet" href="font/font.css?v=26110904">
+<link rel="stylesheet" href="gaya.css?v=26110904">
 </head>
 <body>
 <!-- Sprite SVG Logo disematkan langsung agar dibuka lewat file:// (klik 2x index.html) tetap jalan 100% tanpa kena blokir CORS browser -->
@@ -145,7 +145,7 @@
 
   <!-- ========== ethos ========== -->
   <section class="bagian ethos" aria-labelledby="judul-ethos">
-    <h2 id="judul-ethos" class="judul" data-i18n="ethos.judul">Reign 9 Ethos</h2>
+    <h2 id="judul-ethos" class="judul" data-i18n-html="ethos.judul">Reign 9 <span class="aksen-merah">Ethos</span></h2>
     <p class="ethos__isi" data-i18n="ethos.isi"></p>
     <ul class="ethos__pilar">
       <li data-i18n="ethos.1">Disiplin</li><li data-i18n="ethos.2">Ketangguhan</li><li data-i18n="ethos.3">Keunggulan</li><li data-i18n="ethos.4">Kesetiaan</li>
@@ -193,7 +193,7 @@
       </div>
     </div>
     <div class="kenal__teks">
-      <h2 id="judul-ixar" class="judul" data-i18n="ixar.judul">Kenalan sama IXAR</h2>
+      <h2 id="judul-ixar" class="judul" data-i18n-html="ixar.judul">Kenalan sama <span class="aksen-merah">IXAR</span></h2>
       <p class="kenal__baca" data-i18n="ixar.baca">Dibaca "IK-SAR"</p>
       <p data-i18n="ixar.isi"></p>
       <p class="kenal__petunjuk" data-i18n="ixar.petunjuk"></p>
@@ -312,10 +312,10 @@
     </div>
   </section>
 
-  <!-- ========== rosters (Menu 3-Tingkat: Active/Non-Active -> Tim -> Anggota + IXAR Dummy) ========== -->
+  <!-- ========== rosters (Menu 3-Tingkat: Active Squads / Non-Active Squads / Management -> Tim / Divisi -> Anggota) ========== -->
   <section class="bagian roster" id="rosters" aria-labelledby="judul-roster">
     <div class="kepala-bagian">
-      <h2 id="judul-roster" class="judul" data-i18n="roster.judul">Rosters</h2>
+      <h2 id="judul-roster" class="judul" data-i18n-html="roster.judul">Our <span class="aksen-merah">Rosters</span></h2>
       <p data-i18n="roster.sub">Pemain, pelatih, dan staf yang membawa panji Reign 9 International.</p>
     </div>
 
@@ -339,14 +339,14 @@
     <div class="roster__wadah" data-roster-wadah hidden></div>
 
     <!-- Petunjuk interaktif bertahap -->
-    <p class="kosong" data-roster-petunjuk data-i18n="roster.pilihKategori">👆 Klik kategori skuad di atas (Active Squads atau Non-Active Squads) untuk membuka daftar tim.</p>
+    <p class="kosong" data-roster-petunjuk data-i18n="roster.pilihKategori">👆 Klik kategori skuad di atas (Active Squads, Non-Active Squads, atau Management) untuk membuka daftar tim/divisi.</p>
     <p class="kosong" data-roster-kosong data-i18n="roster.kosong" hidden>Roster lagi disiapin. Pantau terus ya.</p>
   </section>
 
   <!-- ========== schedule ========== -->
   <section class="bagian jadwal" id="schedule" aria-labelledby="judul-jadwal">
     <div class="kepala-bagian">
-      <h2 id="judul-jadwal" class="judul" data-i18n="jadwal.judul">Schedule</h2>
+      <h2 id="judul-jadwal" class="judul" data-i18n-html="jadwal.judul">Match <span class="aksen-merah">Schedule</span></h2>
       <p data-i18n="jadwal.sub">Turnamen, hasil scrim, dan acara komunitas R9.</p>
     </div>
     <div class="jadwal__isi">
@@ -367,7 +367,7 @@
   <!-- ========== news ========== -->
   <section class="bagian news" id="news" aria-labelledby="judul-news">
     <div class="kepala-bagian">
-      <h2 id="judul-news" class="judul" data-i18n="news.judul">News</h2>
+      <h2 id="judul-news" class="judul" data-i18n-html="news.judul">Latest <span class="aksen-merah">News</span></h2>
       <p data-i18n="news.sub">Kabar terbaru dari Reign 9 International.</p>
     </div>
     <div class="news__grid" data-news></div>
@@ -392,7 +392,7 @@
   <!-- ========== banner ========== -->
   <section class="bagian banner" id="banner" aria-labelledby="judul-banner">
     <div class="kepala-bagian">
-      <h2 id="judul-banner" class="judul" data-i18n="banner.judul">Bikin banner kamu</h2>
+      <h2 id="judul-banner" class="judul" data-i18n-html="banner.judul">Bikin <span class="aksen-merah">Banner Kamu</span></h2>
       <p data-i18n="banner.sub"></p>
     </div>
     <div class="banner__kerja">
@@ -422,7 +422,7 @@
   <!-- ========== sponsor & shop ========== -->
   <section class="bagian" id="shop" aria-labelledby="judul-shop">
     <div class="kepala-bagian">
-      <h2 class="judul" data-i18n="sponsor.judul">Mitra & Sponsorship</h2>
+      <h2 class="judul" data-i18n-html="sponsor.judul">Mitra & <span class="aksen-merah">Sponsorship</span></h2>
       <p data-i18n="sponsor.sub"></p>
     </div>
     <div class="sponsor-grid">
@@ -446,7 +446,7 @@
     <div class="shop">
       <svg class="shop__logo" viewBox="0 0 105.63 183.98" aria-hidden="true"><use href="#simbol"/></svg>
       <div>
-        <h2 id="judul-shop" class="judul" data-i18n="shop.judul">Shop</h2>
+        <h2 id="judul-shop" class="judul" data-i18n-html="shop.judul">R9 <span class="aksen-merah">Shop</span></h2>
         <p data-i18n="shop.isi"></p>
         <p class="shop__segera" data-i18n="shop.segera">Segera hadir</p>
       </div>
@@ -456,7 +456,7 @@
   <!-- ========== contact ========== -->
   <section class="bagian kontak" id="contact" aria-labelledby="judul-kontak">
     <div class="kontak__kiri">
-      <h2 id="judul-kontak" class="judul" data-i18n="kontak.judul">Contact Us</h2>
+      <h2 id="judul-kontak" class="judul" data-i18n-html="kontak.judul">Contact <span class="aksen-merah">Us</span></h2>
       <p data-i18n="kontak.sub"></p>
       <p class="kontak__atau"><span data-i18n="kontak.atau">Atau email langsung:</span><br>
         <a href="mailto:reign9intl@reign9.site">reign9intl@reign9.site</a><br>
@@ -496,9 +496,9 @@
   <p class="kaki__hak" data-i18n="kaki.hak">© 2026 Reign 9 International.</p>
 </footer>
 
-<script src="bahasa.js?v=26110903"></script>
-<script src="cuitan-ixar.js?v=26110903"></script>
-<script src="ixar.js?v=26110903"></script>
-<script src="app.js?v=26110903"></script>
+<script src="bahasa.js?v=26110904"></script>
+<script src="cuitan-ixar.js?v=26110904"></script>
+<script src="ixar.js?v=26110904"></script>
+<script src="app.js?v=26110904"></script>
 </body>
 </html>

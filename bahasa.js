@@ -34,7 +34,7 @@ window.R9_KAMUS = {
   'pita.4': { id: 'Slot sponsor terbuka', en: 'Sponsorship open', zh: '赞助合作开放中' },
 
   // ---------- about ----------
-  'about.judul': { id: 'Together<br>we reign', en: 'Together<br>we reign', zh: '携手<br>称王' },
+  'about.judul': { id: 'Together<br><span class="aksen-merah">we reign</span>', en: 'Together<br><span class="aksen-merah">we reign</span>', zh: '携手<br><span class="aksen-merah">称王</span>' },
   'about.sejarah': {
     id: 'Berdiri pada 11 November 2025, REIGN 9 INTERNATIONAL (R9) adalah organisasi Honor of Kings yang serius. Kami berkomitmen pada pengembangan pemain, disiplin baja, dan performa kompetitif kelas atas. Dengan lingkungan yang mendukung pemain kasual maupun kompetitif, R9 membangun fondasi yang kokoh untuk tumbuh bersama dan sukses jangka panjang.',
     en: 'Established on November 11, 2025, REIGN 9 INTERNATIONAL (R9) is a dedicated Honor of Kings organization. We are committed to player development, iron discipline, and elite competitive performance. By providing a supportive environment for both casual and competitive players, R9 builds a formidable foundation for collective growth and long term success.',
@@ -60,7 +60,7 @@ window.R9_KAMUS = {
   'champion.lihat': { id: 'Lihat dokumentasi juara', en: 'View championship details', zh: '查看夺冠详情' },
 
   // ---------- ethos ----------
-  'ethos.judul': { id: 'Reign 9 Ethos', en: 'Reign 9 Ethos', zh: 'Reign 9 精神' },
+  'ethos.judul': { id: 'Reign 9 <span class="aksen-merah">Ethos</span>', en: 'Reign 9 <span class="aksen-merah">Ethos</span>', zh: 'Reign 9 <span class="aksen-merah">精神</span>' },
   'ethos.isi': {
     id: 'REIGN 9 INTERNATIONAL adalah organisasi esports global yang dibangun di atas disiplin, ketangguhan, dan keunggulan kompetitif. Ditempa oleh kesulitan dan disatukan oleh kesetiaan, brand ini melambangkan kepemimpinan, strategi, dan visi jangka panjang. Sebagai wadah resmi untuk kompetisi dan kemitraan, Reign 9 International berdiri untuk pertumbuhan, integritas, dan kekuatan bersama.',
     en: 'REIGN 9 INTERNATIONAL is a global esports organization built on discipline, resilience, and competitive excellence. Forged through adversity and united by loyalty, the brand represents leadership, strategy, and long term vision. Serving as an official platform for competition and partnership, Reign 9 International stands for growth, integrity, and collective strength.',
@@ -78,7 +78,7 @@ window.R9_KAMUS = {
   'ekosistem.3.isi': { id: 'Pusat kreatif konten, siaran langsung turnamen, mabar komunitas Discord, serta kolaborasi brand & kreator.', en: 'Creative hub for tournament broadcasts, highlights, Discord community events, and brand & creator collaborations.', zh: '赛事直播、精彩集锦、Discord 社区开黑活动以及品牌与创作者合作的创意中心。' },
 
   // ---------- IXAR ----------
-  'ixar.judul': { id: 'Kenalan sama IXAR', en: 'Meet IXAR', zh: '认识 IXAR' },
+  'ixar.judul': { id: 'Kenalan sama <span class="aksen-merah">IXAR</span>', en: 'Meet <span class="aksen-merah">IXAR</span>', zh: '认识 <span class="aksen-merah">IXAR</span>' },
   'ixar.baca': { id: 'Dibaca "IK-SAR" · Maskot Interaktif Penjaga R9', en: 'Pronounced "IK-SAR" · R9 Interactive Guardian Mascot', zh: '读作 "IK-SAR" · R9 互动守护吉祥物' },
   'ixar.isi': { id: 'IXAR adalah maskot Reign 9. "IX" itu angka 9 dalam angka Romawi, angka yang jadi nama kami. Badannya menara kastil: dia penjaga benteng R9 yang aktif menemani kamu saat scroll ke mana saja di halaman ini, bisa di-drag & drop, melompat, dan suka rebahan santai di lantai kalau lagi istirahat.', en: 'IXAR is the Reign 9 mascot. "IX" is the Roman numeral for 9, the number in our name. His body is a castle tower: he actively follows you as you scroll anywhere on the page, can be dragged & dropped with real gravity, and loves lying down on the floor to chill when resting.', zh: 'IXAR 是 Reign 9 的吉祥物。"IX" 是罗马数字 9。他的身体是一座城堡塔楼：当你滚动页面时他会全程跟随你，支持拖拽与真实重力掉落，休息时还会悠闲地躺在地板上。' },
   'ixar.coba': { id: 'Suruh IXAR (dia langsung memperagakan):', en: 'Command IXAR (he performs it live):', zh: '指令 IXAR（实时做出动作）：' },
@@ -115,52 +115,64 @@ window.R9_KAMUS = {
   'pose.pelukis': { id: 'Mode Lukis Banner', en: 'Banner Artist', zh: '横幅画师模式' },
   'pose.kurir': { id: 'Mode Kurir Surat', en: 'Mail Courier', zh: '信使接待模式' },
 
-  // ---------- roster (3-Level Drilldown: Active, Non-Active, & Competitive Division) ----------
-  'roster.judul': { id: 'Rosters', en: 'Rosters', zh: '阵容' },
-  'roster.sub': { id: 'Pilih kategori skuad (Active, Non-Active, atau Competitive Division), lalu pilih tim untuk melihat jajaran anggota R9.', en: 'Select a category (Active, Non-Active, or Competitive Division), then choose a unit to view R9 members.', zh: '选择阵容类别（现役、历史或竞技幕后团队），再查看 R9 成员详情。' },
+  // ---------- roster (3-Level Drilldown: Active Squads, Non-Active Squads, & Management) ----------
+  'roster.judul': { id: 'Our <span class="aksen-merah">Rosters</span>', en: 'Our <span class="aksen-merah">Rosters</span>', zh: 'R9 <span class="aksen-merah">阵容与管理层</span>' },
+  'roster.sub': { id: 'Pilih kategori (Active Squads, Non-Active Squads, atau Management), lalu klik nama tim/divisi untuk melihat daftar anggota.', en: 'Select a category (Active Squads, Non-Active Squads, or Management), then click a team or division to view its members.', zh: '选择类别（现役战队、历史荣誉阵容或管理层部门），再点击具体战队或部门名称查看成员。' },
   'roster.wilayah': { id: 'Skuad Lintas Negara: Indonesia, Malaysia, Singapura & Tiongkok', en: 'Multinational Squad: Indonesia, Malaysia, Singapore & China', zh: '跨国阵容：印度尼西亚、马来西亚、新加坡与中国' },
   'roster.wilayahIsi': { id: 'Berawal dari Indonesia, kini Reign 9 menyatukan talenta terbaik dari berbagai negara Asia dalam satu bendera kompetitif.', en: 'Starting in Indonesia, Reign 9 now unites top Asian talents under one competitive banner.', zh: '从印度尼西亚起步，Reign 9 现已将亚洲多国顶尖人才汇聚在同一面竞技旗帜之下。' },
   'roster.pemain': { id: 'anggota', en: 'members', zh: '名成员' },
   'roster.tim': { id: 'tim', en: 'teams', zh: '支队伍' },
-  'roster.unit': { id: 'divisi', en: 'unit', zh: '个部门' },
-  'roster.coach': { id: 'Man Behind the Match', en: 'Man Behind the Match', zh: '幕后功臣 (Man Behind the Match)' },
+  'roster.unit': { id: 'divisi', en: 'divisions', zh: '个部门' },
+  'roster.coach': { id: 'Management', en: 'Management', zh: '管理层 (Management)' },
   'roster.player': { id: 'Pemain', en: 'Player', zh: '选手' },
-  'roster.kosong': { id: 'Roster lagi disiapin. Pantau terus ya.', en: 'The roster is being prepared. Stay tuned.', zh: '阵容正在准备中，敬请关注。' },
+  'roster.kosong': { id: 'Daftar anggota di tim/divisi ini sedang disiapkan dan dapat ditambahkan langsung melalui Admin Panel.', en: 'Member list for this team/division is being prepared and can be added via the Admin Panel.', zh: '该队伍/部门成员名单正在整理中，可通过管理后台随时添加。' },
   'roster.gabung': { id: 'Gabung', en: 'Joined', zh: '加入于' },
   'roster.periode': { id: 'Periode perjuangan', en: 'Active era', zh: '效力时期' },
   'roster.hero': { id: 'Spesialisasi / Hero Andalan', en: 'Specialty / Signature Heroes', zh: '专长 / 招牌英雄' },
 
-  // Kategori Level 1: Active Squads, Non-Active Squads (History), & Competitive Division (Man Behind the Match)
-  'roster.kategori.aktif': { id: 'Active Squads', en: 'Active Squads', zh: '现役阵容 (Active Squads)' },
-  'roster.kategori.aktifSub': { id: 'Tim utama & skuad pemain regional yang aktif bertanding di turnamen saat ini', en: 'Primary & regional player rosters actively competing in current tournaments', zh: '当前活跃征战赛事的主力选手与区域战队' },
-  'roster.kategori.nonaktif': { id: 'Non-Active Squads', en: 'Non-Active Squads', zh: '历史荣誉阵容 (Non-Active)' },
-  'roster.kategori.nonaktifSub': { id: 'Sejarah tim & mantan pejuang yang pernah mengharumkan nama R9', en: 'Historical squads & former warriors who fought under the R9 banner', zh: '曾代表 R9 并肩作战的历史分队与前成员' },
-  'roster.kategori.kompetitif': { id: 'Competitive Division', en: 'Competitive Division', zh: '竞技管理部 (Competitive Division)' },
-  'roster.kategori.kompetitifSub': { id: 'Man Behind the Match — Jajaran Coach, Analyst, & Manager di balik strategi R9', en: 'Man Behind the Match — Coaches, Analysts & Managers behind R9 strategy', zh: 'Man Behind the Match —— 幕后教练、分析师与战队经理团队' },
+  // Kategori Level 1: Active Squads, Non-Active Squads (History), & Management (5 Divisi)
+  'roster.kategori.aktif': { id: 'Active Squads', en: 'Active Squads', zh: '现役战队 (Active Squads)' },
+  'roster.kategori.aktifSub': { id: 'Daftar tim pemain aktif R9 — klik untuk memilih tim dan melihat jajaran pemainnya', en: 'Active R9 competitive teams — click to select a team and view its players', zh: 'R9 现役竞技战队 —— 点击选择战队并查看选手名单' },
+  'roster.kategori.nonaktif': { id: 'Non-Active Squads', en: 'Non-Active Squads', zh: '历史荣誉战队 (Non-Active)' },
+  'roster.kategori.nonaktifSub': { id: 'Daftar tim roster terdahulu & sejarah skuad yang pernah berjuang bersama R9', en: 'Former roster teams & historical squads that fought under the R9 banner', zh: '曾代表 R9 出战的历届战队与历史阵容' },
+  'roster.kategori.management': { id: 'Management', en: 'Management', zh: '管理层 (Management)' },
+  'roster.kategori.managementSub': { id: '5 Divisi Manajemen R9: Media and Publication, Competitive, HR & Community, Secretariat, dan BizDev', en: '5 R9 Management Divisions: Media and Publication, Competitive, HR & Community, Secretariat, and BizDev', zh: 'R9 五大管理部门：媒体宣传、竞技部、人事与社区、秘书处及商务拓展' },
+  'roster.kategori.kompetitif': { id: 'Management', en: 'Management', zh: '管理层 (Management)' },
+  'roster.kategori.kompetitifSub': { id: '5 Divisi Manajemen R9: Media and Publication, Competitive, HR & Community, Secretariat, dan BizDev', en: '5 R9 Management Divisions: Media and Publication, Competitive, HR & Community, Secretariat, and BizDev', zh: 'R9 五大管理部门：媒体宣传、竞技部、人事与社区、秘书处及商务拓展' },
 
-  'roster.pilihKategori': { id: '👆 Klik salah satu kategori di atas (Active Squads, Non-Active Squads, atau Competitive Division) untuk membuka daftar.', en: '👆 Click a category above (Active Squads, Non-Active Squads, or Competitive Division) to explore.', zh: '👆 请点击上方任一类别（现役阵容、历史荣誉阵容或竞技管理部）以查看详情。' },
-  'roster.pilihTim': { id: '👆 Pilih salah satu nama tim/divisi di atas untuk menampilkan jajaran anggotanya.', en: '👆 Select a team/unit above to display its members.', zh: '👆 请点击上方队伍/部门名称以展示其成员。' },
+  'roster.pilihKategori': { id: '👆 Klik salah satu kategori di atas (Active Squads, Non-Active Squads, atau Management) untuk membuka pilihan tim/divisi.', en: '👆 Click a category above (Active Squads, Non-Active Squads, or Management) to open teams or divisions.', zh: '👆 请点击上方任一类别（现役战队、历史荣誉战队或管理层）以展开队伍或部门选项。' },
+  'roster.pilihTim': { id: '👆 Klik salah satu nama tim atau divisi di atas untuk menampilkan daftar anggotanya.', en: '👆 Click a team or division name above to display its members.', zh: '👆 请点击上方具体的队伍或部门名称以显示成员名单。' },
 
-  // Nama Tim & Divisi
-  'kelompok.R9 Main Roster': { id: 'R9 Main Roster', en: 'R9 Main Roster', zh: 'R9 主力战队' },
-  'kelompok.Main Roster': { id: 'R9 Main Roster', en: 'R9 Main Roster', zh: 'R9 主力战队' },
-  'kelompok.R9 Malaysia': { id: 'R9 Malaysia', en: 'R9 Malaysia', zh: 'R9 马来西亚分部' },
-  'kelompok.Academy': { id: 'R9 Academy', en: 'R9 Academy', zh: 'R9 青训分部' },
-  'kelompok.Competitive Division': { id: 'Man Behind the Match', en: 'Man Behind the Match', zh: 'Man Behind the Match · 幕后战术团队' },
-  'kelompok.Man Behind the Match': { id: 'Man Behind the Match', en: 'Man Behind the Match', zh: 'Man Behind the Match · 幕后战术团队' },
+  // Nama Tim & 5 Divisi Management
+  'kelompok.R9 Main Roster': { id: 'R9 Main Roster', en: 'R9 Main Roster', zh: 'R9 主力战队 (Main Roster)' },
+  'kelompok.Main Roster': { id: 'R9 Main Roster', en: 'R9 Main Roster', zh: 'R9 主力战队 (Main Roster)' },
+  'kelompok.R9 Malaysia': { id: 'R9 Malaysia', en: 'R9 Malaysia', zh: 'R9 马来西亚分队' },
+  'kelompok.Academy': { id: 'R9 Academy', en: 'R9 Academy', zh: 'R9 青训分队' },
+  'kelompok.Media and Publication': { id: 'Media and Publication', en: 'Media and Publication', zh: 'Media and Publication · 媒体与宣传部' },
+  'kelompok.Competitive': { id: 'Competitive Division', en: 'Competitive Division', zh: 'Competitive Division · 竞技赛事部' },
+  'kelompok.Competitive Division': { id: 'Competitive Division', en: 'Competitive Division', zh: 'Competitive Division · 竞技赛事部' },
+  'kelompok.Man Behind the Match': { id: 'Competitive Division', en: 'Competitive Division', zh: 'Competitive Division · 竞技赛事部' },
+  'kelompok.HR & Community': { id: 'HR & Community', en: 'HR & Community', zh: 'HR & Community · 人事与社区部' },
+  'kelompok.Secretariat': { id: 'Secretariat', en: 'Secretariat', zh: 'Secretariat · 秘书处' },
+  'kelompok.BizDev': { id: 'BizDev', en: 'BizDev', zh: 'BizDev · 商务拓展部' },
   'kelompok.R9 Genesis (2025)': { id: 'R9 Genesis (2025)', en: 'R9 Genesis (2025)', zh: 'R9 创世初代队 (2025)' },
   'kelompok.R9 Valkyrie': { id: 'R9 Valkyrie', en: 'R9 Valkyrie', zh: 'R9 女武神分队' },
   'kelompok.Legacy Squad': { id: 'R9 Legacy Squad', en: 'R9 Legacy Squad', zh: 'R9 历届荣誉分队' },
 
-  // Deskripsi singkat tiap tim saat muncul di Level 2
+  // Deskripsi singkat tiap tim / divisi saat muncul di Level 2
   'deskripsiTim.R9 Main Roster': { id: 'Skuad utama Honor of Kings lintas negara', en: 'Primary multinational Honor of Kings lineup', zh: '王者荣耀跨国主力阵容' },
   'deskripsiTim.Main Roster': { id: 'Skuad utama Honor of Kings lintas negara', en: 'Primary multinational Honor of Kings lineup', zh: '王者荣耀跨国主力阵容' },
   'deskripsiTim.R9 Malaysia': { id: 'Skuad regional Malaysia & Singapura', en: 'Malaysia & Singapore regional squad', zh: '马来西亚与新加坡区域分部' },
-  'deskripsiTim.Competitive Division': { id: 'Man Behind the Match — Coach, Analyst, & Manager pengatur taktik dan operasional R9', en: 'Man Behind the Match — Coaches, Analysts & Managers driving R9 tactics and operations', zh: 'Man Behind the Match —— 统筹 R9 战术与运营的幕后教练、分析师与经理' },
-  'deskripsiTim.Man Behind the Match': { id: 'Man Behind the Match — Coach, Analyst, & Manager pengatur taktik dan operasional R9', en: 'Man Behind the Match — Coaches, Analysts & Managers driving R9 tactics and operations', zh: 'Man Behind the Match —— 统筹 R9 战术与运营的幕后教练、分析师与经理' },
-  'deskripsiTim.R9 Genesis (2025)': { id: 'Skuad perintis awal berdirinya R9 (2025–2026)', en: 'Founding pioneer squad of R9 (2025–2026)', zh: 'R9 成立初期的初代先驱阵容 (2025–2026)' },
-  'deskripsiTim.R9 Valkyrie': { id: 'Eks divisi turnamen komunitas & kualifikasi', en: 'Former community & qualifier tournament squad', zh: '曾出战社区赛与预选赛的历史分队' },
-  'deskripsiTim.Legacy Squad': { id: 'Para mantan anggota yang pernah berjuang bersama R9', en: 'Former members who fought alongside R9', zh: '曾与 R9 并肩作战的历届成员' },
+  'deskripsiTim.Media and Publication': { id: 'Divisi kreatif konten, publikasi media sosial, desain visual, dan siaran resmi Reign 9', en: 'Creative content, social media publication, visual design, and official broadcasts', zh: '负责 R9 内容创作、社交媒体宣传、视觉设计与官方直播' },
+  'deskripsiTim.Competitive': { id: 'Man Behind the Match — Divisi manajemen tim kompetitif, pelatih, analis, dan operasional turnamen', en: 'Man Behind the Match — Competitive team management, coaching staff, analysts, and tournament ops', zh: 'Man Behind the Match —— 负责竞技战队管理、教练组、战术分析与赛事运营' },
+  'deskripsiTim.Competitive Division': { id: 'Man Behind the Match — Divisi manajemen tim kompetitif, pelatih, analis, dan operasional turnamen', en: 'Man Behind the Match — Competitive team management, coaching staff, analysts, and tournament ops', zh: 'Man Behind the Match —— 负责竞技战队管理、教练组、战术分析与赛事运营' },
+  'deskripsiTim.Man Behind the Match': { id: 'Man Behind the Match — Divisi manajemen tim kompetitif, pelatih, analis, dan operasional turnamen', en: 'Man Behind the Match — Competitive team management, coaching staff, analysts, and tournament ops', zh: 'Man Behind the Match —— 负责竞技战队管理、教练组、战术分析与赛事运营' },
+  'deskripsiTim.HR & Community': { id: 'Divisi pengembangan SDM, rekrutmen talenta, manajemen guild in-game, dan komunitas Discord', en: 'Human resources, talent recruitment, in-game guild management, and Discord community', zh: '负责人才招募、成员发展、游戏内公会管理与 Discord 社区建设' },
+  'deskripsiTim.Secretariat': { id: 'Divisi kesekretariatan, administrasi organisasi, dokumentasi, dan tata kelola internal R9', en: 'Organizational administration, official documentation, and internal governance', zh: '负责组织行政、官方档案文档与内部规范管理' },
+  'deskripsiTim.BizDev': { id: 'Divisi Business Development, kemitraan strategis, sponsorship, dan relasi eksternal', en: 'Business development, strategic partnerships, sponsorships, and external relations', zh: '负责商务拓展、战略合作伙伴关系、品牌赞助与对外联络' },
+  'deskripsiTim.R9 Genesis (2025)': { id: 'Tim roster perintis awal berdirinya R9 (2025–2026)', en: 'Founding pioneer roster squad of R9 (2025–2026)', zh: 'R9 成立初期的初代先驱阵容 (2025–2026)' },
+  'deskripsiTim.R9 Valkyrie': { id: 'Tim roster terdahulu divisi turnamen komunitas & kualifikasi', en: 'Former community & qualifier tournament squad', zh: '曾出战社区赛与预选赛的历史分队' },
+  'deskripsiTim.Legacy Squad': { id: 'Tim roster terdahulu & mantan anggota yang pernah berjuang bersama R9', en: 'Former roster squad & members who fought alongside R9', zh: '曾与 R9 并肩作战的历届荣誉阵容' },
 
   // Negara Lengkap
   'negara.ID': { id: 'Indonesia', en: 'Indonesia', zh: '印度尼西亚' },
@@ -184,10 +196,10 @@ window.R9_KAMUS = {
   'role.Manajer': { id: 'Manager', en: 'Manager', zh: '经理' },
   'role.Cadangan': { id: 'Substitute', en: 'Substitute', zh: '替补' },
   'role.Analis': { id: 'Analyst', en: 'Analyst', zh: '分析师' },
-  'role.Konten': { id: 'Content', en: 'Content', zh: '内容创作' },
+  'role.Konten': { id: 'Media & Publication', en: 'Media & Publication', zh: '媒体与内容' },
 
   // ---------- schedule ----------
-  'jadwal.judul': { id: 'Schedule', en: 'Schedule', zh: '赛程' },
+  'jadwal.judul': { id: 'Match <span class="aksen-merah">Schedule</span>', en: 'Match <span class="aksen-merah">Schedule</span>', zh: '赛事与<span class="aksen-merah">赛程</span>' },
   'jadwal.sub': { id: 'Turnamen, hasil scrim, dan acara komunitas R9.', en: 'Tournaments, scrim results, and R9 community events.', zh: 'R9 的赛事、训练赛战果与社区活动。' },
   'jadwal.akan': { id: 'Akan datang & Live', en: 'Upcoming & Live', zh: '即将到来与直播' },
   'jadwal.lewat': { id: 'Riwayat pertandingan & event', en: 'Past matches & events', zh: '历史比赛与活动' },
@@ -215,15 +227,20 @@ window.R9_KAMUS = {
   },
 
   // ---------- news ----------
-  'news.judul': { id: 'News', en: 'News', zh: '新闻' },
-  'news.sub': { id: 'Kabar terbaru dari Reign 9 International.', en: 'The latest from Reign 9 International.', zh: 'Reign 9 International 最新动态。' },
-  'news.baca': { id: 'Baca selengkapnya', en: 'Read more', zh: '阅读全文' },
+  'news.judul': { id: 'Latest <span class="aksen-merah">News</span>', en: 'Latest <span class="aksen-merah">News</span>', zh: '最新<span class="aksen-merah">新闻</span>' },
+  'news.sub': { id: 'Kabar terbaru dari Reign 9 International. Klik berita untuk membaca di halaman khusus News.', en: 'The latest from Reign 9 International. Click any article to read on our dedicated News page.', zh: 'Reign 9 International 最新动态。点击文章进入专属新闻页面阅读全文。' },
+  'news.baca': { id: 'Baca berita lengkap', en: 'Read full article', zh: '阅读完整文章' },
   'news.tutup': { id: 'Tutup', en: 'Close', zh: '关闭' },
   'news.kosong': { id: 'Belum ada berita.', en: 'No news yet.', zh: '暂无新闻。' },
   'news.lebih': { id: 'Lihat berita lama', en: 'Show older news', zh: '查看更早的新闻' },
+  'news.kembali': { id: '← Kembali ke Beranda', en: '← Back to Home', zh: '← 返回首页' },
+  'news.bagikan': { id: 'Salin Tautan Berita', en: 'Copy Article Link', zh: '复制文章链接' },
+  'news.tersalin': { id: 'Tautan Tersalin!', en: 'Link Copied!', zh: '链接已复制！' },
+  'news.lainnya': { id: 'Berita <span class="aksen-merah">Lainnya</span>', en: 'More <span class="aksen-merah">News</span>', zh: '更多<span class="aksen-merah">新闻</span>' },
+  'news.lencana': { id: 'BERITA RESMI // REIGN 9', en: 'OFFICIAL NEWS // REIGN 9', zh: '官方新闻 // REIGN 9' },
 
   // ---------- banner ----------
-  'banner.judul': { id: 'Bikin banner kamu', en: 'Make your banner', zh: '制作你的横幅' },
+  'banner.judul': { id: 'Bikin <span class="aksen-merah">Banner Kamu</span>', en: 'Make Your <span class="aksen-merah">Banner</span>', zh: '制作你的<span class="aksen-merah">专属横幅</span>' },
   'banner.sub': { id: 'Pilih banner R9, ketik nama kamu, pilih role/negara, lalu unduh. Cocok buat header X, Discord, atau YouTube.', en: 'Pick an R9 banner, type your name, choose role/country, and download. Made for X, Discord, or YouTube headers.', zh: '选一张 R9 横幅，输入名字、选择分路与国家并下载。适用于 X、Discord 或 YouTube 头图。' },
   'banner.pilih': { id: 'Pilih latar banner', en: 'Choose a banner background', zh: '选择横幅背景' },
   'banner.nama': { id: 'Nama / Nickname kamu', en: 'Your Name / Nickname', zh: '你的名字 / 游戏 ID' },
@@ -239,15 +256,15 @@ window.R9_KAMUS = {
   'banner.5': { id: 'Gerbang', en: 'Gate', zh: '城门' },
 
   // ---------- sponsor & shop ----------
-  'sponsor.judul': { id: 'Mitra & Sponsorship', en: 'Partners & Sponsorship', zh: '合作伙伴与赞助' },
+  'sponsor.judul': { id: 'Mitra & <span class="aksen-merah">Sponsorship</span>', en: 'Partners & <span class="aksen-merah">Sponsorship</span>', zh: '合作伙伴与<span class="aksen-merah">赞助</span>' },
   'sponsor.sub': { id: 'Slot kolaborasi resmi Reign 9 International terbuka untuk brand gaming, peripheral, lifestyle, dan F&B.', en: 'Official Reign 9 International partnership slots are open for gaming, peripheral, lifestyle, and F&B brands.', zh: 'Reign 9 International 官方合作席位现面向游戏、外设、生活方式及餐饮品牌开放。' },
   'sponsor.cta': { id: 'Ajukan Kerja Sama', en: 'Inquire Partnership', zh: '洽谈合作' },
-  'shop.judul': { id: 'Shop', en: 'Shop', zh: '商店' },
+  'shop.judul': { id: 'R9 <span class="aksen-merah">Shop</span>', en: 'R9 <span class="aksen-merah">Shop</span>', zh: 'R9 <span class="aksen-merah">官方商店</span>' },
   'shop.isi': { id: 'Merchandise resmi R9 segera hadir. Jersey Pro Kit 2026, kaos komunitas, dan koleksi edisi maskot IXAR sedang disiapkan.', en: 'Official R9 merchandise is coming soon. Pro Kit 2026 Jerseys, community tees, and IXAR mascot editions are in the works.', zh: 'R9 官方周边即将上线。2026 战队队服、社区 T 恤和 IXAR 限定款正在准备中。' },
   'shop.segera': { id: 'Segera hadir', en: 'Coming soon', zh: '即将上线' },
 
   // ---------- contact ----------
-  'kontak.judul': { id: 'Contact Us', en: 'Contact Us', zh: '联系我们' },
+  'kontak.judul': { id: 'Contact <span class="aksen-merah">Us</span>', en: 'Contact <span class="aksen-merah">Us</span>', zh: '联系<span class="aksen-merah">我们</span>' },
   'kontak.sub': { id: 'Sponsor, kerja sama, media, trial pemain, atau pertanyaan apa pun: kirim pesan ke kami.', en: 'Sponsorship, partnership, media, player trials, or any question: send us a message.', zh: '赞助、合作、媒体、选手试训或任何问题，欢迎给我们留言。' },
   'kontak.nama': { id: 'Nama', en: 'Name', zh: '姓名' },
   'kontak.email': { id: 'Email', en: 'Email', zh: '电子邮箱' },

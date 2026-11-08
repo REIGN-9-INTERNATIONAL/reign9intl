@@ -117,7 +117,9 @@ tombolMenu.addEventListener('click', () => { const buka = tombolMenu.getAttribut
 menu.addEventListener('click', (e) => { if (e.target.closest('a')) { tombolMenu.setAttribute('aria-expanded', 'false'); menu.classList.remove('buka'); } });
 
 // ---------- sosmed di kaki ----------
-$('[data-sosmed-salin]').innerHTML = $('.hero .sosmed').innerHTML;
+if ($('[data-sosmed-salin]') && $('.hero .sosmed')) {
+  $('[data-sosmed-salin]').innerHTML = $('.hero .sosmed').innerHTML;
+}
 
 // ---------- salin guild ID ----------
 $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
@@ -945,7 +947,9 @@ $$('.bendera__kain').forEach((kain) => {
   }
 });
 const podium = $('.podium');
-new IntersectionObserver((d, o) => { if (d.some((e) => e.isIntersecting)) { podium.classList.add('keliatan'); o.disconnect(); } }, { threshold: .15 }).observe(podium);
+if (podium) {
+  new IntersectionObserver((d, o) => { if (d.some((e) => e.isIntersecting)) { podium.classList.add('keliatan'); o.disconnect(); } }, { threshold: .15 }).observe(podium);
+}
 
 // ---------- Command Deck IXAR (#ixar): Filter Tab, Kartu Pose, & Tombol 200 Cuitan ----------
 $$('[data-tab-pose]').forEach((tab) => tab.addEventListener('click', () => {
@@ -1009,8 +1013,17 @@ const POSE_IXAR_ROLE = {
 // ---------- state menu 3 tingkat & sinkronisasi live ----------
 let DATA = null;
 let newsTampil = 6;
-let kategoriTerpilih = null; // null | 'aktif' | 'nonaktif' | 'kompetitif' (Diklik dulu baru muncul nama grup/tim!)
-let timTerpilih = null;      // null | string nama tim (Diklik dulu baru muncul pemain/coach/manager!)
+let kategoriTerpilih = null; // null | 'aktif' | 'nonaktif' | 'management' (Diklik dulu baru muncul daftar tim/divisi!)
+let timTerpilih = null;      // null | string nama tim/divisi (Diklik dulu baru muncul daftar pemain/anggota!)
+
+// 5 Divisi Resmi di bawah Management (плюс bisa ditambah divisi baru lewat Admin Panel)
+const DIVISI_MANAGEMENT_RESMI = [
+  'Media and Publication',
+  'Competitive',
+  'HR & Community',
+  'Secretariat',
+  'BizDev',
+];
 
 // Resolusi URL media (foto pemain, gambar news, & dokumentasi prestasi) langsung ke server live admin.reign9.site
 function urlMedia(jalur) {
@@ -1036,44 +1049,54 @@ async function ambilDataLive() {
 
 const hariIni = () => new Date().toISOString().slice(0, 10);
 
-// Deteksi apakah anggota termasuk kategori Competitive Division (Man Behind the Match)
-function apakahKompetitif(p) {
+// Deteksi apakah anggota termasuk kategori Management (Media and Publication, Competitive, HR & Community, Secretariat, BizDev)
+function apakahManagement(p) {
   if (!p) return false;
-  if (p.status === 'kompetitif') return true;
+  if (p.status === 'management' || p.status === 'kompetitif') return true;
   const kel = String(p.kelompok || p.divisi || '').trim();
-  if (['Competitive Division', 'Coaching & Staff', 'Man Behind the Match'].includes(kel)) return true;
-  return p.jenis === 'coach' || ['Pelatih', 'Manajer', 'Analis', 'Konten'].includes(p.role);
+  if ([...DIVISI_MANAGEMENT_RESMI, 'Competitive Division', 'Coaching & Staff', 'Man Behind the Match', 'Management', 'Media & Publication'].includes(kel)) return true;
+  return p.jenis === 'coach' || ['Pelatih', 'Manajer', 'Analis', 'Konten', 'Media and Publication', 'HR & Community', 'Secretariat', 'BizDev'].includes(p.role);
 }
 
-// Menentukan nama tim/grup untuk setiap anggota (sinkron dengan kolom Divisi & Role di Admin)
+// Menentukan nama tim (Active/Non-Active) atau nama divisi (Management) untuk setiap anggota
 function namaTimPemain(p, status = 'aktif') {
-  if (status === 'kompetitif') {
-    if (p.kelompok && !['Competitive Division', 'Coaching & Staff', 'Honor of Kings', 'Main Roster', 'Man Behind the Match'].includes(p.kelompok)) {
-      return p.kelompok;
-    }
-    return 'Man Behind the Match';
+  const kel = String(p.kelompok || '').trim();
+  const div = String(p.divisi || '').trim();
+
+  if (status === 'management' || status === 'kompetitif') {
+    if (['Competitive', 'Competitive Division', 'Coaching & Staff', 'Man Behind the Match'].includes(kel)) return 'Competitive';
+    if (['Media and Publication', 'Media & Publication'].includes(kel)) return 'Media and Publication';
+    if (['HR & Community', 'HR and Community'].includes(kel)) return 'HR & Community';
+    if (kel === 'Secretariat') return 'Secretariat';
+    if (['BizDev', 'Business Development'].includes(kel)) return 'BizDev';
+    if (kel && !['Honor of Kings', 'Main Roster', 'R9 Main Roster'].includes(kel)) return kel;
+    if (p.role === 'Konten' || p.role === 'Media and Publication') return 'Media and Publication';
+    if (DIVISI_MANAGEMENT_RESMI.includes(p.role)) return p.role;
+    return 'Competitive';
   }
-  if (p.kelompok) {
-    if (['Coaching & Staff', 'Competitive Division', 'Man Behind the Match'].includes(p.kelompok)) return 'Man Behind the Match';
-    if (p.kelompok === 'Main Roster') return 'R9 Main Roster';
-    return p.kelompok;
+
+  if (kel) {
+    if (kel === 'Main Roster') return 'R9 Main Roster';
+    return kel;
   }
-  if (p.divisi && p.divisi !== 'Honor of Kings') {
-    if (['Coaching & Staff', 'Competitive Division', 'Man Behind the Match'].includes(p.divisi)) return 'Man Behind the Match';
-    if (p.divisi === 'Main Roster') return 'R9 Main Roster';
-    return p.divisi;
+  if (div && div !== 'Honor of Kings') {
+    if (div === 'Main Roster') return 'R9 Main Roster';
+    return div;
   }
   return status === 'nonaktif' ? 'Legacy Squad' : 'R9 Main Roster';
 }
 
 function renderKartuPemain(p) {
-  const coach = p.jenis === 'coach' || ['Pelatih', 'Manajer', 'Analis', 'Konten'].includes(p.role);
-  const roleLabel = p.role ? R9.t(`role.${p.role}`) : (coach ? R9.t('roster.coach') : R9.t('roster.player'));
+  const coach = apakahManagement(p);
+  const roleKamus = p.role ? R9.t(`role.${p.role}`) : '';
+  const roleLabel = p.role
+    ? (roleKamus !== `role.${p.role}` ? roleKamus : p.role)
+    : (coach ? R9.t('roster.coach') : R9.t('roster.player'));
   const ikonRole = IKON_ROLE[coach ? 'Coach' : p.role] || '';
   const kodeNegara = (p.negara || 'ID').toUpperCase();
   const benderaSvg = BENDERA[kodeNegara] || '';
   const namaNegara = R9.t(`negara.${kodeNegara}`);
-  const poseIxar = p.poseIxar || POSE_IXAR_ROLE[p.role] || (coach ? 'bendera' : 'pedang');
+  const poseIxar = p.poseIxar || POSE_IXAR_ROLE[p.role] || (coach ? 'manajer' : 'pedang');
 
   const daftarHero = Array.isArray(p.hero)
     ? p.hero
@@ -1089,10 +1112,9 @@ function renderKartuPemain(p) {
 
   const sumberFoto = urlMedia(p.foto);
   const cadanganLokal = p.foto && !/^(https?:|data:|blob:)/i.test(p.foto) ? String(p.foto).replace(/^\/+/, '') : '';
-  // Jika tidak ada foto, gunakan karakter IXAR sesuai role.
-  // Jika URL foto gagal dimuat, coba salinan lokal dulu lalu otomatis jatuh ke IXAR!
+  // Rasio foto 3:5 portrait (width="360" height="600")
   const htmlFoto = sumberFoto
-    ? `<img class="kartu-pemain__foto" src="${esc(sumberFoto)}" data-cadangan-lokal="${esc(cadanganLokal)}" alt="${esc(p.nickname)}" loading="lazy" width="400" height="500" data-pose-cadangan="${esc(poseIxar)}">`
+    ? `<img class="kartu-pemain__foto" src="${esc(sumberFoto)}" data-cadangan-lokal="${esc(cadanganLokal)}" alt="${esc(p.nickname)}" loading="lazy" width="360" height="600" data-pose-cadangan="${esc(poseIxar)}">`
     : `<div class="kartu-pemain__tanpa"><span class="kartu-pemain__ixar" data-ixar="${esc(poseIxar)}" data-ixar-interaktif></span></div>`;
 
   return `<li class="kartu-pemain ${coach ? 'kartu-pemain--coach' : ''}">
@@ -1139,6 +1161,10 @@ function aktifkanIxarKartu(wadah) {
 
 function kelompokkanTim(daftar, status) {
   const map = new Map();
+  // Untuk kategori Management, sediakan 5 divisi resmi secara berurutan (+ divisi tambahan dari Admin)
+  if (status === 'management') {
+    DIVISI_MANAGEMENT_RESMI.forEach((div) => map.set(div, []));
+  }
   daftar.forEach((p) => {
     const nama = namaTimPemain(p, status);
     if (!map.has(nama)) map.set(nama, []);
@@ -1147,13 +1173,84 @@ function kelompokkanTim(daftar, status) {
   return map;
 }
 
+function renderKartuBerita(n) {
+  return `<a class="berita" href="news.html?id=${encodeURIComponent(n.id)}">
+    ${n.gambar ? `<img src="${esc(urlMedia(n.gambar))}" alt="${esc(R9.teks(n.judul))}" loading="lazy" width="800" height="450">` : ''}
+    <span class="berita__isi">
+      <time datetime="${esc(n.tanggal)}">${esc(R9.tanggal(n.tanggal))}</time>
+      <h3>${esc(R9.teks(n.judul))}</h3>
+      <p>${esc(R9.teks(n.ringkas) || String(R9.teks(n.isi)).slice(0, 140))}</p>
+      <span class="berita__baca">${esc(R9.t('news.baca'))} →</span>
+    </span>
+  </a>`;
+}
+
+// Render Halaman Khusus News (news.html)
+function gambarHalamanBerita(d) {
+  const wadahUtama = $('[data-artikel-berita]');
+  if (!wadahUtama) return;
+  const news = (d.news || []).slice().sort((a, b) => (b.tanggal > a.tanggal ? 1 : -1));
+  const params = new URLSearchParams(location.search);
+  const idCari = params.get('id');
+  const artikel = (idCari && news.find((x) => String(x.id) === String(idCari))) || news[0];
+
+  if (!artikel) {
+    wadahUtama.innerHTML = `<p class="kosong">${esc(R9.t('news.kosong'))}</p>`;
+    return;
+  }
+
+  document.title = `${R9.teks(artikel.judul)} · Reign 9 International News`;
+  const paragraf = String(R9.teks(artikel.isi) || '')
+    .split(/\n\s*\n/)
+    .map((p) => p.trim())
+    .filter(Boolean);
+
+  wadahUtama.innerHTML = `
+    ${artikel.gambar
+      ? `<img class="artikel-berita__gambar" src="${esc(urlMedia(artikel.gambar))}" alt="${esc(R9.teks(artikel.judul))}" width="1200" height="675">`
+      : `<div class="artikel-berita__visual"><svg viewBox="0 0 188.61 237.24" aria-hidden="true"><use href="#tegak"/></svg></div>`}
+    <div class="artikel-berita__badan">
+      <div class="artikel-berita__meta">
+        <span class="artikel-berita__lencana">${esc(R9.t('news.lencana'))}</span>
+        <time class="artikel-berita__tanggal" datetime="${esc(artikel.tanggal)}">${esc(R9.tanggal(artikel.tanggal))}</time>
+      </div>
+      <h1 class="artikel-berita__judul">${esc(R9.teks(artikel.judul))}</h1>
+      ${R9.teks(artikel.ringkas) ? `<p class="artikel-berita__ringkas">${esc(R9.teks(artikel.ringkas))}</p>` : ''}
+      <div class="artikel-berita__isi">
+        ${paragraf.map((par) => `<p>${esc(par)}</p>`).join('')}
+      </div>
+      <div class="artikel-berita__aksi">
+        <a class="tombol tombol--garis tombol--kecil" href="index.html#news">${esc(R9.t('news.kembali'))}</a>
+        <button type="button" class="tombol tombol--utama tombol--kecil" data-salin-berita>${esc(R9.t('news.bagikan'))}</button>
+      </div>
+    </div>
+  `;
+
+  $('[data-salin-berita]', wadahUtama)?.addEventListener('click', async (e) => {
+    const btn = e.currentTarget;
+    try { await navigator.clipboard.writeText(location.href); } catch (err) {}
+    btn.textContent = R9.t('news.tersalin');
+    setTimeout(() => { btn.textContent = R9.t('news.bagikan'); }, 1800);
+  });
+
+  const wadahLainnya = $('[data-news-lainnya]');
+  if (wadahLainnya) {
+    const daftarLain = news.filter((x) => String(x.id) !== String(artikel.id));
+    wadahLainnya.innerHTML = (daftarLain.length ? daftarLain : news).map(renderKartuBerita).join('');
+  }
+}
+
 function gambarData() {
   const d = DATA || { pemain: { aktif: [], nonaktif: [] }, event: [], prestasi: [], news: [], ringkas: {} };
+
+  if ($('[data-artikel-berita]')) {
+    gambarHalamanBerita(d);
+  }
 
   // 1. Podium, Champion Spotlight (inspirasi nmss.gg), & Hadiah
   const rk = d.ringkas || {};
   $$('[data-juara]').forEach((el) => { const n = rk[`juara${el.dataset.juara}`]; el.textContent = n ? n : '–'; });
-  $('[data-hadiah]').textContent = R9.rupiah(rk.totalHadiah) || R9.t('hadiah.kosong');
+  if ($('[data-hadiah]')) $('[data-hadiah]').textContent = R9.rupiah(rk.totalHadiah) || R9.t('hadiah.kosong');
 
   const wadahChampion = $('[data-champion-wadah]');
   if (wadahChampion) {
@@ -1172,22 +1269,23 @@ function gambarData() {
     }
   }
 
-  // 2. Statistik Wilayah & Bendera (Seluruh anggota aktif & kompetitif)
+  // 2. Statistik Wilayah & Bendera (Seluruh anggota aktif & management)
   const semuaAktif = d.pemain?.aktif || [];
-  const aktif = semuaAktif.filter((p) => !apakahKompetitif(p));
+  const aktif = semuaAktif.filter((p) => !apakahManagement(p));
   const nonaktif = d.pemain?.nonaktif || [];
-  const mentahKompetitif = [
+  const mentahManagement = [
+    ...(d.pemain?.management || []),
     ...(d.pemain?.kompetitif || []),
-    ...semuaAktif.filter((p) => apakahKompetitif(p)),
+    ...semuaAktif.filter((p) => apakahManagement(p)),
   ];
-  const idKompetitif = new Set();
-  const kompetitif = mentahKompetitif.filter((p) => {
+  const idManagement = new Set();
+  const management = mentahManagement.filter((p) => {
     const kunci = String(p.id || p.nickname || '');
-    if (idKompetitif.has(kunci)) return false;
-    idKompetitif.add(kunci);
+    if (idManagement.has(kunci)) return false;
+    idManagement.add(kunci);
     return true;
   });
-  const anggotaAktifTotal = [...aktif, ...kompetitif];
+  const anggotaAktifTotal = [...aktif, ...management];
   const hitungNegara = {};
   anggotaAktifTotal.forEach((p) => {
     const neg = (p.negara || 'ID').toUpperCase();
@@ -1200,19 +1298,21 @@ function gambarData() {
       .map((kode) => BENDERA[kode] || '')
       .join('');
   }
-  $('[data-hitung-negara]').innerHTML = anggotaAktifTotal.length
-    ? `<span>${anggotaAktifTotal.length} ${esc(R9.t('roster.pemain'))}</span>` +
-      Object.entries(hitungNegara)
-        .map(([k, v]) => `<span class="wilayah__negara-item">${BENDERA[k] || ''} ${esc(R9.t(`negara.${k}`))} (${v})</span>`)
-        .join('')
-    : '';
+  if ($('[data-hitung-negara]')) {
+    $('[data-hitung-negara]').innerHTML = anggotaAktifTotal.length
+      ? `<span>${anggotaAktifTotal.length} ${esc(R9.t('roster.pemain'))}</span>` +
+        Object.entries(hitungNegara)
+          .map(([k, v]) => `<span class="wilayah__negara-item">${BENDERA[k] || ''} ${esc(R9.t(`negara.${k}`))} (${v})</span>`)
+          .join('')
+      : '';
+  }
 
-  // Kelompokkan tim untuk 3 Kategori: Active Squads, Non-Active Squads, & Competitive Division (Man Behind the Match)
+  // Kelompokkan tim/divisi untuk 3 Kategori: Active Squads, Non-Active Squads, & Management
   const grupAktif = kelompokkanTim(aktif, 'aktif');
   const grupNonaktif = kelompokkanTim(nonaktif, 'nonaktif');
-  const grupKompetitif = kelompokkanTim(kompetitif, 'kompetitif');
+  const grupManagement = kelompokkanTim(management, 'management');
 
-  // LEVEL 1: Render 3 Tombol Kategori Utama (Active Squads, Non-Active Squads, & Competitive Division)
+  // LEVEL 1: Render 3 Tombol Kategori Utama (Active Squads, Non-Active Squads, & Management)
   const elKategori = $('[data-roster-kategori]');
   if (elKategori) {
     elKategori.innerHTML = `
@@ -1230,79 +1330,83 @@ function gambarData() {
         </div>
         <p class="kartu-kategori__sub">${esc(R9.t('roster.kategori.nonaktifSub'))}</p>
       </button>
-      <button type="button" class="kartu-kategori" data-pilih-kategori="kompetitif" aria-pressed="${kategoriTerpilih === 'kompetitif'}">
+      <button type="button" class="kartu-kategori" data-pilih-kategori="management" aria-pressed="${kategoriTerpilih === 'management'}">
         <div class="kartu-kategori__atas">
-          <span class="kartu-kategori__judul"><span class="titik-status titik-status--kompetitif"></span>${esc(R9.t('roster.kategori.kompetitif'))}</span>
-          <span class="kartu-kategori__lencana">${grupKompetitif.size} ${esc(R9.t('roster.tim'))} · ${kompetitif.length} ${esc(R9.t('roster.pemain'))}</span>
+          <span class="kartu-kategori__judul"><span class="titik-status titik-status--kompetitif"></span>${esc(R9.t('roster.kategori.management'))}</span>
+          <span class="kartu-kategori__lencana">${grupManagement.size} ${esc(R9.t('roster.unit'))} · ${management.length} ${esc(R9.t('roster.pemain'))}</span>
         </div>
-        <p class="kartu-kategori__sub">${esc(R9.t('roster.kategori.kompetitifSub'))}</p>
+        <p class="kartu-kategori__sub">${esc(R9.t('roster.kategori.managementSub'))}</p>
       </button>
     `;
   }
 
-  // LEVEL 2: Render Daftar Nama Tim / Grup (HANYA muncul jika salah satu kategori diklik!)
+  // LEVEL 2: Render Daftar Nama Tim / Divisi (HANYA muncul jika salah satu kategori diklik!)
   const elTimWadah = $('[data-roster-tim-wadah]');
   const elWadahAnggota = $('[data-roster-wadah]');
   const elPetunjuk = $('[data-roster-petunjuk]');
 
-  if (!kategoriTerpilih) {
-    elTimWadah.hidden = true;
-    elTimWadah.innerHTML = '';
-    elWadahAnggota.hidden = true;
-    elWadahAnggota.innerHTML = '';
-    elPetunjuk.hidden = false;
-    elPetunjuk.textContent = R9.t('roster.pilihKategori');
-  } else {
-    const mapSekarang = kategoriTerpilih === 'aktif'
-      ? grupAktif
-      : kategoriTerpilih === 'kompetitif'
-        ? grupKompetitif
-        : grupNonaktif;
-    const daftarNamaTim = [...mapSekarang.keys()];
-    if (timTerpilih && !mapSekarang.has(timTerpilih)) timTerpilih = null;
-
-    elTimWadah.hidden = false;
-    if (!daftarNamaTim.length) {
-      elTimWadah.innerHTML = `<p class="kosong">${esc(R9.t('roster.kosong'))}</p>`;
+  if (elTimWadah && elWadahAnggota && elPetunjuk) {
+    if (!kategoriTerpilih) {
+      elTimWadah.hidden = true;
+      elTimWadah.innerHTML = '';
       elWadahAnggota.hidden = true;
-      elPetunjuk.hidden = true;
+      elWadahAnggota.innerHTML = '';
+      elPetunjuk.hidden = false;
+      elPetunjuk.textContent = R9.t('roster.pilihKategori');
     } else {
-      elTimWadah.innerHTML = `<div class="roster__tim-daftar" role="group">
-        ${daftarNamaTim.map((nama) => {
-          const anggota = mapSekarang.get(nama) || [];
-          const label = R9.t(`kelompok.${nama}`) !== `kelompok.${nama}` ? R9.t(`kelompok.${nama}`) : nama;
-          const desk = R9.t(`deskripsiTim.${nama}`) !== `deskripsiTim.${nama}` ? R9.t(`deskripsiTim.${nama}`) : '';
-          const negaraUnik = [...new Set(anggota.map((p) => (p.negara || 'ID').toUpperCase()))];
-          return `<button type="button" class="kartu-tim" data-pilih-tim="${esc(nama)}" aria-pressed="${timTerpilih === nama}">
-            <div class="kartu-tim__atas">
-              <span class="kartu-tim__nama">${esc(label)}</span>
-              <span class="kartu-tim__jumlah">${anggota.length} ${esc(R9.t('roster.pemain'))}</span>
-            </div>
-            ${desk ? `<p class="kartu-tim__sub">${esc(desk)}</p>` : ''}
-            <div class="kartu-tim__bendera">${negaraUnik.map((k) => BENDERA[k] || '').join('')}</div>
-          </button>`;
-        }).join('')}
-      </div>`;
+      const mapSekarang = kategoriTerpilih === 'aktif'
+        ? grupAktif
+        : kategoriTerpilih === 'management'
+          ? grupManagement
+          : grupNonaktif;
+      const daftarNamaTim = [...mapSekarang.keys()];
+      if (timTerpilih && !mapSekarang.has(timTerpilih)) timTerpilih = null;
 
-      // LEVEL 3: Render Pemain / Coach / Analyst / Manager (HANYA muncul jika nama tim diklik!)
-      if (!timTerpilih) {
+      elTimWadah.hidden = false;
+      if (!daftarNamaTim.length) {
+        elTimWadah.innerHTML = `<p class="kosong">${esc(R9.t('roster.kosong'))}</p>`;
         elWadahAnggota.hidden = true;
-        elWadahAnggota.innerHTML = '';
-        elPetunjuk.hidden = false;
-        elPetunjuk.textContent = R9.t('roster.pilihTim');
-      } else {
         elPetunjuk.hidden = true;
-        elWadahAnggota.hidden = false;
-        const anggota = mapSekarang.get(timTerpilih) || [];
-        const label = R9.t(`kelompok.${timTerpilih}`) !== `kelompok.${timTerpilih}` ? R9.t(`kelompok.${timTerpilih}`) : timTerpilih;
-        elWadahAnggota.innerHTML = `<section class="kelompok-roster" aria-label="${esc(label)}">
-          <div class="kelompok-roster__kepala">
-            <h3 class="kelompok-roster__judul">${esc(label)}</h3>
-            <span class="kelompok-roster__jumlah">${anggota.length} ${esc(R9.t('roster.pemain'))}</span>
-          </div>
-          <ul class="roster__grid">${anggota.map(renderKartuPemain).join('')}</ul>
-        </section>`;
-        aktifkanIxarKartu(elWadahAnggota);
+      } else {
+        elTimWadah.innerHTML = `<div class="roster__tim-daftar" role="group">
+          ${daftarNamaTim.map((nama) => {
+            const anggota = mapSekarang.get(nama) || [];
+            const label = R9.t(`kelompok.${nama}`) !== `kelompok.${nama}` ? R9.t(`kelompok.${nama}`) : nama;
+            const desk = R9.t(`deskripsiTim.${nama}`) !== `deskripsiTim.${nama}` ? R9.t(`deskripsiTim.${nama}`) : '';
+            const negaraUnik = [...new Set(anggota.map((p) => (p.negara || 'ID').toUpperCase()))];
+            return `<button type="button" class="kartu-tim" data-pilih-tim="${esc(nama)}" aria-pressed="${timTerpilih === nama}">
+              <div class="kartu-tim__atas">
+                <span class="kartu-tim__nama">${esc(label)}</span>
+                <span class="kartu-tim__jumlah">${anggota.length} ${esc(R9.t('roster.pemain'))}</span>
+              </div>
+              ${desk ? `<p class="kartu-tim__sub">${esc(desk)}</p>` : ''}
+              ${negaraUnik.length ? `<div class="kartu-tim__bendera">${negaraUnik.map((k) => BENDERA[k] || '').join('')}</div>` : ''}
+            </button>`;
+          }).join('')}
+        </div>`;
+
+        // LEVEL 3: Render Daftar Anggota (HANYA muncul ketika nama tim / divisi diklik!)
+        if (!timTerpilih) {
+          elWadahAnggota.hidden = true;
+          elWadahAnggota.innerHTML = '';
+          elPetunjuk.hidden = false;
+          elPetunjuk.textContent = R9.t('roster.pilihTim');
+        } else {
+          elPetunjuk.hidden = true;
+          elWadahAnggota.hidden = false;
+          const anggota = mapSekarang.get(timTerpilih) || [];
+          const label = R9.t(`kelompok.${timTerpilih}`) !== `kelompok.${timTerpilih}` ? R9.t(`kelompok.${timTerpilih}`) : timTerpilih;
+          elWadahAnggota.innerHTML = `<section class="kelompok-roster" aria-label="${esc(label)}">
+            <div class="kelompok-roster__kepala">
+              <h3 class="kelompok-roster__judul">${esc(label)}</h3>
+              <span class="kelompok-roster__jumlah">${anggota.length} ${esc(R9.t('roster.pemain'))}</span>
+            </div>
+            ${anggota.length
+              ? `<ul class="roster__grid">${anggota.map(renderKartuPemain).join('')}</ul>`
+              : `<p class="kosong">${esc(R9.t('roster.kosong'))}</p>`}
+          </section>`;
+          aktifkanIxarKartu(elWadahAnggota);
+        }
       }
     }
   }
@@ -1323,32 +1427,34 @@ function gambarData() {
   </li>`;
 
   const ev = d.event || [], akan = ev.filter((v) => (v.selesai || v.mulai) >= hariIni()), lewat = ev.filter((v) => (v.selesai || v.mulai) < hariIni()).reverse();
-  $('[data-event-akan]').innerHTML = akan.map(kartuEvent).join('');
-  $('[data-event-kosong]').hidden = akan.length > 0;
-  $('[data-event-lewat]').innerHTML = lewat.slice(0, 8).map(kartuEvent).join('');
-  $('[data-event-lewat-judul]').hidden = !lewat.length;
+  if ($('[data-event-akan]')) $('[data-event-akan]').innerHTML = akan.map(kartuEvent).join('');
+  if ($('[data-event-kosong]')) $('[data-event-kosong]').hidden = akan.length > 0;
+  if ($('[data-event-lewat]')) $('[data-event-lewat]').innerHTML = lewat.slice(0, 8).map(kartuEvent).join('');
+  if ($('[data-event-lewat-judul]')) $('[data-event-lewat-judul]').hidden = !lewat.length;
 
-  $('[data-prestasi]').innerHTML = (d.prestasi || []).map((p) => `<li>
-    <button type="button" class="prestasi" data-buka-prestasi="${p.id}">
-      <span class="prestasi__lencana">🏆 ${esc(R9.teks(p.peringkat))}</span>
-      <span class="prestasi__nama">${esc(R9.teks(p.turnamen))}<small>${esc([R9.tanggal(p.tanggal), p.divisi].filter(Boolean).join(' · '))}</small></span>
-      <span class="prestasi__kanan">
-        ${p.hadiah ? `<span class="prestasi__hadiah">${esc(R9.rupiah(p.hadiah))}</span>` : ''}
-        <span class="prestasi__detail">${esc(R9.t('prestasi.detail'))}</span>
-      </span>
-    </button>
-  </li>`).join('');
+  if ($('[data-prestasi]')) {
+    $('[data-prestasi]').innerHTML = (d.prestasi || []).map((p) => `<li>
+      <button type="button" class="prestasi" data-buka-prestasi="${p.id}">
+        <span class="prestasi__lencana">🏆 ${esc(R9.teks(p.peringkat))}</span>
+        <span class="prestasi__nama">${esc(R9.teks(p.turnamen))}<small>${esc([R9.tanggal(p.tanggal), p.divisi].filter(Boolean).join(' · '))}</small></span>
+        <span class="prestasi__kanan">
+          ${p.hadiah ? `<span class="prestasi__hadiah">${esc(R9.rupiah(p.hadiah))}</span>` : ''}
+          <span class="prestasi__detail">${esc(R9.t('prestasi.detail'))}</span>
+        </span>
+      </button>
+    </li>`).join('');
+  }
 
-  // 4. News
+  // 4. News (Redirect ke halaman khusus news.html, bukan popup)
   const news = (d.news || []).slice().sort((a, b) => (b.tanggal > a.tanggal ? 1 : -1));
-  $('[data-news-kosong]').hidden = news.length > 0;
-  $('[data-news]').innerHTML = news.slice(0, newsTampil).map((n) => `<button class="berita" type="button" data-berita="${n.id}">
-    ${n.gambar ? `<img src="${esc(urlMedia(n.gambar))}" alt="" loading="lazy" width="800" height="450">` : ''}
-    <span class="berita__isi"><time datetime="${esc(n.tanggal)}">${esc(R9.tanggal(n.tanggal))}</time><h3>${esc(R9.teks(n.judul))}</h3><p>${esc(R9.teks(n.ringkas) || String(R9.teks(n.isi)).slice(0, 140))}</p></span></button>`).join('');
-  $('[data-news-lebih]').hidden = news.length <= newsTampil;
+  if ($('[data-news-kosong]')) $('[data-news-kosong]').hidden = news.length > 0;
+  if ($('[data-news]')) {
+    $('[data-news]').innerHTML = news.slice(0, newsTampil).map(renderKartuBerita).join('');
+  }
+  if ($('[data-news-lebih]')) $('[data-news-lebih]').hidden = news.length <= newsTampil;
 }
 
-// Event Listener Level 1: Klik Active Squads / Non-Active Squads
+// Event Listener Level 1: Klik Active Squads / Non-Active Squads / Management
 $('[data-roster-kategori]')?.addEventListener('click', (e) => {
   const b = e.target.closest('[data-pilih-kategori]');
   if (!b) return;
@@ -1363,7 +1469,7 @@ $('[data-roster-kategori]')?.addEventListener('click', (e) => {
   gambarData();
 });
 
-// Event Listener Level 2: Klik Nama Tim
+// Event Listener Level 2: Klik Nama Tim / Divisi
 $('[data-roster-tim-wadah]')?.addEventListener('click', (e) => {
   const b = e.target.closest('[data-pilih-tim]');
   if (!b) return;
@@ -1372,31 +1478,17 @@ $('[data-roster-tim-wadah]')?.addEventListener('click', (e) => {
   gambarData();
 });
 
-$('[data-news-lebih]').addEventListener('click', () => { newsTampil += 6; gambarData(); });
+$('[data-news-lebih]')?.addEventListener('click', () => { newsTampil += 6; gambarData(); });
 
-// Buka Popup News
-$('[data-news]').addEventListener('click', (e) => {
-  const b = e.target.closest('[data-berita]'); if (!b) return;
-  const n = (DATA?.news || []).find((x) => String(x.id) === b.dataset.berita); if (!n) return;
-  const dlg = $('[data-baca]'), img = $('.baca__gambar', dlg), visual = $('[data-baca-visual]', dlg);
-  const lencana = $('[data-baca-lencana]', dlg), meta = $('[data-baca-meta]', dlg);
-  if (visual) { visual.hidden = true; visual.innerHTML = ''; }
-  if (lencana) { lencana.hidden = false; lencana.textContent = 'NEWS // R9'; }
-  if (meta) { meta.hidden = true; meta.innerHTML = ''; }
-  img.hidden = !n.gambar; if (n.gambar) img.src = urlMedia(n.gambar);
-  $('.baca__tanggal', dlg).textContent = R9.tanggal(n.tanggal);
-  $('.baca__judul', dlg).textContent = R9.teks(n.judul);
-  $('.baca__isi', dlg).textContent = R9.teks(n.isi);
-  dlg.showModal();
-});
-
-// Buka Popup Detail Prestasi (Konsep modal seperti News, tanpa redirect link keluar)
+// Buka Popup Detail Prestasi (Konsep modal dokumentasi khusus Prestasi)
 document.addEventListener('click', (e) => {
   const b = e.target.closest('[data-buka-prestasi]');
   if (!b) return;
   const p = (DATA?.prestasi || []).find((x) => String(x.id) === b.dataset.bukaPrestasi);
   if (!p) return;
-  const dlg = $('[data-baca]'), img = $('.baca__gambar', dlg), visual = $('[data-baca-visual]', dlg);
+  const dlg = $('[data-baca]');
+  if (!dlg) return;
+  const img = $('.baca__gambar', dlg), visual = $('[data-baca-visual]', dlg);
   const lencana = $('[data-baca-lencana]', dlg), meta = $('[data-baca-meta]', dlg);
   const peringkat = R9.teks(p.peringkat), turnamen = R9.teks(p.turnamen);
   if (p.gambar) {
@@ -1448,7 +1540,9 @@ gambarData();
 
 // ---------- pembuat banner (Font Reign9Display) ----------
 (() => {
-  const kanvas = $('.banner__kanvas'), c = kanvas.getContext('2d'), isian = $('[name=nama-banner]'), subIsian = $('[name=sub-banner]'), gambar = {};
+  const kanvas = $('.banner__kanvas');
+  if (!kanvas) return;
+  const c = kanvas.getContext('2d'), isian = $('[name=nama-banner]'), subIsian = $('[name=sub-banner]'), gambar = {};
   const muat = (n) => gambar[n] || (gambar[n] = new Promise((ok) => { const i = new Image(); i.onload = () => ok(i); i.onerror = () => ok(null); i.src = `gambar/banner/banner-${n}.jpg`; }));
   const lukis = async () => {
     const n = $('[name=banner]:checked').value, img = await muat(n);
@@ -1490,6 +1584,7 @@ gambarData();
 // ---------- contact ----------
 (() => {
   const form = $('.kontak__form'), info = $('.kontak__info');
+  if (!form) return;
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const d = Object.fromEntries(new FormData(form));
