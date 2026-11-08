@@ -362,17 +362,27 @@ const POSE_IXAR_ROLE = {
   'Manajer': 'nyambut',
 };
 
-// ---------- state menu 3 tingkat ----------
-let DATA = window.R9_DUMMY ? JSON.parse(JSON.stringify(window.R9_DUMMY)) : null;
+// ---------- state menu 3 tingkat & sinkronisasi live ----------
+let DATA = null;
 let newsTampil = 6;
 let kategoriTerpilih = null; // null | 'aktif' | 'nonaktif' (Diklik dulu baru muncul nama tim!)
 let timTerpilih = null;      // null | string nama tim (Diklik dulu baru muncul pemain/coach/manager!)
-let sumberData = 'dummy';
+
+// Resolusi URL media (foto pemain & gambar news) langsung ke server live admin.reign9.site
+function urlMedia(jalur) {
+  if (!jalur) return '';
+  if (/^(https?:|data:|blob:)/i.test(jalur)) return jalur;
+  const bersih = String(jalur).replace(/^\/+/, '');
+  if (bersih.startsWith('gambar/roster/') || bersih.startsWith('gambar/news/')) {
+    return `${ADMIN}/${bersih}`;
+  }
+  return bersih;
+}
 
 async function ambilDataLive() {
   for (const url of [`${ADMIN}/api/publik`, `data/reign9.json?t=${Date.now()}`]) {
     try {
-      const ac = new AbortController(), batas = setTimeout(() => ac.abort(), 4000);
+      const ac = new AbortController(), batas = setTimeout(() => ac.abort(), 5000);
       const r = await fetch(url, { signal: ac.signal, cache: 'no-store' }); clearTimeout(batas);
       if (r.ok) return await r.json();
     } catch (e) {}
@@ -382,21 +392,25 @@ async function ambilDataLive() {
 
 const hariIni = () => new Date().toISOString().slice(0, 10);
 
-// Menentukan nama tim/divisi untuk setiap anggota
+// Menentukan nama tim/divisi untuk setiap anggota (sinkron dengan kolom Divisi & Role di Admin)
 function namaTimPemain(p, status = 'aktif') {
   if (p.kelompok) {
     if (p.kelompok === 'Coaching & Staff') return 'Competitive Division';
     if (p.kelompok === 'Main Roster') return 'R9 Main Roster';
     return p.kelompok;
   }
-  const isStaff = p.jenis === 'coach' || ['Pelatih', 'Manajer', 'Analis'].includes(p.role);
+  if (p.divisi && p.divisi !== 'Honor of Kings') {
+    if (p.divisi === 'Coaching & Staff') return 'Competitive Division';
+    if (p.divisi === 'Main Roster') return 'R9 Main Roster';
+    return p.divisi;
+  }
+  const isStaff = p.jenis === 'coach' || ['Pelatih', 'Manajer', 'Analis', 'Konten'].includes(p.role);
   if (isStaff && status === 'aktif') return 'Competitive Division';
-  if (p.divisi && p.divisi !== 'Honor of Kings') return p.divisi;
   return status === 'nonaktif' ? 'Legacy Squad' : 'R9 Main Roster';
 }
 
 function renderKartuPemain(p) {
-  const coach = p.jenis === 'coach' || ['Pelatih', 'Manajer', 'Analis'].includes(p.role);
+  const coach = p.jenis === 'coach' || ['Pelatih', 'Manajer', 'Analis', 'Konten'].includes(p.role);
   const roleLabel = p.role ? R9.t(`role.${p.role}`) : (coach ? R9.t('roster.coach') : R9.t('roster.player'));
   const ikonRole = IKON_ROLE[coach ? 'Coach' : p.role] || '';
   const kodeNegara = (p.negara || 'ID').toUpperCase();
@@ -404,8 +418,11 @@ function renderKartuPemain(p) {
   const namaNegara = R9.t(`negara.${kodeNegara}`);
   const poseIxar = p.poseIxar || POSE_IXAR_ROLE[p.role] || (coach ? 'bendera' : 'pedang');
 
-  const heroes = Array.isArray(p.hero) && p.hero.length
-    ? `<div class="kartu-pemain__hero" title="${esc(R9.t('roster.hero'))}">${p.hero.map((h) => `<span>${esc(h)}</span>`).join('')}</div>`
+  const daftarHero = Array.isArray(p.hero)
+    ? p.hero
+    : (typeof p.hero === 'string' && p.hero.trim() ? p.hero.split(',').map((x) => x.trim()).filter(Boolean) : []);
+  const heroes = daftarHero.length
+    ? `<div class="kartu-pemain__hero" title="${esc(R9.t('roster.hero'))}">${daftarHero.map((h) => `<span>${esc(h)}</span>`).join('')}</div>`
     : '';
   const infoWaktu = p.periode
     ? `<div class="kartu-pemain__meta">${esc(R9.t('roster.periode'))}: <strong>${esc(p.periode)}</strong></div>`
@@ -413,10 +430,12 @@ function renderKartuPemain(p) {
       ? `<div class="kartu-pemain__meta">${esc(R9.t('roster.gabung'))}: ${esc(R9.tanggal(p.gabung, { month: 'short', year: 'numeric' }))}</div>`
       : '';
 
-  // Jika tidak ada foto, gunakan karakter IXAR sebagai foto stock/dummy!
-  // Jika ada URL foto tetapi gagal dimuat (404), otomatis jatuh ke IXAR juga!
-  const htmlFoto = p.foto
-    ? `<img class="kartu-pemain__foto" src="${esc(p.foto)}" alt="${esc(p.nickname)}" loading="lazy" width="400" height="500" data-pose-cadangan="${esc(poseIxar)}">`
+  const sumberFoto = urlMedia(p.foto);
+  const cadanganLokal = p.foto && !/^(https?:|data:|blob:)/i.test(p.foto) ? String(p.foto).replace(/^\/+/, '') : '';
+  // Jika tidak ada foto, gunakan karakter IXAR sesuai role.
+  // Jika URL foto gagal dimuat, coba salinan lokal dulu lalu otomatis jatuh ke IXAR!
+  const htmlFoto = sumberFoto
+    ? `<img class="kartu-pemain__foto" src="${esc(sumberFoto)}" data-cadangan-lokal="${esc(cadanganLokal)}" alt="${esc(p.nickname)}" loading="lazy" width="400" height="500" data-pose-cadangan="${esc(poseIxar)}">`
     : `<div class="kartu-pemain__tanpa"><span class="kartu-pemain__ixar" data-ixar="${esc(poseIxar)}" data-ixar-interaktif></span></div>`;
 
   return `<li class="kartu-pemain ${coach ? 'kartu-pemain--coach' : ''}">
@@ -443,7 +462,13 @@ function aktifkanIxarKartu(wadah) {
   if (!wadah) return;
   $$('[data-ixar]', wadah).forEach((el) => window.IXAR?.pasang(el));
   $$('img.kartu-pemain__foto', wadah).forEach((img) => {
-    img.addEventListener('error', () => {
+    img.addEventListener('error', function tanganiError() {
+      const lokal = img.dataset.cadanganLokal;
+      if (lokal && img.getAttribute('src') !== lokal) {
+        img.dataset.cadanganLokal = '';
+        img.src = lokal;
+        return;
+      }
       const pose = img.dataset.poseCadangan || 'pedang';
       const ganti = document.createElement('div');
       ganti.className = 'kartu-pemain__tanpa';
@@ -451,7 +476,7 @@ function aktifkanIxarKartu(wadah) {
       img.replaceWith(ganti);
       const span = $('[data-ixar]', ganti);
       if (span) window.IXAR?.pasang(span);
-    }, { once: true });
+    });
   });
 }
 
@@ -617,7 +642,7 @@ function gambarData() {
   const news = (d.news || []).slice().sort((a, b) => (b.tanggal > a.tanggal ? 1 : -1));
   $('[data-news-kosong]').hidden = news.length > 0;
   $('[data-news]').innerHTML = news.slice(0, newsTampil).map((n) => `<button class="berita" type="button" data-berita="${n.id}">
-    ${n.gambar ? `<img src="${esc(n.gambar)}" alt="" loading="lazy" width="800" height="450">` : ''}
+    ${n.gambar ? `<img src="${esc(urlMedia(n.gambar))}" alt="" loading="lazy" width="800" height="450">` : ''}
     <span class="berita__isi"><time datetime="${esc(n.tanggal)}">${esc(R9.tanggal(n.tanggal))}</time><h3>${esc(R9.teks(n.judul))}</h3><p>${esc(R9.teks(n.ringkas) || String(R9.teks(n.isi)).slice(0, 140))}</p></span></button>`).join('');
   $('[data-news-lebih]').hidden = news.length <= newsTampil;
 }
@@ -651,7 +676,7 @@ $('[data-news]').addEventListener('click', (e) => {
   const b = e.target.closest('[data-berita]'); if (!b) return;
   const n = (DATA?.news || []).find((x) => String(x.id) === b.dataset.berita); if (!n) return;
   const dlg = $('[data-baca]'), img = $('.baca__gambar', dlg);
-  img.hidden = !n.gambar; if (n.gambar) img.src = n.gambar;
+  img.hidden = !n.gambar; if (n.gambar) img.src = urlMedia(n.gambar);
   $('.baca__tanggal', dlg).textContent = R9.tanggal(n.tanggal);
   $('.baca__judul', dlg).textContent = R9.teks(n.judul);
   $('.baca__isi', dlg).textContent = R9.teks(n.isi);
@@ -660,10 +685,9 @@ $('[data-news]').addEventListener('click', (e) => {
 document.addEventListener('r9:bahasa', gambarData);
 gambarData();
 
-// Sinkronisasi data dari server publik jika tersedia, sambil menjaga struktur Competitive Division & History
+// Sinkronisasi data live dari admin.reign9.site/api/publik (fallback ke data/reign9.json)
 (async () => {
   const segarkan = async () => {
-    if (sumberData !== 'live') return;
     const d = await ambilDataLive();
     if (d) {
       DATA = d;
@@ -671,7 +695,8 @@ gambarData();
     }
   };
   await segarkan();
-  setInterval(() => { if (!document.hidden && sumberData === 'live') segarkan(); }, 30000);
+  setInterval(() => { if (!document.hidden) segarkan(); }, 15000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) segarkan(); });
 })();
 
 // ---------- pembuat banner (Font Reign9Display) ----------
@@ -735,52 +760,5 @@ gambarData();
       info.textContent = R9.t('kontak.gagal');
       location.href = `mailto:reign9intl@reign9.site?cc=reignnine2@gmail.com&subject=${encodeURIComponent(`[R9 Contact] ${d.keperluan} - ${d.nama}`)}&body=${encodeURIComponent(`${d.pesan}\n\n${d.nama} <${d.email}>`)}`;
     } finally { tombol.disabled = false; }
-  });
-})();
-
-// ---------- PANEL OPREK INTERAKTIF ----------
-(() => {
-  const btn = $('#oprek-tombol'), panel = $('#oprek-panel');
-  if (!btn || !panel) return;
-  btn.addEventListener('click', () => { panel.hidden = !panel.hidden; });
-
-  $('#oprek-sumber')?.addEventListener('change', async (e) => {
-    sumberData = e.target.value;
-    if (sumberData === 'live') {
-      const live = await ambilDataLive();
-      if (live) DATA = live;
-    } else {
-      DATA = JSON.parse(JSON.stringify(window.R9_DUMMY));
-    }
-    kategoriTerpilih = null;
-    timTerpilih = null;
-    gambarData();
-  });
-
-  $('#oprek-form-pemain')?.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const f = new FormData(e.target);
-    const statusTarget = f.get('status') || 'aktif';
-    const kelompokTarget = f.get('kelompok') || 'R9 Main Roster';
-    const roleTarget = f.get('role') || 'Jungling';
-    const baru = {
-      id: Date.now(),
-      nickname: f.get('nickname') || 'R9.NewPlayer',
-      role: roleTarget,
-      kelompok: kelompokTarget,
-      negara: f.get('negara') || 'CN',
-      jenis: ['Pelatih', 'Manajer', 'Analis'].includes(roleTarget) ? 'coach' : 'pemain',
-      gabung: statusTarget === 'aktif' ? new Date().toISOString().slice(0, 10) : '',
-      periode: statusTarget === 'nonaktif' ? '2025 – 2026' : '',
-      hero: (f.get('hero') || '').split(',').map((x) => x.trim()).filter(Boolean),
-      instagram: 'reignnine',
-      foto: '', // Tanpa foto -> otomatis pakai IXAR!
-    };
-    DATA.pemain[statusTarget].unshift(baru);
-    kategoriTerpilih = statusTarget;
-    timTerpilih = kelompokTarget;
-    gambarData();
-    e.target.reset();
-    location.hash = '#rosters';
   });
 })();

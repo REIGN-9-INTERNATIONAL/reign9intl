@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Reign 9 International · Honor of Kings Esports (Versi Oprek)</title>
-<meta name="description" content="Reign 9 International (R9), organisasi esports Honor of Kings lintas negara. Roster per kelompok, jadwal, berita, dan maskot IXAR.">
+<title>Reign 9 International · Honor of Kings Esports</title>
+<meta name="description" content="Reign 9 International (R9), organisasi esports Honor of Kings lintas negara. Roster, jadwal turnamen, berita resmi, dan maskot IXAR.">
 <meta property="og:title" content="Reign 9 International">
 <meta property="og:description" content="Honor of Kings esports organization. Together we reign.">
 <meta property="og:image" content="gambar/banner/banner-5.jpg">
@@ -14,8 +14,8 @@
 <link rel="icon" href="gambar/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="font/Reign9Display-Regular.ttf" as="font" type="font/ttf" crossorigin>
 <link rel="preload" href="font/oxanium-500.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="font/font.css">
-<link rel="stylesheet" href="gaya.css">
+<link rel="stylesheet" href="font/font.css?v=26110901">
+<link rel="stylesheet" href="gaya.css?v=26110901">
 </head>
 <body>
 <!-- Sprite SVG Logo disematkan langsung agar dibuka lewat file:// (klik 2x index.html) tetap jalan 100% tanpa kena blokir CORS browser -->
@@ -348,74 +348,8 @@
   <p class="kaki__hak" data-i18n="kaki.hak">© 2026 Reign 9 International.</p>
 </footer>
 
-<!-- ======================================================================= -->
-<!-- PANEL OPREK INTERAKTIF (Bisa ditutup/dibuka kapan saja saat ngoprek)    -->
-<!-- ======================================================================= -->
-<button type="button" class="oprek-tombol" id="oprek-tombol">⚙ Panel Oprek R9</button>
-<aside class="oprek-panel" id="oprek-panel" hidden>
-  <h3>🛠 Panel Oprek & Bedah Fitur R9</h3>
-  <label>
-    <span>Sumber Data:</span>
-    <select id="oprek-sumber">
-      <option value="dummy" selected>Data Dummy Oprek (data-dummy.js)</option>
-      <option value="live">Data Live Server (admin.reign9.site)</option>
-    </select>
-  </label>
-  <form id="oprek-form-pemain" style="display:grid;gap:8px;border-top:1px solid rgba(255,255,255,.15);padding-top:10px;">
-    <strong>+ Tes Tambah Anggota (Otomatis Foto IXAR)</strong>
-    <div class="oprek-baris">
-      <input name="nickname" placeholder="Nickname (mis. R9.Yeyan)" required>
-      <select name="negara">
-        <option value="CN">🇨🇳 CN (Tiongkok)</option>
-        <option value="ID">🇮🇩 ID (Indonesia)</option>
-        <option value="MY">🇲🇾 MY (Malaysia)</option>
-        <option value="SG">🇸🇬 SG (Singapura)</option>
-        <option value="PH">🇵🇭 PH (Filipina)</option>
-        <option value="KR">🇰🇷 KR (Korea Selatan)</option>
-        <option value="TH">🇹🇭 TH (Thailand)</option>
-        <option value="VN">🇻🇳 VN (Vietnam)</option>
-        <option value="TW">🇹🇼 TW (Taiwan)</option>
-        <option value="HK">🇭🇰 HK (Hong Kong)</option>
-      </select>
-    </div>
-    <div class="oprek-baris">
-      <select name="status">
-        <option value="aktif">Active Squads</option>
-        <option value="nonaktif">Non-Active Squads (History)</option>
-      </select>
-      <select name="kelompok">
-        <option value="R9 Main Roster">R9 Main Roster (Active)</option>
-        <option value="R9 Malaysia">R9 Malaysia (Active)</option>
-        <option value="Competitive Division">Competitive Division (Active)</option>
-        <option value="R9 Genesis (2025)">R9 Genesis (2025) (History)</option>
-        <option value="R9 Valkyrie">R9 Valkyrie (History)</option>
-      </select>
-    </div>
-    <div class="oprek-baris">
-      <select name="role">
-        <option value="Jungling">Jungling</option>
-        <option value="Mid Lane">Mid Lane</option>
-        <option value="Farm Lane">Farm Lane</option>
-        <option value="Clash Lane">Clash Lane</option>
-        <option value="Roaming">Roaming</option>
-        <option value="Pelatih">Coach (Pelatih)</option>
-        <option value="Analis">Analyst (Analis)</option>
-        <option value="Manajer">Manager (Manajer)</option>
-      </select>
-      <input name="hero" placeholder="Hero / Peran (mis. Lam, Jing)">
-    </div>
-    <button type="submit" class="tombol tombol--utama tombol--kecil">Tambahkan & Buka Tim</button>
-  </form>
-  <ul class="oprek-daftar-cepat">
-    <li>Font terbaru: <code>font/Reign9Display-Regular.ttf</code></li>
-    <li>Edit data tim & anggota di <code>data-dummy.js</code></li>
-    <li>Edit alur 3-tingkat & IXAR di <code>app.js</code></li>
-  </ul>
-</aside>
-
-<script src="data-dummy.js"></script>
-<script src="bahasa.js"></script>
-<script src="ixar.js"></script>
-<script src="app.js"></script>
+<script src="bahasa.js?v=26110901"></script>
+<script src="ixar.js?v=26110901"></script>
+<script src="app.js?v=26110901"></script>
 </body>
 </html>

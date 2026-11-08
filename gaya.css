@@ -469,23 +469,3 @@ button { font: inherit; color: inherit; }
 .kepala-bagian p { margin-inline: auto; }
 .news .kepala-bagian { position: relative; padding-top: 128px; }
 .news__ixar { position: absolute; top: 0; left: 50%; width: 96px; margin-left: -48px; }
-
-/* ---------- PANEL OPREK INTERAKTIF (Pojok Kanan Bawah) ---------- */
-.oprek-tombol {
-  position: fixed; right: 16px; bottom: 16px; z-index: 90;
-  background: var(--merah); color: #fff; border: 2px solid #fff; padding: 10px 16px;
-  font: 700 12px/1 var(--judul); text-transform: uppercase; letter-spacing: .08em; cursor: pointer;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, .5);
-}
-.oprek-panel {
-  position: fixed; right: 16px; bottom: 64px; z-index: 90; width: min(380px, calc(100vw - 32px));
-  max-height: 80svh; overflow-y: auto; background: #0d0203; color: #fff;
-  border: 2px solid var(--merah); padding: 16px; display: grid; gap: 12px;
-  box-shadow: 0 12px 36px rgba(0, 0, 0, .75); font-size: 13px;
-}
-.oprek-panel h3 { font: 700 14px/1.2 var(--judul); text-transform: uppercase; color: #ff4d4d; border-bottom: 1px solid rgba(255,255,255,.15); padding-bottom: 8px; }
-.oprek-panel label { display: grid; gap: 4px; font-weight: 600; }
-.oprek-panel select, .oprek-panel input { padding: 7px 9px; background: rgba(255,255,255,.1); color: #fff; border: 1px solid rgba(255,255,255,.25); font: inherit; }
-.oprek-panel select option { color: #000; }
-.oprek-baris { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.oprek-daftar-cepat { font-size: 12px; color: rgba(255,255,255,.75); line-height: 1.45; margin: 0; padding-left: 16px; }
