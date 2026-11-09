@@ -172,13 +172,18 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
   const sprite = $('#r9-sprite-logo')?.outerHTML || await fetch(`gambar/logo.svg`).then((r) => r.text()).catch(() => '');
   const m = sprite.match(/id="tegak" viewBox="([^"]+)">(.*?)<\/symbol>/);
   if (!m) { document.documentElement.classList.add('bara-gagal'); return; }
-  const vb = m[1].split(' ').map(Number), bentuk = [...m[2].matchAll(/ d="([^"]+)"/g)].map((x) => new Path2D(x[1]));
+  // tiap path bawa aturan isinya sendiri (bentuk tanpa lubang: nonzero; evenodd bikin bolong garis yang motong dirinya)
+  const vb = m[1].split(' ').map(Number), bentuk = [...m[2].matchAll(/<path([^>]*)>/g)].map((x) => [new Path2D(x[1].match(/ d="([^"]+)"/)[1]), (x[1].match(/fill-rule="(\w+)"/) || [])[1] === 'evenodd' ? 'evenodd' : 'nonzero']);
   await document.fonts.load('700 100px Reign9Display').catch(() => {});
   let w, h, butir = [], lepas = [], titik = {}, px = -999, py = -999, jalan = true, fase = 'teks', mulaiFase = performance.now(), terang = false;
   const kanvasBantu = (lw, lh) => { const o = Object.assign(document.createElement('canvas'), { width: Math.max(1, lw), height: Math.max(1, lh) }); return [o, o.getContext('2d', { willReadFrequently: true })]; };
-  const cuplik = (oc, lw, lh, jarak, gx = 0, gy = 0) => {
+  // susut > 0: titik cuma dipasang kalau satu butir utuh (±susut px) muat di dalam bentuk, biar celah tipis logo gak ketutup
+  const cuplik = (oc, lw, lh, jarak, gx = 0, gy = 0, susut = 0) => {
     const d = oc.getImageData(0, 0, Math.max(1, lw), Math.max(1, lh)).data, hasil = [];
-    for (let y = 0; y < lh; y += jarak) for (let x = 0; x < lw; x += jarak) if (d[(Math.round(y) * lw + Math.round(x)) * 4 + 3] > 128) hasil.push([gx + x, gy + y]);
+    const isi = (x, y) => { x = Math.round(x); y = Math.round(y); return x >= 0 && y >= 0 && x < lw && y < lh && d[(y * lw + x) * 4 + 3] > 128; };
+    for (let y = 0; y < lh; y += jarak) for (let x = 0; x < lw; x += jarak) {
+      if (isi(x, y) && (!susut || (isi(x - susut, y) && isi(x + susut, y) && isi(x, y - susut) && isi(x, y + susut)))) hasil.push([gx + x, gy + y]);
+    }
     return hasil;
   };
   const hitungTitik = () => {
@@ -186,8 +191,8 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
     const lw = Math.round(r.width), lh = Math.round(r.height), gx = r.left - k.left, gy = r.top - k.top;
     let [o, oc] = kanvasBantu(lw, lh);
     const s = Math.min(lw / vb[2], lh / vb[3]);
-    oc.translate((lw - vb[2] * s) / 2, 0); oc.scale(s, s); oc.translate(-vb[0], -vb[1]); bentuk.forEach((b) => oc.fill(b, 'evenodd'));
-    const batas = Math.round((355 - vb[1]) * s), atas = cuplik(oc, lw, batas, lw < 320 ? 3 : 3.5, gx, gy);
+    oc.translate((lw - vb[2] * s) / 2, 0); oc.scale(s, s); oc.translate(-vb[0], -vb[1]); bentuk.forEach(([b, aturan]) => oc.fill(b, aturan));
+    const batas = Math.round((355 - vb[1]) * s), atas = cuplik(oc, lw, batas, lw < 320 ? 2.5 : 3, gx, gy, 1.3);
     const [, oc2] = kanvasBantu(lw, lh - batas); oc2.drawImage(o, 0, -batas);
     titik.logo = [...atas, ...cuplik(oc2, lw, lh - batas, 2, gx, gy + batas)];
     titik.kotakLogo = [gx, gy, gx + lw, gy + lh];
