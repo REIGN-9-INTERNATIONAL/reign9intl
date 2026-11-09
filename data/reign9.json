@@ -1,5 +1,5 @@
 {
- "diperbarui": "2026-11-09T07:24:09.189Z",
+ "diperbarui": "2026-11-09T16:16:23.691Z",
  "pemain": {
   "aktif": [
    {
@@ -1339,8 +1339,8 @@
     "zh": "Reign 9 International 于 2025 年 11 月 11 日正式成立，致力于为《王者荣耀》的休闲玩家和竞技玩家提供一个家，并始终秉持纪律、坚韧与忠诚的价值观。"
    },
    "isi": {
-    "id": "Tanggal 11 November 2025 menjadi tonggak sejarah lahirnya Reign 9 International (R9). Dibangun di atas empat pilar utama—Disiplin, Ketangguhan, Keunggulan, dan Kesetiaan—R9 hadir bukan sekadar sebagai tim, melainkan wadah bertumbuh bagi para pemain Honor of Kings.\n\nKami membuka pintu bagi para pemain yang ingin berkembang bersama melalui Guild in-game resmi kami (Guild ID: 980982 / Tag: R9) serta komunitas Discord Reign 9. Baik pemain kasual yang mencari rekan mabar solid maupun pemain kompetitif yang mengincar panggung turnamen, R9 menyediakan lingkungan yang suportif dan terarah.\n\nMari bergabung bersama keluarga besar Reign 9 International dan ukir sejarah juara bersama kami!",
-    "en": "11 November 2025 marked a historic milestone in the founding of Reign 9 International (R9). Built upon four core pillars—Discipline, Resilience, Excellence and Loyalty—R9 exists not merely as a team, but as a platform for growth for Honor of Kings players.\n\nWe are opening our doors to players who wish to grow together through our official in-game guild (Guild ID: 980982 / Tag: R9) and the Reign 9 Discord community. Whether you’re a casual player looking for reliable teammates or a competitive player aiming for the tournament stage, R9 provides a supportive and focused environment.\n\nJoin the Reign 9 International family and help us make history as champions!",
+    "id": "Tanggal 11 November 2025 menjadi tonggak sejarah lahirnya Reign 9 International (R9). Dibangun di atas empat pilar utama, yaitu Disiplin, Ketangguhan, Keunggulan, dan Kesetiaan, R9 hadir bukan sekadar sebagai tim, melainkan wadah bertumbuh bagi para pemain Honor of Kings.\n\nKami membuka pintu bagi para pemain yang ingin berkembang bersama melalui Guild in-game resmi kami (Guild ID: 980982 / Tag: R9) serta komunitas Discord Reign 9. Baik pemain kasual yang mencari rekan mabar solid maupun pemain kompetitif yang mengincar panggung turnamen, R9 menyediakan lingkungan yang suportif dan terarah.\n\nMari bergabung bersama keluarga besar Reign 9 International dan ukir sejarah juara bersama kami!",
+    "en": "11 November 2025 marked a historic milestone in the founding of Reign 9 International (R9). Built upon four core pillars, namely Discipline, Resilience, Excellence and Loyalty, R9 exists not merely as a team, but as a platform for growth for Honor of Kings players.\n\nWe are opening our doors to players who wish to grow together through our official in-game guild (Guild ID: 980982 / Tag: R9) and the Reign 9 Discord community. Whether you’re a casual player looking for reliable teammates or a competitive player aiming for the tournament stage, R9 provides a supportive and focused environment.\n\nJoin the Reign 9 International family and help us make history as champions!",
     "zh": "2025年11月11日，成为Reign 9 International（R9）诞生的历史性里程碑。 R9以“纪律、坚韧、卓越、忠诚”四大支柱为基石，不仅是一支战队，更是《王者荣耀》玩家共同成长的沃土。\n\n我们通过官方游戏内公会（公会ID：980982 / 标签：R9）以及Reign 9的Discord社区，向所有希望共同成长的玩家敞开大门。 无论是寻求可靠队友的休闲玩家，还是志在征战赛事舞台的竞技玩家，R9 都将提供一个充满支持且目标明确的环境。\n\n快来加入 Reign 9 International 大家庭，与我们共同谱写冠军传奇吧！"
    }
   }
@@ -1364,7 +1364,18 @@
    }
   },
   "info": {},
-  "desain": []
+  "desain": [
+   {
+    "halaman": "beranda",
+    "sasaran": "#about > div:nth-of-type(2) > div:nth-of-type(2) > strong",
+    "tema": "semua",
+    "layar": "semua",
+    "nilai": {
+     "size": "62",
+     "namaElemen": "1"
+    }
+   }
+  ]
  },
  "ringkas": {
   "juara1": 1,
