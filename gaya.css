@@ -993,3 +993,6 @@ html { overflow-x: clip; }
 .artikel-berita__isi { font-size: 17px; line-height: 1.8; }
 .artikel-berita__isi p { margin: 0 0 1.1em; }
 .berita-lainnya { max-width: 1160px; margin: 48px auto 0; padding-top: 28px; border-top: 1px solid var(--garis); }
+/* header selalu nempel di atas: overflow "clip" (bukan hidden) biar body gak jadi wadah scroll yang bikin sticky lepas */
+body { overflow-x: clip !important; }
+.atas { position: sticky !important; top: 0 !important; z-index: 60 !important; }
