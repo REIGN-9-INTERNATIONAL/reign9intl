@@ -1596,11 +1596,12 @@ function gambarData() {
       .join('');
   }
   if ($('[data-hitung-negara]')) {
+    // bendera sejajar: satu baris chip, tinggi bendera sama (lebar ikut proporsi asli tiap negara)
     $('[data-hitung-negara]').innerHTML = anggotaAktifTotal.length
-      ? `<span>${anggotaAktifTotal.length} ${esc(R9.t('roster.pemain'))}</span>` +
-        Object.entries(hitungNegara)
-          .map(([k, v]) => `<span class="wilayah__negara-item">${BENDERA[k] || ''} ${esc(R9.t(`negara.${k}`))} (${v})</span>`)
-          .join('')
+      ? `<span class="wilayah__total"><b>${anggotaAktifTotal.length}</b> ${esc(R9.t('roster.pemain'))}</span><span class="wilayah__chip-baris">` +
+        Object.entries(hitungNegara).sort((a, b) => b[1] - a[1])
+          .map(([k, v]) => `<span class="negara-chip"><span class="negara-chip__bendera">${BENDERA[k] || ''}</span><span class="negara-chip__nama">${esc(R9.t(`negara.${k}`))}</span><b>${v}</b></span>`)
+          .join('') + '</span>'
       : '';
   }
 
@@ -1612,29 +1613,17 @@ function gambarData() {
   // LEVEL 1: Render 3 Tombol Kategori Utama (Active Squads, Non-Active Squads, & Management)
   const elKategori = $('[data-roster-kategori]');
   if (elKategori) {
-    elKategori.innerHTML = `
-      <button type="button" class="kartu-kategori" data-pilih-kategori="aktif" aria-pressed="${kategoriTerpilih === 'aktif'}">
-        <div class="kartu-kategori__atas">
-          <span class="kartu-kategori__judul"><span class="titik-status"></span>${esc(R9.t('roster.kategori.aktif'))}</span>
-          <span class="kartu-kategori__lencana">${grupAktif.size} ${esc(R9.t('roster.tim'))} · ${aktif.length} ${esc(R9.t('roster.pemain'))}</span>
-        </div>
-        <p class="kartu-kategori__sub">${esc(R9.t('roster.kategori.aktifSub'))}</p>
-      </button>
-      <button type="button" class="kartu-kategori" data-pilih-kategori="nonaktif" aria-pressed="${kategoriTerpilih === 'nonaktif'}">
-        <div class="kartu-kategori__atas">
-          <span class="kartu-kategori__judul"><span class="titik-status titik-status--sejarah"></span>${esc(R9.t('roster.kategori.nonaktif'))}</span>
-          <span class="kartu-kategori__lencana">${grupNonaktif.size} ${esc(R9.t('roster.tim'))} · ${nonaktif.length} ${esc(R9.t('roster.pemain'))}</span>
-        </div>
-        <p class="kartu-kategori__sub">${esc(R9.t('roster.kategori.nonaktifSub'))}</p>
-      </button>
-      <button type="button" class="kartu-kategori" data-pilih-kategori="management" aria-pressed="${kategoriTerpilih === 'management'}">
-        <div class="kartu-kategori__atas">
-          <span class="kartu-kategori__judul"><span class="titik-status titik-status--kompetitif"></span>${esc(R9.t('roster.kategori.management'))}</span>
-          <span class="kartu-kategori__lencana">${grupManagement.size} ${esc(R9.t('roster.unit'))} · ${management.length} ${esc(R9.t('roster.pemain'))}</span>
-        </div>
-        <p class="kartu-kategori__sub">${esc(R9.t('roster.kategori.managementSub'))}</p>
-      </button>
-    `;
+    const kartu = (kat, titik, jumlahGrup, labelGrup, anggota) => `
+      <button type="button" class="kartu-kategori" data-pilih-kategori="${kat}" aria-pressed="${kategoriTerpilih === kat}">
+        <span class="kk__kepala"><span class="titik-status${titik}"></span><span class="kk__judul">${esc(R9.t(`roster.kategori.${kat}`))}</span></span>
+        <span class="kk__angka"><b>${anggota}</b> ${esc(R9.t('roster.pemain'))}</span>
+        <span class="kk__meta">${jumlahGrup} ${esc(R9.t(labelGrup))}</span>
+        <span class="kk__sub">${esc(R9.t(`roster.kategori.${kat}Sub`))}</span>
+        <svg class="kk__panah" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2"/></svg>
+      </button>`;
+    elKategori.innerHTML = kartu('aktif', '', grupAktif.size, 'roster.tim', aktif.length)
+      + kartu('nonaktif', ' titik-status--sejarah', grupNonaktif.size, 'roster.tim', nonaktif.length)
+      + kartu('management', ' titik-status--kompetitif', grupManagement.size, 'roster.unit', management.length);
   }
 
   // LEVEL 2: Render Daftar Nama Tim / Divisi (HANYA muncul jika salah satu kategori diklik!)

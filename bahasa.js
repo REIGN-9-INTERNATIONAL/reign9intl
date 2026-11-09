@@ -149,7 +149,7 @@ window.R9_KAMUS = {
   // ---------- roster (3-Level Drilldown: Active Squads, Inactive Squads, & Management) ----------
   'roster.judul': { id: 'Tim <span class="aksen-merah">Kami</span>', en: 'Our <span class="aksen-merah">Team</span>', zh: '我们的<span class="aksen-merah">团队</span>' },
   'roster.sub': { id: 'Pilih kategori (Active Squads, Inactive Squads, atau Management), lalu klik nama tim/divisi untuk melihat daftar anggota.', en: 'Select a category (Active Squads, Inactive Squads, or Management), then click a team or division to view its members.', zh: '选择类别（现役战队、历史荣誉阵容或管理层部门），再点击具体战队或部门名称查看成员。' },
-  'roster.wilayah': { id: 'Skuad Lintas Negara: Indonesia, Malaysia, Singapura & Tiongkok', en: 'Multinational Squad: Indonesia, Malaysia, Singapore & China', zh: '跨国阵容：印度尼西亚、马来西亚、新加坡与中国' },
+  'roster.wilayah': { id: 'Skuad lintas negara', en: 'Multinational squad', zh: '跨国阵容' },
   'roster.wilayahIsi': { id: 'Berawal dari Indonesia, kini Reign 9 menyatukan talenta terbaik dari berbagai negara Asia dalam satu bendera kompetitif.', en: 'Starting in Indonesia, Reign 9 now unites top Asian talents under one competitive banner.', zh: '从印度尼西亚起步，Reign 9 现已将亚洲多国顶尖人才汇聚在同一面竞技旗帜之下。' },
   'roster.pemain': { id: 'anggota', en: 'members', zh: '名成员' },
   'roster.tim': { id: 'tim', en: 'teams', zh: '支队伍' },
@@ -163,15 +163,15 @@ window.R9_KAMUS = {
 
   // Kategori Level 1: Active Squads, Inactive Squads (History), & Management (5 Divisi)
   'roster.kategori.aktif': { id: 'Active Squads', en: 'Active Squads', zh: '现役战队 (Active Squads)' },
-  'roster.kategori.aktifSub': { id: 'Daftar tim pemain aktif R9. Klik untuk memilih tim dan melihat jajaran pemainnya', en: 'Active R9 competitive teams. Click to select a team and view its players', zh: 'R9 现役竞技战队：点击选择战队并查看选手名单' },
+  'roster.kategori.aktifSub': { id: 'Tim yang sedang bertanding untuk R9.', en: 'Teams currently competing for R9.', zh: '目前代表 R9 出战的战队。' },
   'roster.kategori.nonaktif': { id: 'Inactive Squads', en: 'Inactive Squads', zh: '历史荣誉战队 (Inactive)' },
-  'roster.kategori.nonaktifSub': { id: 'Daftar tim roster terdahulu & sejarah skuad yang pernah berjuang bersama R9', en: 'Former roster teams & historical squads that fought under the R9 banner', zh: '曾代表 R9 出战的历届战队与历史阵容' },
+  'roster.kategori.nonaktifSub': { id: 'Skuad terdahulu yang pernah membawa nama R9.', en: 'Former squads that carried the R9 name.', zh: '曾代表 R9 出战的往届阵容。' },
   'roster.kategori.management': { id: 'Management', en: 'Management', zh: '管理层 (Management)' },
-  'roster.kategori.managementSub': { id: '5 Divisi Manajemen R9: Media and Publication, Competitive, HR & Community, Secretariat, dan BizDev', en: '5 R9 Management Divisions: Media and Publication, Competitive, HR & Community, Secretariat, and BizDev', zh: 'R9 五大管理部门：媒体宣传、竞技部、人事与社区、秘书处及商务拓展' },
+  'roster.kategori.managementSub': { id: 'Tim di balik layar: media, kompetitif, HR, sekretariat, dan bisnis.', en: 'The team behind the scenes: media, competitive, HR, secretariat, and business.', zh: '幕后团队：媒体、竞技、人力、秘书处与商务。' },
   'roster.kategori.kompetitif': { id: 'Management', en: 'Management', zh: '管理层 (Management)' },
   'roster.kategori.kompetitifSub': { id: '5 Divisi Manajemen R9: Media and Publication, Competitive, HR & Community, Secretariat, dan BizDev', en: '5 R9 Management Divisions: Media and Publication, Competitive, HR & Community, Secretariat, and BizDev', zh: 'R9 五大管理部门：媒体宣传、竞技部、人事与社区、秘书处及商务拓展' },
 
-  'roster.pilihKategori': { id: '👆 Klik salah satu kategori di atas (Active Squads, Inactive Squads, atau Management) untuk membuka pilihan tim/divisi.', en: '👆 Click a category above (Active Squads, Inactive Squads, or Management) to open teams or divisions.', zh: '👆 请点击上方任一类别（现役战队、历史荣誉战队或管理层）以展开队伍或部门选项。' },
+  'roster.pilihKategori': { id: 'Pilih kategori di atas untuk membuka daftar tim.', en: 'Pick a category above to open its teams.', zh: '选择上方类别查看战队。' },
   'roster.pilihTim': { id: '👆 Klik salah satu nama tim atau divisi di atas untuk menampilkan daftar anggotanya.', en: '👆 Click a team or division name above to display its members.', zh: '👆 请点击上方具体的队伍或部门名称以显示成员名单。' },
 
   // Nama Tim & 5 Divisi Management

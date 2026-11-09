@@ -901,3 +901,43 @@ html.ganti-tema :is(body, .atas, .bagian, .kaki, .hero) { transition: background
 /* tema gelap: teks hero putih tetap tajam di atas langit merah */
 .hero__teks { text-shadow: 0 1px 8px rgba(0, 0, 0, .55); }
 .hero__latar { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; image-rendering: pixelated; }
+
+/* ---------- Tim: ringkasan wilayah & kartu kategori v2 (bersih, bendera sejajar) ---------- */
+.wilayah { display: block !important; padding: 22px !important; border: 1px solid var(--garis) !important; background: var(--kartu) !important; }
+.wilayah__bendera { display: none !important; }
+.wilayah h3 { margin: 0 0 6px; font: 700 clamp(18px, 2.2vw, 22px)/1.2 var(--judul); text-transform: uppercase; letter-spacing: .04em; color: var(--teks-merah); }
+.wilayah p { margin: 0 0 16px; max-width: 62ch; opacity: .85; }
+.wilayah__hitung { display: flex !important; flex-wrap: wrap; align-items: center; gap: 12px 18px; }
+.wilayah__total { font: 600 14px/1 var(--badan); text-transform: uppercase; letter-spacing: .08em; opacity: .85; }
+.wilayah__total b { font: 700 32px/1 var(--judul); margin-right: 6px; color: var(--teks); opacity: 1; letter-spacing: 0; }
+.wilayah__chip-baris { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.negara-chip { display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 12px; border: 1px solid var(--garis); background: var(--pita-a); font: 600 13px/1 var(--badan); white-space: nowrap; }
+.negara-chip__bendera { display: inline-flex; align-items: center; height: 18px; }
+.negara-chip__bendera svg { height: 18px !important; width: auto !important; display: block; outline: 1px solid rgba(127, 127, 127, .35); vertical-align: middle; margin: 0 !important; }
+.negara-chip b { font: 700 13px/1 var(--judul); padding-left: 8px; border-left: 1px solid var(--garis); }
+.roster__kategori { display: grid !important; grid-template-columns: minmax(0, 1fr); gap: 12px !important; }
+@media (min-width: 900px) { .roster__kategori { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.kartu-kategori { position: relative; display: grid !important; grid-template-columns: minmax(0, 1fr); gap: 6px !important; align-content: start; padding: 20px 44px 20px 20px !important; text-align: left; border: 1px solid var(--garis) !important; background: var(--kartu) !important; color: var(--teks) !important; clip-path: none !important; cursor: pointer; transition: border-color .2s, transform .2s, background .2s; }
+.kartu-kategori:hover { border-color: var(--merah) !important; transform: translateY(-2px); }
+.kartu-kategori[aria-pressed="true"] { border-color: var(--merah) !important; box-shadow: inset 4px 0 0 var(--merah); }
+.kartu-kategori:focus-visible { outline: 2px solid var(--merah); outline-offset: 2px; }
+.kk__kepala { display: flex; align-items: center; gap: 8px; }
+.kk__judul { font: 700 15px/1.2 var(--judul); text-transform: uppercase; letter-spacing: .06em; }
+.kk__angka { font: 600 13px/1 var(--badan); text-transform: uppercase; letter-spacing: .08em; opacity: .8; margin-top: 6px; }
+.kk__angka b { font: 700 40px/1 var(--judul); letter-spacing: 0; margin-right: 6px; color: var(--teks-merah); opacity: 1; }
+.kk__meta { font: 600 12px/1 var(--badan); text-transform: uppercase; letter-spacing: .1em; opacity: .65; }
+.kk__sub { font-size: 14px; line-height: 1.5; opacity: .82; }
+.kk__panah { position: absolute; right: 16px; top: 50%; width: 20px; height: 20px; transform: translateY(-50%); opacity: .5; transition: transform .2s, opacity .2s; }
+.kartu-kategori:hover .kk__panah, .kartu-kategori[aria-pressed="true"] .kk__panah { opacity: 1; transform: translate(3px, -50%); color: var(--merah); }
+.roster__petunjuk, [data-roster-petunjuk] { border-style: solid !important; border-width: 1px !important; opacity: .8; }
+@media (max-width: 640px) {
+  .wilayah__hitung { display: grid !important; gap: 12px; }
+  .wilayah__chip-baris { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 8px; width: 100%; }
+  .negara-chip { flex-direction: column; justify-content: center; height: auto; padding: 10px 6px; gap: 6px; white-space: normal; text-align: center; min-width: 0; }
+  .negara-chip__nama { font-size: 12px; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+  .negara-chip b { border-left: 0; padding-left: 0; font-size: 15px; }
+}
+html { overflow-x: clip; }
+[data-roster-petunjuk] { width: 100% !important; max-width: none !important; }
+:root[data-tema="terang"] .titik-status--sejarah { background: #8a8a8a !important; box-shadow: none !important; }
+@media (prefers-color-scheme: light) { :root:not([data-tema="gelap"]) .titik-status--sejarah { background: #8a8a8a !important; box-shadow: none !important; } }
