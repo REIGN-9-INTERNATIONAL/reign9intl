@@ -132,6 +132,18 @@ try { bahasaAwal = localStorage.getItem('bahasa') || ((navigator.language || '')
 pasangBahasa(bahasaAwal);
 $$('[data-bahasa]').forEach((t) => t.addEventListener('click', () => pasangBahasa(t.dataset.bahasa, true)));
 
+// ---------- selalu versi terbaru: peramban yang nyimpen halaman lama (mis. Samsung Internet) dimuat ulang sekali ----------
+(async () => {
+  const kini = document.querySelector('script[src*="app.js?v="]')?.src.split('v=')[1];
+  if (!kini) return;
+  try {
+    const t = await (await fetch(`${location.pathname}?cek=${Date.now()}`, { cache: 'no-store' })).text();
+    const baru = t.match(/app\.js\?v=(\w+)/)?.[1];
+    if (baru && baru !== kini && sessionStorage.getItem('r9-muat') !== baru) { sessionStorage.setItem('r9-muat', baru); location.replace(`${location.pathname}?v=${baru}${location.hash}`); }
+  } catch (e) {}
+})();
+addEventListener('pageshow', (e) => { if (e.persisted) location.reload(); });
+
 // ---------- tema ----------
 const temaSekarang = () => document.documentElement.dataset.tema || (matchMedia('(prefers-color-scheme: light)').matches ? 'terang' : 'gelap');
 const pasangTema = (t) => { document.documentElement.dataset.tema = t; try { localStorage.setItem('tema', t); } catch (e) {} document.dispatchEvent(new Event('r9:tema')); };
@@ -202,7 +214,8 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
     const garisInternational = (394 - vb[1]) * s;
     const jarak = lw < 320 ? 2.2 : 2.6, garis = Math.floor(garisInternational);
     const [, ocBawah] = kanvasBantu(lw, lh - garis); ocBawah.drawImage(o, 0, -garis);
-    titik.logo = [...cuplik(oc, lw, garis, jarak, gx, gy, 1), ...cuplik(ocBawah, lw, lh - garis, jarak * .75, gx, gy + garis)];
+    const atasLogo = cuplik(oc, lw, garis, jarak, gx, gy, 1);
+    titik.logo = [...atasLogo, ...cuplik(ocBawah, lw, lh - garis, jarak * .55, gx, gy + garis)]; titik.awalKecil = atasLogo.length;
     titik.kotakLogo = [gx, gy, gx + lw, gy + lh];
     const tw = Math.min(w * .9, 980), uk = Math.min(tw / 6.5, 142), th = Math.round(uk * 2.7);
     [o, oc] = kanvasBantu(Math.round(tw), th);
@@ -215,7 +228,9 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
   // warna api logo ikut aturan logo: putih di tema gelap, merah di tema terang. Api latar selalu hitam pekat (beda dari logo).
   const WARNA_GELAP = [['#ffffff', 46], ['#ffe9e6', 24], ['#ffd0cb', 16], ['#ff8a80', 9], ['#ff5245', 5]];
   const WARNA_TERANG = [['#da1617', 44], ['#c00f12', 24], ['#ff2a1f', 16], ['#a80309', 16]];
-  const WARNA_LATAR = [['#000000', 62], ['#070000', 24], ['#160205', 14]];
+  const LATAR_GELAP = [['#000000', 62], ['#070000', 24], ['#160205', 14]];
+  const LATAR_TERANG = [['#FFD3DC', 55], ['#FFC4D0', 25], ['#FFE2E8', 20]];
+  const warnaLatar = () => (terang ? LATAR_TERANG : LATAR_GELAP);
   const undi = (daftar) => { let n = Math.random() * 100; for (const [wr, b] of daftar) { if ((n -= b) < 0) return wr; } return daftar[0][0]; };
   const pilihWarna = () => undi(terang ? WARNA_TERANG : WARNA_GELAP);
 
@@ -226,26 +241,26 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
     const dasar = h + 2, x0 = 0;
     oc.beginPath();
     if (nama === 'kastil') {
-      const u = w / 100, t = (k) => dasar - Math.min(h * k, w * k * 1.1);
+      const u = w / 100, t = (k) => dasar - h * k;
       const gerigi = (x, y, l, g) => { for (let i = 0; i < l; i += g * 2) oc.rect(x + i, y - g, g, g); };
-      oc.rect(x0, t(.3), w, h); gerigi(x0, t(.3), w, 3 * u);
-      [[1, 12, .5], [18, 12, .64], [41, 18, .8], [70, 12, .64], [87, 12, .5]].forEach(([p0, l, k]) => { oc.rect(p0 * u, t(k), l * u, h); gerigi(p0 * u, t(k), l * u, 2.2 * u); });
+      oc.rect(x0, t(.55), w, h); gerigi(x0, t(.55), w, 3 * u);
+      [[1, 12, .78], [18, 12, .88], [41, 18, .97], [70, 12, .88], [87, 12, .78]].forEach(([p0, l, k]) => { oc.rect(p0 * u, t(k), l * u, h); gerigi(p0 * u, t(k), l * u, 2.2 * u); });
       oc.fill(); oc.globalCompositeOperation = 'destination-out'; oc.beginPath();
-      oc.arc(50 * u, t(.14), 6 * u, Math.PI, 0); oc.rect(44 * u, t(.14), 12 * u, h);
-      [[7, .42], [24, .56], [50, .7], [76, .56], [93, .42]].forEach(([p, k]) => oc.rect((p - 1.2) * u, t(k), 2.4 * u, 6 * u));
+      oc.arc(50 * u, t(.2), 6 * u, Math.PI, 0); oc.rect(44 * u, t(.2), 12 * u, h);
+      [[7, .66], [24, .78], [50, .86], [76, .78], [93, .66]].forEach(([p, k]) => oc.rect((p - 1.2) * u, t(k), 2.4 * u, 4 * u));
       oc.fill(); oc.globalCompositeOperation = 'source-over'; return;
     }
     if (nama === 'api') {
       oc.moveTo(0, dasar); const n = Math.max(7, Math.round(w / 110));
       for (let i = 0; i <= n; i++) {
-        const x = (i / n) * w, puncak = dasar - h * (.42 + .32 * Math.abs(Math.sin(i * 2.17)) + (i % 2 ? 0 : .08)), lebar = w / n;
+        const x = (i / n) * w, puncak = dasar - h * (.62 + .3 * Math.abs(Math.sin(i * 2.17)) + (i % 2 ? 0 : .06)), lebar = w / n;
         oc.quadraticCurveTo(x - lebar * .55, dasar - h * .2, x - lebar * .1, puncak + h * .12); oc.quadraticCurveTo(x, puncak - h * .02, x + lebar * .05, puncak);
         oc.quadraticCurveTo(x + lebar * .2, puncak + h * .2, x + lebar * .45, dasar - h * .24);
       }
       oc.lineTo(w, dasar); oc.closePath(); oc.fill(); return;
     }
     if (nama === 'mahkota') {
-      const lebar = Math.min(w * .96, h * 1.5), kiri = (w - lebar) / 2, bawah = dasar, pita = h * .14, tinggi = h * .62, ujung = 5;
+      const lebar = w * .98, kiri = (w - lebar) / 2, bawah = dasar, pita = h * .3, tinggi = h * .6, ujung = 5;
       oc.rect(0, bawah - h * .12, w, h * .12 + 4);
       oc.moveTo(kiri, bawah - pita);
       for (let i = 0; i <= ujung * 2; i++) { const x = kiri + (i / (ujung * 2)) * lebar, y = i % 2 ? bawah - pita - tinggi * .45 : bawah - pita - tinggi * (i === ujung ? 1 : .8); oc.lineTo(x, y); }
@@ -256,7 +271,7 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
     if (nama === 'menara') { // barisan menara catur = pasukan kepala IXAR
       const n = w < 600 ? 4 : 6, lebar = w / n;
       for (let i = 0; i < n; i++) {
-        const tinggi = h * (.45 + .25 * Math.abs(Math.sin(i * 1.9 + 1))), x = i * lebar + lebar * .12, l = lebar * .76, atas = dasar - tinggi, g = l / 7;
+        const tinggi = h * (.7 + .26 * Math.abs(Math.sin(i * 1.9 + 1))), x = i * lebar + lebar * .12, l = lebar * .76, atas = dasar - tinggi, g = l / 7;
         oc.rect(x + l * .12, atas + g * 1.6, l * .76, tinggi); oc.rect(x, atas + g * .6, l, g * 1.2);
         for (let k = 0; k < 4; k++) oc.rect(x + k * g * 2, atas - g * .4, g, g * 1.2);
         oc.rect(x - l * .05, dasar - g * 1.6, l * 1.1, g * 1.6);
@@ -265,7 +280,7 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
     }
     // gunung
     oc.moveTo(0, dasar);
-    const pk = [[0, .5], [.12, .68], [.24, .5], [.38, .82], [.52, .55], [.66, .74], [.8, .5], [.9, .64], [1, .48]];
+    const pk = [[0, .72], [.12, .9], [.24, .7], [.38, .98], [.52, .76], [.66, .94], [.8, .7], [.9, .86], [1, .7]];
     pk.forEach(([px2, k]) => oc.lineTo(px2 * w, dasar - h * k));
     oc.lineTo(w, dasar); oc.closePath(); oc.fill();
     oc.globalCompositeOperation = 'destination-out'; oc.beginPath(); // jalur salju dibikin bolong biar ada tekstur
@@ -273,7 +288,7 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
     oc.fill(); oc.globalCompositeOperation = 'source-over';
   }
   function hitungLatar() {
-    const batasN = w < 600 ? 3600 : 5200, jarak = Math.max(6, Math.sqrt(w * h * .62 / batasN));
+    const batasN = w < 600 ? 4200 : 6000, jarak = Math.max(6, Math.sqrt(w * h * .85 / batasN));
     titikLatar = {};
     for (const nama of BENTUK_LATAR) {
       const [, oc] = kanvasBantu(Math.round(w), Math.round(h)); oc.fillStyle = '#000'; gambarLatar(oc, nama);
@@ -284,7 +299,7 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
     }
     const n = Math.max(...Object.values(titikLatar).map((t) => t.length));
     const besar = [jarak * .52, jarak * .14]; // setengah jarak = butir saling nempel → siluet pekat
-    latar = Array.from({ length: n }, (_, i) => latar[i] || { x: Math.random() * w, y: h + Math.random() * h * .3, vx: 0, vy: 0, r: besar[0] + Math.random() * besar[1], kedip: Math.random() * 6.28, warna: undi(WARNA_LATAR) });
+    latar = Array.from({ length: n }, (_, i) => latar[i] || { x: Math.random() * w, y: h + Math.random() * h * .3, vx: 0, vy: 0, r: besar[0] + Math.random() * besar[1], kedip: Math.random() * 6.28, warna: undi(warnaLatar()) });
     latar.length = n;
     latar.sort((a, b) => (a.warna < b.warna ? -1 : a.warna > b.warna ? 1 : 0));
     arahkanLatar(0);
@@ -302,8 +317,9 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
     fase = f; mulaiFase = performance.now();
     const L = titik.logo.length;
     butir.forEach((b, i) => {
+      b.kecil = false;
       if (f === 'teks') { const t = titik.teks[i]; b.tx = t ? t[0] : null; b.ty = t ? t[1] : null; b.tunda = Math.random() * 700; }
-      else if (f === 'logo') { [b.tx, b.ty] = titik.logo[i % L]; b.tunda = Math.random() * 250; }
+      else if (f === 'logo') { [b.tx, b.ty] = titik.logo[i % L]; b.kecil = i % L >= titik.awalKecil; b.tunda = Math.random() * 250; }
       else { b.tx = null; b.ty = null; }
     });
   }
@@ -340,7 +356,7 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
     gantiLatar(xh, yh) { const [x, y] = keKanvas(xh, yh); dorong(x, y, 20, w * .6, latar); goyang(); gantiLatar([x, y]); return BENTUK_LATAR[iLatar]; },
     get bentukLatar() { return BENTUK_LATAR[iLatar]; },
   };
-  const ixarHero = [$('.hero__ixar'), $('.jelajah__ixar')].filter(Boolean);
+  const ixarHero = [$('.hero__ixar'), $('.jelajah__ixar')].filter(Boolean), teksHero = $('.hero__teks');
   const gambar = (t) => {
     if (!jalan) return;
     c.clearRect(0, 0, w, h);
@@ -358,10 +374,18 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
       b.vx *= .87; b.vy *= .87; b.x += b.vx; b.y += b.vy;
     }
     // kanvas latar resolusi 1x (butirnya kotak besar), butir udah urut warna: ringan walau ribuan
-    cl.clearRect(0, 0, w, h); let warnaAktif = '';
+    cl.clearRect(0, 0, w, h); cl.globalCompositeOperation = 'source-over'; let warnaAktif = '';
     for (const b of latar) {
       if (b.warna !== warnaAktif) { warnaAktif = b.warna; cl.fillStyle = warnaAktif; }
       cl.globalAlpha = b.lebih ? .55 : .94; cl.fillRect(b.x - b.r, b.y - b.r, b.r * 2, b.r * 2);
+    }
+    // pembatas: api latar di belakang tulisan & tombol dihapus pelan-pelan (lingkaran lembut), jadi tulisan kebaca tanpa panel
+    if (teksHero) {
+      const r = teksHero.getBoundingClientRect(), cx = r.left - k.left + r.width / 2, cy = r.top - k.top + r.height / 2, rx = Math.max(r.width * .62, 160), ry = Math.max(r.height * .7, 120);
+      cl.save(); cl.globalCompositeOperation = 'destination-out'; cl.globalAlpha = terang ? .7 : .78;
+      cl.translate(cx, cy); cl.scale(1, ry / rx);
+      const g = cl.createRadialGradient(0, 0, rx * .35, 0, 0, rx); g.addColorStop(0, '#000'); g.addColorStop(1, 'rgba(0,0,0,0)');
+      cl.fillStyle = g; cl.fillRect(-rx, -rx, rx * 2, rx * 2); cl.restore();
     }
     c.globalCompositeOperation = terang ? 'source-over' : 'lighter';
     for (const b of lepas) {
@@ -379,7 +403,8 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
       if (d2 < 6400) { const f = (6400 - d2) / 6400 * 2.4, d = Math.sqrt(d2) || 1; b.vx += ex / d * f; b.vy += ey / d * f; }
       b.vx *= .86; b.vy *= .86; b.x += b.vx; b.y += b.vy; b.kedip += .08;
       c.globalAlpha = (.88 + Math.sin(b.kedip) * .12) * (b.tx == null ? .55 : 1);
-      c.fillStyle = b.warna; c.fillRect(b.x - b.r, b.y - b.r, b.r * 2, b.r * 2);
+      const r = b.kecil && fase === 'logo' ? .62 : b.r;
+      c.fillStyle = b.warna; c.fillRect(b.x - r, b.y - r, r * 2, r * 2);
     }
     c.globalAlpha = 1;
     requestAnimationFrame(gambar);
@@ -388,7 +413,10 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
   hero.addEventListener('pointerleave', () => { px = py = -999; });
   hero.addEventListener('click', (e) => { if (!e.target.closest('a, button, input, .hero__ixar, .jelajah__ixar')) window.R9Hero.gantiLatar(e.pageX, e.pageY); });
   hero.addEventListener('pointerup', (e) => { if (e.pointerType !== 'mouse') px = py = -999; });
-  document.addEventListener('r9:tema', () => { terang = temaSekarang() === 'terang'; butir.forEach((b) => { b.warna = pilihWarna(); }); });
+  document.addEventListener('r9:tema', () => {
+    terang = temaSekarang() === 'terang'; butir.forEach((b) => { b.warna = pilihWarna(); });
+    latar.forEach((b) => { b.warna = undi(warnaLatar()); }); latar.sort((a, b) => (a.warna < b.warna ? -1 : a.warna > b.warna ? 1 : 0));
+  });
   document.addEventListener('r9:bahasa', () => { if (w && h) ukur(); });
   new IntersectionObserver(([e]) => { const tadi = jalan; jalan = e.isIntersecting; if (jalan && !tadi) requestAnimationFrame(gambar); }).observe(kanvas);
   let tunggu; addEventListener('resize', () => { clearTimeout(tunggu); tunggu = setTimeout(ukur, 200); });
@@ -1305,7 +1333,7 @@ function urlMedia(jalur) {
 }
 
 async function ambilDataLive() {
-  for (const url of [`${ADMIN}/api/publik`, `data/reign9.json?t=${Date.now()}`]) {
+  for (const url of [`${ADMIN}/api/publik?t=${Date.now()}`, `data/reign9.json?t=${Date.now()}`]) {
     try {
       const ac = new AbortController(), batas = setTimeout(() => ac.abort(), 5000);
       const r = await fetch(url, { signal: ac.signal, cache: 'no-store' }); clearTimeout(batas);
@@ -1811,8 +1839,10 @@ gambarData();
     const sinyal = new EventSource(`${ADMIN}/api/langsung`);
     sinyal.addEventListener('open', () => segarkan());
     sinyal.addEventListener('berubah', () => segarkan());
+    sinyal.addEventListener('error', () => setTimeout(segarkan, 2000)); // sinyal putus (sering di Samsung Internet): ambil manual
   } catch (e) { /* peramban tanpa EventSource: cukup cek berkala */ }
-  setInterval(() => { if (!document.hidden) segarkan(); }, 15000);
+  setInterval(() => { if (!document.hidden) segarkan(); }, 8000);
+  addEventListener('pageshow', () => segarkan()); addEventListener('focus', () => segarkan());
   document.addEventListener('visibilitychange', () => { if (!document.hidden) segarkan(); });
 })();
 
