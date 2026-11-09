@@ -827,18 +827,22 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
   }
 
   // Perintahkan IXAR melakukan pose tertentu (dipakai oleh Command Deck #ixar)
+  let urutanPose = 0; // klik skill terakhir selalu menang: aksi lama yang masih jalan gak boleh nimpa
   async function peragakanPose(namaPose, durasi = 4500) {
     if (sedangDiseret) return;
+    const ini = ++urutanPose;
     jedaSampai = performance.now() + durasi + 800;
     const info = infoPlatform();
     if (info.mode === 'kenal') {
       const tengahPanggung = (info.xMin + info.xMax) / 2;
       if (Math.abs(px - tengahPanggung) > 60 || Math.abs(py - info.y) > 24) {
         await lompatKe(tengahPanggung, info.y, 120, 540);
+        if (ini !== urutanPose) return;
       }
     }
     if (namaPose === 'lompat') {
       await lompatKe(px, lantai(), 165, 660);
+      if (ini !== urutanPose) return;
       pose('menang');
       x()?.lakukan('menang', 1600);
     } else {
@@ -1090,7 +1094,9 @@ $$('[data-tab-pose]').forEach((tab) => tab.addEventListener('click', () => {
     kartu.hidden = kat !== 'semua' && kartu.dataset.kategoriPose !== kat;
   });
 }));
-$$('[data-pose]').forEach((b) => b.addEventListener('click', () => {
+$$('[data-pose]').forEach((b) => b.addEventListener('click', (e) => {
+  // efek gelombang dari titik tekan
+  if (gerakBoleh && b.classList.contains('kartu-pose')) { const r = b.getBoundingClientRect(), g = document.createElement('span'); g.className = 'riak'; g.style.left = `${(e.clientX || r.left + r.width / 2) - r.left}px`; g.style.top = `${(e.clientY || r.top + r.height / 2) - r.top}px`; b.append(g); setTimeout(() => g.remove(), 600); }
   $$('[data-pose]').forEach((x) => x.setAttribute('aria-pressed', x === b));
   window.R9IxarUtama?.peragakanPose(b.dataset.pose, 4600);
   window.R9IxarUtama?.tampilkanCuitanAcak(6800);

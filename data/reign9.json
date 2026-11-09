@@ -1,5 +1,5 @@
 {
- "diperbarui": "2026-11-09T01:01:02.642Z",
+ "diperbarui": "2026-11-09T01:07:00.249Z",
  "pemain": {
   "aktif": [
    {
@@ -221,6 +221,24 @@
   ],
   "nonaktif": [
    {
+    "id": 18,
+    "nickname": "R9.Alang克伦",
+    "role": "Analis",
+    "divisi": "Honor of Kings",
+    "kelompok": "R9 MY",
+    "instagram": "",
+    "tiktok": "",
+    "hero": [
+     "Jing",
+     "Pei"
+    ],
+    "periode": "April 2026 - Agustus 2026",
+    "gabung": "2026-05-02",
+    "negara": "MY",
+    "jenis": "coach",
+    "foto": ""
+   },
+   {
     "id": 16,
     "nickname": "R9.Arcyy衝突",
     "role": "Clash Lane",
@@ -246,7 +264,7 @@
     "divisi": "Honor of Kings",
     "kelompok": "R9 MY",
     "instagram": "",
-    "tiktok": "",
+    "tiktok": "mundofakar",
     "hero": [
      "Zhang Fei",
      "Lianpo",
@@ -273,6 +291,44 @@
     ],
     "periode": "April 2026 - Agustus 2026",
     "gabung": "2026-04-12",
+    "negara": "MY",
+    "jenis": "pemain",
+    "foto": ""
+   },
+   {
+    "id": 17,
+    "nickname": "R9.Monyet",
+    "role": "Mid Lane",
+    "divisi": "Honor of Kings",
+    "kelompok": "R9 MY",
+    "instagram": "",
+    "tiktok": "",
+    "hero": [
+     "Nuwa",
+     "Xiao Qiao",
+     "Angela"
+    ],
+    "periode": "April 2026 - Agustus 2026",
+    "gabung": "2026-05-02",
+    "negara": "MY",
+    "jenis": "pemain",
+    "foto": ""
+   },
+   {
+    "id": 19,
+    "nickname": "R9.Potato土豆",
+    "role": "Mid Lane",
+    "divisi": "Honor of Kings",
+    "kelompok": "R9 MY",
+    "instagram": "",
+    "tiktok": "mr_fotato",
+    "hero": [
+     "Mai Shiranui",
+     "Yixing",
+     "Nuwa"
+    ],
+    "periode": "April 2026 - Agustus 2026",
+    "gabung": "2026-05-02",
     "negara": "MY",
     "jenis": "pemain",
     "foto": ""

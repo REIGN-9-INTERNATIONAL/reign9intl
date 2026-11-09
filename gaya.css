@@ -411,7 +411,7 @@ button { font: inherit; color: inherit; }
 }
 .kartu-kategori__atas { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
 .kartu-kategori__judul { font: 700 clamp(18px, 2.2vw, 24px)/1.1 var(--judul); text-transform: uppercase; letter-spacing: .04em; display: inline-flex; align-items: center; gap: 10px; }
-.titik-status { width: 10px; height: 10px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 10px #22c55e; flex: none; }
+.titik-status { width: 10px; height: 10px; border-radius: 50%; background: #DA1617; box-shadow: 0 0 10px #DA1617; flex: none; }
 .titik-status--sejarah { background: rgba(255, 255, 255, .55); box-shadow: 0 0 8px rgba(255, 255, 255, .35); }
 .titik-status--kompetitif { background: #ef4444; box-shadow: 0 0 10px #ef4444; }
 .kartu-kategori__lencana { font: 700 11px/1 var(--judul); padding: 6px 10px; background: rgba(0, 0, 0, .35); border: 1px solid var(--garis); text-transform: uppercase; letter-spacing: .08em; white-space: nowrap; }
@@ -726,3 +726,43 @@ button { font: inherit; color: inherit; }
   -webkit-mask: radial-gradient(circle, transparent 38%, #000 40%, #000 62%, transparent 64%); mask: radial-gradient(circle, transparent 38%, #000 40%, #000 62%, transparent 64%); }
 .percik-duel::after { inset: -22px; transform: rotate(22deg); }
 @keyframes percik-duel { 0% { transform: scale(.2); opacity: 1; } 60% { opacity: 1; } 100% { transform: scale(calc(1.8 * var(--besar, 1))); opacity: 0; } }
+
+/* ---------- panggung IXAR modern: arena bercahaya + tombol skill hidup ---------- */
+.kenal__panggung { isolation: isolate; overflow: hidden;
+  background:
+    radial-gradient(60% 46% at 50% 14%, rgba(218, 22, 23, .22), transparent 70%),
+    linear-gradient(180deg, transparent 58%, rgba(218, 22, 23, .08) 58%),
+    var(--pita-b) !important; }
+/* lantai arena: garis perspektif + cincin bercahaya di bawah IXAR */
+.kenal__panggung::before { content: ''; position: absolute; left: -20%; right: -20%; bottom: 0; height: 42%; z-index: -1; pointer-events: none;
+  background: repeating-linear-gradient(90deg, rgba(218, 22, 23, .22) 0 1px, transparent 1px 46px), repeating-linear-gradient(0deg, rgba(218, 22, 23, .18) 0 1px, transparent 1px 30px);
+  transform: perspective(380px) rotateX(58deg); transform-origin: bottom center;
+  -webkit-mask: linear-gradient(transparent, #000 60%); mask: linear-gradient(transparent, #000 60%); }
+.kenal__panggung::after { content: ''; position: absolute; left: 50%; bottom: 13%; width: min(300px, 70%); height: 46px; margin-left: min(-150px, -35%); z-index: -1;
+  border-radius: 50%; border: 2px solid rgba(218, 22, 23, .75); box-shadow: 0 0 26px rgba(218, 22, 23, .55), inset 0 0 22px rgba(218, 22, 23, .4);
+  animation: cincin-arena 3.2s ease-in-out infinite; pointer-events: none; }
+@keyframes cincin-arena { 50% { box-shadow: 0 0 40px rgba(218, 22, 23, .8), inset 0 0 30px rgba(218, 22, 23, .55); transform: scaleX(1.04); } }
+:root[data-tema="terang"] .kenal__panggung::after { border-color: #000; box-shadow: 0 0 22px rgba(0, 0, 0, .35); }
+@media (prefers-color-scheme: light) { :root:not([data-tema="gelap"]) .kenal__panggung::after { border-color: #000; box-shadow: 0 0 22px rgba(0, 0, 0, .35); } }
+.kenal__cuitan-box { display: none !important; } /* gelembung IXAR udah nampilin kalimat yang sama */
+
+.kartu-pose { position: relative; overflow: hidden; transition: transform .2s cubic-bezier(.3, 1.4, .5, 1), border-color .2s, box-shadow .2s, background .2s !important; }
+.kartu-pose:hover { transform: translateY(-4px); border-color: var(--merah) !important; box-shadow: 0 10px 22px rgba(0, 0, 0, .35), 0 0 0 1px var(--merah), 0 0 18px rgba(218, 22, 23, .35); }
+.kartu-pose:active { transform: translateY(0) scale(.97); }
+.kartu-pose[aria-pressed="true"] { background: var(--merah) !important; color: #fff !important; border-color: var(--merah) !important; }
+.kartu-pose[aria-pressed="true"] .kartu-pose__ikon { background: #000 !important; color: #fff !important; }
+.kartu-pose[aria-pressed="true"] small { opacity: .9; }
+.kartu-pose:hover .kartu-pose__ikon svg { animation: goyang-ikon .45s ease-in-out; }
+@keyframes goyang-ikon { 25% { transform: rotate(-14deg) scale(1.15); } 60% { transform: rotate(10deg) scale(1.1); } }
+.kartu-pose__info small { white-space: normal !important; overflow: visible !important; text-overflow: clip !important; line-height: 1.25 !important; }
+/* gelombang pas ditekan */
+.kartu-pose .riak { position: absolute; width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 50%; background: rgba(255, 255, 255, .45); pointer-events: none; animation: riak .55s ease-out forwards; }
+@keyframes riak { to { transform: scale(26); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .kenal__panggung::after, .kartu-pose:hover .kartu-pose__ikon svg { animation: none; } }
+/* kartu skill: tinggi ngikutin isi (jangan kepotong) */
+.dek-ixar__grid { grid-auto-rows: auto !important; align-items: stretch; max-height: none !important; overflow: visible !important; }
+.kartu-pose { height: auto !important; min-height: 62px; overflow: hidden; }
+
+/* titik status "aktif": merah berdenyut (palet merah-hitam-putih, tanpa hijau) */
+.titik-status--aktif { background: var(--merah) !important; animation: denyut-status 1.6s ease-in-out infinite; }
+@keyframes denyut-status { 50% { box-shadow: 0 0 0 5px rgba(218, 22, 23, .25), 0 0 12px rgba(218, 22, 23, .8); } }
