@@ -766,3 +766,23 @@ button { font: inherit; color: inherit; }
 /* titik status "aktif": merah berdenyut (palet merah-hitam-putih, tanpa hijau) */
 .titik-status--aktif { background: var(--merah) !important; animation: denyut-status 1.6s ease-in-out infinite; }
 @keyframes denyut-status { 50% { box-shadow: 0 0 0 5px rgba(218, 22, 23, .25), 0 0 12px rgba(218, 22, 23, .8); } }
+
+/* ---------- generator foto profil ---------- */
+#pfp { background: var(--pita-c) !important; }
+.pfp__kerja { display: grid; gap: 22px; padding: 16px; background: var(--kartu); border: 2px solid var(--garis); }
+.pfp__kanvas { width: 100%; max-width: 520px; height: auto; aspect-ratio: 1; margin-inline: auto; background: #000; box-shadow: 0 18px 40px rgba(0, 0, 0, .4); }
+.pfp__atur { display: grid; gap: 16px; align-content: start; }
+.pfp__grup { border: 0; margin: 0; padding: 0; display: grid; gap: 8px; }
+.pfp__grup legend { font: 700 13px/1 var(--judul); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; padding: 0; }
+.pfp__pilihan { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.pfp__pilihan--chip { display: flex; flex-wrap: wrap; }
+.pfp__opsi { position: relative; min-height: 38px; padding: 0 12px; border: 2px solid var(--garis); background: var(--kartu); color: var(--teks); font: 600 13px/1 var(--badan); cursor: pointer; transition: transform .18s cubic-bezier(.3, 1.4, .5, 1), border-color .18s, background .18s; }
+.pfp__opsi img { width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; display: block; }
+.pfp__pilihan:not(.pfp__pilihan--chip) .pfp__opsi { padding: 0; min-height: 0; }
+.pfp__pilihan:not(.pfp__pilihan--chip) .pfp__opsi[data-i18n] { aspect-ratio: 1; font-size: 12px; }
+.pfp__opsi:hover { transform: translateY(-2px); border-color: var(--merah); }
+.pfp__opsi[aria-pressed="true"] { border-color: var(--merah); background: var(--merah); color: #fff; }
+.pfp__opsi[aria-pressed="true"] img { outline: 3px solid var(--merah); outline-offset: -3px; }
+.pfp__aksi { display: flex; flex-wrap: wrap; gap: 10px; }
+.pfp__studio { position: absolute; left: -9999px; top: 0; width: 820px; height: 1000px; overflow: hidden; } /* IXAR bayangan buat difoto */
+@media (min-width: 900px) { .pfp__kerja { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); padding: 24px; align-items: start; } }

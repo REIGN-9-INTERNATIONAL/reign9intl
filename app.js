@@ -199,7 +199,7 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
     titik.kotakLogo = [gx, gy, gx + lw, gy + lh];
     const tw = Math.min(w * .9, 980), uk = Math.min(tw / 6.5, 142), th = Math.round(uk * 2.7);
     [o, oc] = kanvasBantu(Math.round(tw), th);
-    oc.font = `700 ${uk}px Reign9Display, Oxanium, sans-serif`; oc.textAlign = 'center'; oc.textBaseline = 'middle';
+    oc.font = `700 ${uk}px Reign9Display, Reign9Display, Oxanium, sans-serif`; oc.textAlign = 'center'; oc.textBaseline = 'middle';
     oc.fillText('WELCOME TO', tw / 2, uk * .7, tw); oc.fillText('OUR REIGN', tw / 2, uk * 1.9, tw);
     const tx = (w - tw) / 2, ty = gy + lh * .42 - uk * 1.15;
     titik.teks = cuplik(oc, Math.round(tw), th, w < 600 ? 2.5 : 3.2, tx, ty);
@@ -1701,13 +1701,13 @@ gambarData();
     c.textAlign = 'right'; c.textBaseline = 'alphabetic';
     c.shadowColor = 'rgba(0,0,0,.7)'; c.shadowBlur = 18;
     if (nama) {
-      let uk = 88; c.font = `700 ${uk}px Reign9Display, Oxanium, sans-serif`;
-      while (c.measureText(nama.toUpperCase()).width > 760 && uk > 34) { uk -= 4; c.font = `700 ${uk}px Reign9Display, Oxanium, sans-serif`; }
+      let uk = 88; c.font = `700 ${uk}px Reign9Display, Reign9Display, Oxanium, sans-serif`;
+      while (c.measureText(nama.toUpperCase()).width > 760 && uk > 34) { uk -= 4; c.font = `700 ${uk}px Reign9Display, Reign9Display, Oxanium, sans-serif`; }
       c.fillStyle = '#fff';
       c.fillText(nama.toUpperCase(), 1450, sub ? 430 : 455);
     }
     if (sub) {
-      c.font = '700 24px Reign9Display, Oxanium, sans-serif';
+      c.font = '700 24px Reign9Display, Reign9Display, Oxanium, sans-serif';
       c.fillStyle = '#ff3b26';
       c.fillText(sub.toUpperCase(), 1450, 468);
     }
@@ -1747,4 +1747,154 @@ gambarData();
       location.href = `mailto:reign9intl@reign9.site?cc=reignnine2@gmail.com&subject=${encodeURIComponent(`[R9 Contact] ${d.keperluan} - ${d.nama}`)}&body=${encodeURIComponent(`${d.pesan}\n\n${d.nama} <${d.email}>`)}`;
     } finally { tombol.disabled = false; }
   });
+})();
+
+// ---------- generator foto profil: IXAR (pose beku dari mesin IXAR) + latar + item, persegi 1080 ----------
+(() => {
+  const kanvas = $('.pfp__kanvas'), ixEl = $('[data-pfp-ixar]');
+  if (!kanvas || !ixEl) return;
+  const c = kanvas.getContext('2d'), S = 1080, isian = $('[name=nama-pfp]');
+  const LATAR = ['banner-1', 'banner-2', 'banner-3', 'banner-4', 'banner-5', 'bara', 'kastil', 'merah'];
+  const POSE = ['diam', 'nyambut', 'pedang', 'tonjok', 'menang', 'tameng', 'meditasi', 'marah', 'penasaran', 'bendera'];
+  const WARNA = { hitam: ['#0B0102', '#FFFFFF'], putih: ['#FFFFFF', '#0B0102'], merah: ['#DA1617', '#0B0102'] }; // [badan, mata]
+  const ITEM = ['kacamata', 'headset', 'rokok', 'tongkat', 'pedang', 'syal', 'medali', 'mic'];
+  const pilih = { latar: 'banner-5', pose: 'diam', warna: 'hitam', item: new Set(['headset']) };
+  const gambarCache = {};
+  const muatGambar = (src) => gambarCache[src] || (gambarCache[src] = new Promise((ok) => { const i = new Image(); i.onload = () => ok(i); i.onerror = () => ok(null); i.src = src; }));
+  // tombol pilihan
+  const tombol = (wadah, nilai, label, ganda) => {
+    const b = document.createElement('button'); b.type = 'button'; b.className = 'pfp__opsi'; b.dataset.nilai = nilai;
+    if (label.startsWith('gambar:')) { const im = document.createElement('img'); im.src = label.slice(7); im.alt = ''; im.width = 120; im.height = 120; im.loading = 'lazy'; b.append(im); }
+    else { b.dataset.i18n = label; b.textContent = R9.t(label); }
+    b.setAttribute('aria-pressed', 'false'); wadah.append(b); return b;
+  };
+  const wLatar = $('[data-pfp-latar]'), wPose = $('[data-pfp-pose]'), wWarna = $('[data-pfp-warna]'), wItem = $('[data-pfp-item]');
+  LATAR.forEach((l) => tombol(wLatar, l, l.startsWith('banner') ? `gambar:gambar/banner/${l}-kecil.jpg` : `pfp.latar.${l}`));
+  POSE.forEach((p) => tombol(wPose, p, `pose.${p}`));
+  Object.keys(WARNA).forEach((w) => tombol(wWarna, w, `pfp.warna.${w}`));
+  ITEM.forEach((it) => tombol(wItem, it, `pfp.item.${it}`));
+  const tandai = () => {
+    $$('.pfp__opsi', wLatar).forEach((b) => b.setAttribute('aria-pressed', b.dataset.nilai === pilih.latar));
+    $$('.pfp__opsi', wPose).forEach((b) => b.setAttribute('aria-pressed', b.dataset.nilai === pilih.pose));
+    $$('.pfp__opsi', wWarna).forEach((b) => b.setAttribute('aria-pressed', b.dataset.nilai === pilih.warna));
+    $$('.pfp__opsi', wItem).forEach((b) => b.setAttribute('aria-pressed', pilih.item.has(b.dataset.nilai)));
+  };
+  // ---- latar ----
+  async function lukisLatar() {
+    if (pilih.latar.startsWith('banner')) {
+      const im = await muatGambar(`gambar/banner/${pilih.latar}.jpg`);
+      if (im) { const sisi = im.height; c.drawImage(im, (im.width - sisi) / 2, 0, sisi, sisi, 0, 0, S, S); c.fillStyle = 'rgba(0,0,0,.18)'; c.fillRect(0, 0, S, S); return; }
+    }
+    if (pilih.latar === 'merah') {
+      c.fillStyle = '#A80309'; c.fillRect(0, 0, S, S);
+      c.strokeStyle = 'rgba(0,0,0,.18)'; c.lineWidth = 18; for (let x = -S; x < S * 2; x += 90) { c.beginPath(); c.moveTo(x, S); c.lineTo(x + S, 0); c.stroke(); }
+    } else if (pilih.latar === 'kastil') {
+      const g = c.createLinearGradient(0, 0, 0, S); g.addColorStop(0, '#22040A'); g.addColorStop(1, '#050101'); c.fillStyle = g; c.fillRect(0, 0, S, S);
+      c.fillStyle = '#3A050A'; const dasar = S * .9;
+      [[60, 140, 330], [240, 170, 420], [440, 200, 520], [680, 170, 420], [870, 150, 330]].forEach(([x, l, t]) => { c.fillRect(x, dasar - t, l, t); for (let i = 0; i < l; i += 34) c.fillRect(x + i, dasar - t - 24, 17, 24); });
+      c.fillRect(0, dasar - 150, S, 150 + S * .1);
+    } else { // bara
+      const g = c.createRadialGradient(S / 2, S * .55, 40, S / 2, S * .55, S * .75); g.addColorStop(0, '#7A0A10'); g.addColorStop(.6, '#2A0306'); g.addColorStop(1, '#050101'); c.fillStyle = g; c.fillRect(0, 0, S, S);
+      for (let i = 0; i < 260; i++) { const x = (i * 197) % S, y = (i * 389) % S, r = (i % 4) + 1; c.globalAlpha = .25 + (i % 5) / 8; c.fillStyle = i % 7 ? '#DA1617' : '#FFD6D6'; c.fillRect(x, y, r * 2, r * 2); }
+      c.globalAlpha = 1;
+    }
+  }
+  // ---- IXAR + item jadi satu svg (item ditempel di kepala/tangan rig, jadi ikut gerak pose), lalu digambar ke kanvas ----
+  const VB = { x: 360, y: -40, w: 820, h: 1000 }, sk = .82, X0 = (S - VB.w * sk) / 2, Y0 = S - VB.h * sk - 50;
+  const MERAH = '#DA1617', PUTIH = '#FFFFFF', HITAM = '#0B0102', NS = 'http://www.w3.org/2000/svg';
+  const bikin = (tag, at, induk) => { const e = document.createElementNS(NS, tag); for (const k in at) e.setAttribute(k, at[k]); if (induk) induk.append(e); return e; };
+  // koordinat kepala IXAR: mata kiri x 604–696, kanan 838–930, y 300–439; kepala x 492–1042
+  function pasangItem(nama, akar, kepala, tangan, kontras) {
+    if (nama === 'kacamata') {
+      const g = bikin('g', { stroke: kontras, 'stroke-width': 14, 'stroke-linejoin': 'round' }, kepala);
+      [577, 811].forEach((x) => bikin('rect', { x, y: 312, width: 146, height: 116, rx: 26, fill: HITAM }, g));
+      bikin('path', { d: 'M723 360H811M577 352L496 338M957 352L1038 338', fill: 'none' }, g);
+      bikin('path', { d: 'M603 342L640 390M837 342L874 390', fill: 'none', 'stroke-width': 10, opacity: .55 }, g);
+    } else if (nama === 'headset') {
+      const g = bikin('g', {}, kepala);
+      bikin('path', { d: 'M474 400C452 120 1082 120 1060 400', fill: 'none', stroke: MERAH, 'stroke-width': 34, 'stroke-linecap': 'round' }, g);
+      bikin('rect', { x: 434, y: 318, width: 70, height: 150, rx: 26, fill: MERAH, stroke: kontras, 'stroke-width': 8 }, g);
+      bikin('rect', { x: 1030, y: 318, width: 70, height: 150, rx: 26, fill: MERAH, stroke: kontras, 'stroke-width': 8 }, g);
+      bikin('path', { d: 'M1066 460Q1060 560 950 580', fill: 'none', stroke: kontras, 'stroke-width': 12, 'stroke-linecap': 'round' }, g);
+      bikin('circle', { cx: 944, cy: 582, r: 20, fill: kontras }, g);
+    } else if (nama === 'rokok') {
+      const g = bikin('g', { 'stroke-linecap': 'round' }, kepala);
+      bikin('path', { d: 'M880 540L1010 512', stroke: PUTIH, 'stroke-width': 26 }, g);
+      bikin('path', { d: 'M992 516L1012 512', stroke: MERAH, 'stroke-width': 26 }, g);
+      bikin('path', { d: 'M1028 492Q1060 450 1030 400T1060 320', fill: 'none', stroke: '#D8D8D8', 'stroke-width': 10, opacity: .6 }, g);
+    } else if (nama === 'syal') {
+      const g = bikin('g', { fill: 'none', stroke: MERAH, 'stroke-linecap': 'round' }, akar);
+      bikin('path', { d: 'M660 596Q768 650 876 596', 'stroke-width': 50 }, g);
+      bikin('path', { d: 'M850 620Q890 700 846 800', 'stroke-width': 42 }, g);
+      bikin('path', { d: 'M866 660Q884 710 866 760', stroke: kontras, 'stroke-width': 6 }, g);
+    } else if (nama === 'medali') {
+      const g = bikin('g', {}, akar);
+      bikin('path', { d: 'M728 610L768 700', stroke: MERAH, 'stroke-width': 20 }, g);
+      bikin('path', { d: 'M808 610L768 700', stroke: PUTIH, 'stroke-width': 20 }, g);
+      bikin('circle', { cx: 768, cy: 736, r: 48, fill: PUTIH, stroke: MERAH, 'stroke-width': 10 }, g);
+      const t = bikin('text', { x: 768, y: 752, 'text-anchor': 'middle', fill: MERAH, 'font-size': 44, 'font-weight': 800, 'font-family': 'Reign9Display, Oxanium, sans-serif' }, g); t.textContent = 'R9';
+    } else if (nama === 'tongkat') {
+      const [x, y] = tangan.kanan.titik, g = bikin('g', {}, akar);
+      bikin('path', { d: `M${x} ${y - 360}V${y + 290}`, stroke: kontras, 'stroke-width': 22, 'stroke-linecap': 'round' }, g);
+      bikin('circle', { cx: x, cy: y - 380, r: 46, fill: MERAH, stroke: kontras, 'stroke-width': 10 }, g);
+    } else if (nama === 'mic') {
+      const ke = tangan.kiri, [x, y] = ke.titik, g = bikin('g', { transform: `translate(${x} ${y}) rotate(${-ke.sudut + 90})` }, akar);
+      bikin('rect', { x: -15, y: -20, width: 30, height: 130, rx: 10, fill: HITAM, stroke: kontras, 'stroke-width': 6 }, g);
+      bikin('circle', { cx: 0, cy: -50, r: 40, fill: MERAH, stroke: kontras, 'stroke-width': 8 }, g);
+    }
+  }
+  async function lukisIxar() {
+    const ix = window.IXAR?.pasang(ixEl); if (!ix) return;
+    const tangan = ix.bekukan(pilih.pose).lokal;
+    const [badan, mata] = WARNA[pilih.warna], kontras = badan === PUTIH ? HITAM : PUTIH;
+    const svg = ix.svg.cloneNode(true);
+    svg.setAttribute('width', VB.w); svg.setAttribute('height', VB.h);
+    svg.setAttribute('style', `color:${badan};--ixar-mata:${mata};--ixar-alat:${badan === MERAH ? kontras : MERAH};--ixar-alat-2:${kontras}`);
+    bikin('style', {}, svg).textContent = '.ixar__mata{fill:var(--ixar-mata)}';
+    const akar = svg.querySelector(':scope > g'), kepala = akar.children[1];
+    for (const it of ITEM) {
+      if (!pilih.item.has(it)) continue;
+      if (it === 'pedang') { // pedang Reign asli dari rig, di tangan kiri
+        const p = akar.children[2].cloneNode(true), ke = tangan.kiri;
+        p.style.opacity = 1; p.setAttribute('transform', `translate(${ke.titik[0]} ${ke.titik[1]}) rotate(${-ke.sudut})`);
+        p.setAttribute('fill', badan === MERAH ? kontras : MERAH); akar.append(p);
+      } else pasangItem(it, akar, kepala, tangan, kontras);
+    }
+    const src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(new XMLSerializer().serializeToString(svg))}`;
+    const im = await new Promise((ok) => { const i = new Image(); i.onload = () => ok(i); i.onerror = () => ok(null); i.src = src; });
+    if (!im) return;
+    c.save(); c.shadowColor = badan === HITAM ? 'rgba(218,22,23,.85)' : 'rgba(0,0,0,.5)'; c.shadowBlur = badan === HITAM ? 20 : 30;
+    c.drawImage(im, X0, Y0, VB.w * sk, VB.h * sk); c.restore();
+  }
+  // ---- gabung semua ----
+  let antre = Promise.resolve();
+  const lukis = () => (antre = antre.then(async () => {
+    tandai();
+    await document.fonts.load('700 80px Reign9Display').catch(() => {});
+    c.clearRect(0, 0, S, S); await lukisLatar();
+    await lukisIxar();
+    const nama = (isian.value || '').trim().toUpperCase();
+    if (nama) {
+      const g = c.createLinearGradient(0, S - 220, 0, S); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(0,0,0,.75)'); c.fillStyle = g; c.fillRect(0, S - 220, S, 220);
+      let uk = 96; c.font = `700 ${uk}px Reign9Display, Oxanium, sans-serif`; while (c.measureText(nama).width > S - 120 && uk > 40) { uk -= 4; c.font = `700 ${uk}px Reign9Display, Oxanium, sans-serif`; }
+      c.textAlign = 'center'; c.textBaseline = 'alphabetic'; c.fillStyle = '#FFFFFF'; c.shadowColor = 'rgba(0,0,0,.6)'; c.shadowBlur = 16; c.fillText(nama, S / 2, S - 54); c.shadowBlur = 0;
+    }
+  }).catch(() => {}));
+  const klik = (wadah, fn) => wadah.addEventListener('click', (e) => { const b = e.target.closest('.pfp__opsi'); if (b) { fn(b.dataset.nilai); lukis(); } });
+  klik(wLatar, (v) => { pilih.latar = v; }); klik(wPose, (v) => { pilih.pose = v; }); klik(wWarna, (v) => { pilih.warna = v; });
+  klik(wItem, (v) => { if (pilih.item.has(v)) pilih.item.delete(v); else pilih.item.add(v); });
+  isian.addEventListener('input', lukis);
+  $('[data-pfp-acak]').addEventListener('click', () => {
+    const acak = (a) => a[Math.floor(Math.random() * a.length)];
+    pilih.latar = acak(LATAR); pilih.pose = acak(POSE); pilih.warna = acak(Object.keys(WARNA));
+    pilih.item = new Set(ITEM.filter(() => Math.random() < .3)); lukis();
+  });
+  $('[data-pfp-unduh]').addEventListener('click', async () => {
+    await lukis();
+    const a = document.createElement('a');
+    a.download = `reign9-ixar-${(isian.value.trim() || pilih.pose).toLowerCase().replace(/[^a-z0-9]+/g, '-')}.png`;
+    a.href = kanvas.toDataURL('image/png'); a.click();
+  });
+  document.addEventListener('r9:bahasa', () => $$('.pfp__opsi[data-i18n]').forEach((b) => { b.textContent = R9.t(b.dataset.i18n); }));
+  new IntersectionObserver((d, o) => { if (d.some((e) => e.isIntersecting)) { o.disconnect(); lukis(); } }, { rootMargin: '300px' }).observe(kanvas);
 })();

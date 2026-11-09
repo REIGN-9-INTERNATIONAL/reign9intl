@@ -198,6 +198,17 @@
       this.svg = s; this.el.append(s);
       Object.values(this.alat).forEach((a) => a.style.opacity = 0);
     }
+    // pose beku buat difoto (generator foto profil): langsung ke pose akhir, tanpa kedip/napas
+    bekukan(p) {
+      if (!POSE[p]) p = 'diam';
+      this.set(p); const t = POSE[p];
+      this.n = { ...t, lk: [...t.lk], ln: [...t.ln], kk: [...t.kk], kn: [...t.kn] };
+      this.kedipBerikut = Infinity; this.kedipMulai = 0; this.lirikX = this.lirikY = 0; this.tujuanLirik = [0, 0];
+      this.langkah(this.t0);
+      // titik tangan dalam koordinat svg (udah kena transformasi badan)
+      const m = this.akar.transform.baseVal.consolidate()?.matrix, ke = (q) => (m ? [m.a * q[0] + m.c * q[1] + m.e, m.b * q[0] + m.d * q[1] + m.f] : q);
+      return { kanan: ke(this.ujungKanan.titik), kiri: ke(this.ujungKiri.titik), lokal: { kanan: this.ujungKanan, kiri: this.ujungKiri } };
+    }
     set(pose) { if (POSE[pose]) { this.pose = pose; this.el.dataset.pose = pose; } }
     lakukan(pose, lama = 1400) {
       clearTimeout(this.balik); this.set(pose);

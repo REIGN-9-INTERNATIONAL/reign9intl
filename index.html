@@ -21,8 +21,8 @@
 <link rel="icon" href="gambar/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="font/Reign9Display-Regular.ttf" as="font" type="font/ttf" crossorigin>
 <link rel="preload" href="font/oxanium-500.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="font/font.css?v=2611090806">
-<link rel="stylesheet" href="gaya.css?v=2611090806">
+<link rel="stylesheet" href="font/font.css?v=2611090816">
+<link rel="stylesheet" href="gaya.css?v=2611090816">
 </head>
 <body>
 <!-- Sprite SVG Logo disematkan langsung agar dibuka lewat file:// (klik 2x index.html) tetap jalan 100% tanpa kena blokir CORS browser -->
@@ -414,6 +414,29 @@
     </div>
   </section>
 
+  <!-- ========== foto profil custom: IXAR + latar + item, persegi 1080 ========== -->
+  <section class="bagian pfp" id="pfp" aria-labelledby="judul-pfp">
+    <div class="kepala-bagian">
+      <h2 id="judul-pfp" class="judul" data-i18n-html="pfp.judul">Bikin <span class="aksen-merah">foto profil</span></h2>
+      <p data-i18n="pfp.sub">Pilih gaya IXAR, latar, dan item. Hasilnya persegi, siap jadi foto profil.</p>
+    </div>
+    <div class="pfp__kerja">
+      <canvas class="pfp__kanvas" width="1080" height="1080" role="img" data-i18n-attr="aria-label:pfp.alt"></canvas>
+      <div class="pfp__atur">
+        <fieldset class="pfp__grup"><legend data-i18n="pfp.latar">Latar</legend><div class="pfp__pilihan" data-pfp-latar></div></fieldset>
+        <fieldset class="pfp__grup"><legend data-i18n="pfp.gaya">Gaya IXAR</legend><div class="pfp__pilihan pfp__pilihan--chip" data-pfp-pose></div></fieldset>
+        <fieldset class="pfp__grup"><legend data-i18n="pfp.warna">Warna IXAR</legend><div class="pfp__pilihan pfp__pilihan--chip" data-pfp-warna></div></fieldset>
+        <fieldset class="pfp__grup"><legend data-i18n="pfp.item">Item (boleh lebih dari satu)</legend><div class="pfp__pilihan pfp__pilihan--chip" data-pfp-item></div></fieldset>
+        <label class="isian"><span data-i18n="pfp.nama">Nama (opsional)</span><input name="nama-pfp" maxlength="16" autocomplete="off" spellcheck="false" data-i18n-attr="placeholder:banner.namaPh"></label>
+        <div class="pfp__aksi">
+          <button class="tombol tombol--garis" type="button" data-pfp-acak data-i18n="pfp.acak">Acak</button>
+          <button class="tombol tombol--utama" type="button" data-pfp-unduh data-i18n="pfp.unduh">Unduh foto profil (PNG)</button>
+        </div>
+      </div>
+    </div>
+    <span class="pfp__studio" aria-hidden="true"><span data-ixar="diam" data-pfp-ixar></span></span>
+  </section>
+
   <!-- ========== sponsor & shop ========== -->
   <section class="bagian" id="shop" aria-labelledby="judul-shop">
     <div class="kepala-bagian">
@@ -491,9 +514,9 @@
   <p class="kaki__hak" data-i18n="kaki.hak">© 2026 Reign 9 International.</p>
 </footer>
 
-<script src="bahasa.js?v=2611090806"></script>
+<script src="bahasa.js?v=2611090816"></script>
 <script src="cuitan-ixar.js?v=26110904"></script>
-<script src="ixar.js?v=2611090806"></script>
-<script src="app.js?v=2611090806"></script>
+<script src="ixar.js?v=2611090816"></script>
+<script src="app.js?v=2611090816"></script>
 </body>
 </html>
