@@ -148,7 +148,7 @@ window.R9_KAMUS = {
 
   // ---------- roster (3-Level Drilldown: Active Squads, Inactive Squads, & Management) ----------
   'roster.judul': { id: 'Tim <span class="aksen-merah">Kami</span>', en: 'Our <span class="aksen-merah">Team</span>', zh: '我们的<span class="aksen-merah">团队</span>' },
-  'roster.sub': { id: 'Pilih kategori (Active Squads, Inactive Squads, atau Management), lalu klik nama tim/divisi untuk melihat daftar anggota.', en: 'Select a category (Active Squads, Inactive Squads, or Management), then click a team or division to view its members.', zh: '选择类别（现役战队、历史荣誉阵容或管理层部门），再点击具体战队或部门名称查看成员。' },
+  'roster.sub': { id: 'Pilih kategori (Management, Active Squads, atau Inactive Squads), lalu klik nama tim/divisi untuk melihat daftar anggota.', en: 'Select a category (Management, Active Squads, or Inactive Squads), then click a team or division to view its members.', zh: '选择类别（现役战队、历史荣誉阵容或管理层部门），再点击具体战队或部门名称查看成员。' },
   'roster.wilayah': { id: 'Skuad lintas negara', en: 'Multinational squad', zh: '跨国阵容' },
   'roster.wilayahIsi': { id: 'Berawal dari Indonesia, kini Reign 9 menyatukan talenta terbaik dari berbagai negara Asia dalam satu bendera kompetitif.', en: 'Starting in Indonesia, Reign 9 now unites top Asian talents under one competitive banner.', zh: '从印度尼西亚起步，Reign 9 现已将亚洲多国顶尖人才汇聚在同一面竞技旗帜之下。' },
   'roster.pemain': { id: 'anggota', en: 'members', zh: '名成员' },

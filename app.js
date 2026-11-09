@@ -1621,9 +1621,10 @@ function gambarData() {
         <span class="kk__sub">${esc(R9.t(`roster.kategori.${kat}Sub`))}</span>
         <svg class="kk__panah" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2"/></svg>
       </button>`;
-    elKategori.innerHTML = kartu('aktif', '', grupAktif.size, 'roster.tim', aktif.length)
-      + kartu('nonaktif', ' titik-status--sejarah', grupNonaktif.size, 'roster.tim', nonaktif.length)
-      + kartu('management', ' titik-status--kompetitif', grupManagement.size, 'roster.unit', management.length);
+    // Management paling depan: inti organisasi
+    elKategori.innerHTML = kartu('management', ' titik-status--kompetitif', grupManagement.size, 'roster.unit', management.length)
+      + kartu('aktif', '', grupAktif.size, 'roster.tim', aktif.length)
+      + kartu('nonaktif', ' titik-status--sejarah', grupNonaktif.size, 'roster.tim', nonaktif.length);
   }
 
   // LEVEL 2: Render Daftar Nama Tim / Divisi (HANYA muncul jika salah satu kategori diklik!)
