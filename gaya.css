@@ -996,3 +996,6 @@ html { overflow-x: clip; }
 /* header selalu nempel di atas: overflow "clip" (bukan hidden) biar body gak jadi wadah scroll yang bikin sticky lepas */
 body { overflow-x: clip !important; }
 .atas { position: sticky !important; top: 0 !important; z-index: 60 !important; }
+/* "Situs desktop" di HP: matiin pembesar teks otomatis peramban (font boosting) biar ukuran tulisan sesuai desain */
+html { -webkit-text-size-adjust: 100%; -moz-text-size-adjust: 100%; text-size-adjust: 100%; }
+p, li, h1, h2, h3, h4, dt, dd, small, label, blockquote { max-height: 1000000px; } /* trik kedua: peramban HP gak ngegedein teks yang punya max-height */

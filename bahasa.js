@@ -71,7 +71,7 @@ window.R9_KAMUS = {
   'ethos.3': { id: 'Keunggulan', en: 'Excellence', zh: '卓越' },
   'ethos.4': { id: 'Kesetiaan', en: 'Loyalty', zh: '忠诚' },
   'ekosistem.1.judul': { id: 'R9 Esports', en: 'R9 Esports', zh: 'R9 电竞战队' },
-  'ekosistem.1.isi': { id: 'Divisi kompetitif utama lintas negara (Indonesia, Malaysia, Singapura, Tiongkok) yang bertarung di turnamen dan scrim tingkat Asia.', en: 'Our premier multinational competitive division (Indonesia, Malaysia, Singapore, China) battling in top Asian tournaments and scrims.', zh: '汇聚印尼、马来西亚、新加坡与中国的跨国主力竞技分部，征战亚洲各大赛事与高强度训练赛。' },
+  'ekosistem.1.isi': { id: 'Divisi kompetitif utama lintas negara yang bertarung di turnamen dan scrim tingkat Asia.', en: 'Our premier multinational competitive division, competing in top Asian tournaments and scrims.', zh: '我们的跨国主力竞技分部，征战亚洲顶级赛事与训练赛。' },
   'ekosistem.2.judul': { id: 'R9 Guild & Academy', en: 'R9 Guild & Academy', zh: 'R9 公会与青训' },
   'ekosistem.2.isi': { id: 'Komunitas resmi di dalam game (Guild ID: 980982) dan wadah pembinaan pemain Grandmaster+ menuju panggung kompetitif.', en: 'Official community inside the game (Guild ID: 980982) and talent development path for Grandmaster+ players aiming for the pro stage.', zh: '官方游戏内公会（ID：980982）与青训体系，助力王者段位以上玩家迈向职业赛场。' },
   'ekosistem.3.judul': { id: 'R9 Studios & Community', en: 'R9 Studios & Community', zh: 'R9 媒体与社区' },
@@ -193,7 +193,7 @@ window.R9_KAMUS = {
   // Deskripsi singkat tiap tim / divisi saat muncul di Level 2
   'deskripsiTim.R9 Main Roster': { id: 'Skuad utama Honor of Kings lintas negara', en: 'Primary multinational Honor of Kings lineup', zh: '王者荣耀跨国主力阵容' },
   'deskripsiTim.Main Roster': { id: 'Skuad utama Honor of Kings lintas negara', en: 'Primary multinational Honor of Kings lineup', zh: '王者荣耀跨国主力阵容' },
-  'deskripsiTim.R9 Malaysia': { id: 'Skuad regional Malaysia & Singapura', en: 'Malaysia & Singapore regional squad', zh: '马来西亚与新加坡区域分部' },
+  'deskripsiTim.R9 Malaysia': { id: 'Skuad regional Malaysia', en: 'Malaysia regional squad', zh: '马来西亚区域分部' },
   'deskripsiTim.Media and Publication': { id: 'Divisi kreatif konten, publikasi media sosial, desain visual, dan siaran resmi Reign 9', en: 'Creative content, social media publication, visual design, and official broadcasts', zh: '负责 R9 内容创作、社交媒体宣传、视觉设计与官方直播' },
   'deskripsiTim.Competitive': { id: 'Man Behind the Match: divisi manajemen tim kompetitif, pelatih, analis, dan operasional turnamen', en: 'Man Behind the Match: competitive team management, coaching staff, analysts, and tournament ops', zh: 'Man Behind the Match：负责竞技战队管理、教练组、战术分析与赛事运营' },
   'deskripsiTim.Competitive Division': { id: 'Man Behind the Match: divisi manajemen tim kompetitif, pelatih, analis, dan operasional turnamen', en: 'Man Behind the Match: competitive team management, coaching staff, analysts, and tournament ops', zh: 'Man Behind the Match：负责竞技战队管理、教练组、战术分析与赛事运营' },
