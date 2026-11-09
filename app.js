@@ -135,26 +135,17 @@ $$('[data-bahasa]').forEach((t) => t.addEventListener('click', () => pasangBahas
 // ---------- tema ----------
 const temaSekarang = () => document.documentElement.dataset.tema || (matchMedia('(prefers-color-scheme: light)').matches ? 'terang' : 'gelap');
 const pasangTema = (t) => { document.documentElement.dataset.tema = t; try { localStorage.setItem('tema', t); } catch (e) {} document.dispatchEvent(new Event('r9:tema')); };
-// ganti tema tanpa kedip: lingkaran warna tema baru nutup layar dari tombol, tema diganti di balik tutupan, lalu tutupan memudar.
-// (View Transitions bikin layar kedip di sebagian HP, jadi gak dipakai.)
-const LATAR_TEMA = { gelap: '#0B0203', terang: '#FFE3E9' };
-let lagiGantiTema = false;
-$('.tema').addEventListener('click', async (e) => {
-  if (lagiGantiTema) return;
-  const baru = temaSekarang() === 'terang' ? 'gelap' : 'terang';
+// ganti tema halus: semua warna meluncur barengan dari tema lama ke tema baru (transisi CSS sementara di <html>).
+// Gak pakai tutupan layar (bikin layar diam dulu) & gak pakai View Transitions (kedip di sebagian HP).
+let timerTema = 0;
+$('.tema').addEventListener('click', () => {
+  const baru = temaSekarang() === 'terang' ? 'gelap' : 'terang', html = document.documentElement;
   if (!gerakBoleh) return pasangTema(baru);
-  lagiGantiTema = true;
-  const r = e.currentTarget.getBoundingClientRect(), x = r.left + r.width / 2, y = r.top + r.height / 2;
-  const jari = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y)) + 20;
-  const tutup = document.createElement('div');
-  tutup.setAttribute('aria-hidden', 'true');
-  Object.assign(tutup.style, { position: 'fixed', inset: '0', zIndex: '9999', pointerEvents: 'none', background: LATAR_TEMA[baru], clipPath: `circle(0px at ${x}px ${y}px)` });
-  document.body.append(tutup);
-  await tutup.animate({ clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${jari}px at ${x}px ${y}px)`] }, { duration: 520, easing: 'cubic-bezier(.65, 0, .35, 1)', fill: 'forwards' }).finished;
+  clearTimeout(timerTema);
+  html.classList.add('ganti-tema');
+  void html.offsetWidth; // transisi harus kepasang dulu sebelum warna berubah
   pasangTema(baru);
-  await new Promise((ok) => requestAnimationFrame(() => requestAnimationFrame(ok)));
-  await tutup.animate({ opacity: [1, 0] }, { duration: 320, easing: 'ease-out', fill: 'forwards' }).finished;
-  tutup.remove(); lagiGantiTema = false;
+  timerTema = setTimeout(() => html.classList.remove('ganti-tema'), 600);
 });
 
 // ---------- menu HP ----------

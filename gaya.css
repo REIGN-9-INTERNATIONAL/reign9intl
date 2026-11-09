@@ -624,7 +624,6 @@ button { font: inherit; color: inherit; }
 /* ---------- ganti tema & rapih ---------- */
 ::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
 ::view-transition-new(root) { z-index: 9999; clip-path: circle(0px at var(--vt-x, 50%) var(--vt-y, 0px)); }
-.ganti-tema, .ganti-tema * { transition: background-color .45s, color .45s, border-color .45s !important; }
 @media (prefers-reduced-motion: reduce) { .pita__jalan { animation: none; } html { scroll-behavior: auto; } }
 @media (min-width: 860px) { .hero { padding-bottom: 64px; } }
 .hero__ixar, .jelajah__ixar { --ixar-mata: #120203; filter: drop-shadow(0 0 10px rgba(218, 22, 23, .45)); }
@@ -871,3 +870,19 @@ button { font: inherit; color: inherit; }
 .pfp__dialog--hasil .pfp__hasil-img { width: auto; max-width: 100%; max-height: min(48vh, 420px); margin-inline: auto; }
 .pfp__dialog--hasil .pfp__dialog-catatan { padding: 0; text-align: center; }
 .pfp__dialog--hasil .pfp__aksi { justify-content: center; }
+
+/* ---------- tema terang v2: putih bersih tanpa pink, satu latar (gak belang per bagian), aksen merah & hitam ---------- */
+:root[data-tema="terang"] {
+  --gradasi-a: #FFFFFF; --gradasi-b: #FFFFFF; --pita-a: #FFFFFF; --pita-b: #FFFFFF; --pita-c: #FFFFFF;
+  --kartu: rgba(0, 0, 0, .035); --garis: rgba(0, 0, 0, .14); --isian: rgba(0, 0, 0, .045); --hero-tengah: rgba(218, 22, 23, .10); --ixar-mata: #FFFFFF;
+}
+@media (prefers-color-scheme: light) { :root:not([data-tema="gelap"]) {
+  --gradasi-a: #FFFFFF; --gradasi-b: #FFFFFF; --pita-a: #FFFFFF; --pita-b: #FFFFFF; --pita-c: #FFFFFF;
+  --kartu: rgba(0, 0, 0, .035); --garis: rgba(0, 0, 0, .14); --isian: rgba(0, 0, 0, .045); --hero-tengah: rgba(218, 22, 23, .10); --ixar-mata: #FFFFFF;
+} }
+:root[data-tema="terang"] :is(.hero__ixar, .jelajah__ixar, .kenal__ixar) { --ixar-mata: #FFFFFF; }
+@media (prefers-color-scheme: light) { :root:not([data-tema="gelap"]) :is(.hero__ixar, .jelajah__ixar, .kenal__ixar) { --ixar-mata: #FFFFFF; } }
+:root[data-tema="terang"] .hero::after { display: none; }
+@media (prefers-color-scheme: light) { :root:not([data-tema="gelap"]) .hero::after { display: none; } }
+/* ganti tema: semua warna meluncur halus barengan (tanpa tutupan, tanpa jeda) */
+html.ganti-tema :is(body, .atas, .bagian, .kaki, .hero) { transition: background-color .4s ease !important; }
