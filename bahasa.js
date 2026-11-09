@@ -349,3 +349,32 @@ window.R9_KAMUS = {
   'kaki.hak': { id: '© 2026 Reign 9 International. Semua hak dilindungi.', en: '© 2026 Reign 9 International. All rights reserved.', zh: '© 2026 Reign 9 International。保留所有权利。' },
   'kaki.ikuti': { id: 'Ikuti R9', en: 'Follow R9', zh: '关注 R9' },
 };
+
+// Teks yang juga bisa diubah lewat tab Teks & tautan.
+for (const [k,v] of Object.entries({
+  "tambahan.R9HOK": "R9//HOK",
+  "tambahan.EST11112025": "EST. 11.11.2025",
+  "tambahan.Ethos": "Ethos",
+  "tambahan.01COMPETE": "01 // COMPETE",
+  "tambahan.02GROW": "02 // GROW",
+  "tambahan.03CREATE": "03 // CREATE",
+  "tambahan.IXAR": "IXAR",
+  "tambahan.Rosters": "Rosters",
+  "tambahan.Schedule": "Schedule",
+  "tambahan.News": "News",
+  "tambahan.BannerKamu": "Banner Kamu",
+  "tambahan.fotoprofil": "foto profil",
+  "tambahan.Sponsorship": "Sponsorship",
+  "tambahan.OFFICIALTITLEPARTNER": "OFFICIAL TITLE PARTNER",
+  "tambahan.SlotTerbukaJerseyDadaDepanHeader": "Slot Terbuka · Jersey Dada Depan & Header",
+  "tambahan.GAMINGGEARPERIPHERAL": "GAMING GEAR / PERIPHERAL",
+  "tambahan.SlotTerbukaLenganJerseyStreamOverlay": "Slot Terbuka · Lengan Jersey & Stream Overlay",
+  "tambahan.COMMUNITYTOPUPPARTNER": "COMMUNITY & TOP-UP PARTNER",
+  "tambahan.SlotTerbukaEventTurnamenDiscordR9": "Slot Terbuka · Event Turnamen & Discord R9",
+  "tambahan.Shop": "Shop",
+  "tambahan.Us": "Us",
+  "tambahan.IXARFUNFACTJOKES": "IXAR // FUN FACT & JOKES",
+  "tambahan.MemuatberitaresmiReign9International": "Memuat berita resmi Reign 9 International…",
+  "hero.baraAtas": "WELCOME TO",
+  "hero.baraBawah": "OUR REIGN"
+})) window.R9_KAMUS[k] = {id:v,en:v,zh:v};

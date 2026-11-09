@@ -22,7 +22,8 @@ const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '
 const idAman = (v) => (/^\d{1,10}$/.test(String(v ?? '')) ? String(v) : '');
 const tautanAman = (v) => { if (!v) return ''; try { const u = new URL(String(v), location.href); return ['https:', 'http:'].includes(u.protocol) ? u.href : ''; } catch { return ''; } };
 // cegah situs ini ditempel di iframe situs lain (lapisan tambahan; header frame-ancestors gak bisa dipasang di GitHub Pages)
-if (window.top !== window.self) { try { window.top.location.replace(window.self.location.href); } catch (e) { document.documentElement.hidden = true; } }
+const pratinjauAdmin = window.parent === window.top && document.referrer.split('/').slice(0,3).join('/') === ADMIN && new URLSearchParams(location.search).has('editor');
+if (window.top !== window.self && !pratinjauAdmin) { try { window.top.location.replace(window.self.location.href); } catch (e) { document.documentElement.hidden = true; } }
 
 // ---------- sistem keamanan R9: anti-copy, anti-bajak, & anti-scraper ----------
 (() => {
@@ -89,6 +90,7 @@ let situsTerpasang = '';
 // pasang isi tab Situs dari admin: teks (3 bahasa) & info (guild, sosmed, toko)
 function terapkanSitus(situs) {
   const jejak = JSON.stringify(situs || {}); if (jejak === situsTerpasang) return; situsTerpasang = jejak;
+  window.R9Tampilan?.apply(situs?.desain);
   const teks = situs?.teks || {}, info = situs?.info || {};
   for (const k of Object.keys(window.R9_KAMUS)) if (window.R9_KAMUS[k].dariAdmin && !teks[k]) window.R9_KAMUS[k] = { ...KAMUS_ASLI[k] };
   for (const [k, v] of Object.entries(teks)) {
@@ -112,6 +114,7 @@ function terapkanSitus(situs) {
     else if (toko) el.href = toko;
     else if (el.tagName === 'A') { const p = document.createElement('p'); p.className = 'shop__segera'; p.dataset.i18n = 'shop.segera'; p.textContent = R9.t('shop.segera'); el.replaceWith(p); }
   });
+  window.R9_CUITAN_IXAR?.forEach((v,i) => Object.assign(v, window.R9_KAMUS['cuitan.'+(i+1)]));
   pasangBahasa(R9.bahasa);
 }
 function pasangBahasa(b, simpan) {
@@ -200,7 +203,7 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
     const tw = Math.min(w * .9, 980), uk = Math.min(tw / 6.5, 142), th = Math.round(uk * 2.7);
     [o, oc] = kanvasBantu(Math.round(tw), th);
     oc.font = `700 ${uk}px Reign9Display, Reign9Display, Oxanium, sans-serif`; oc.textAlign = 'center'; oc.textBaseline = 'middle';
-    oc.fillText('WELCOME TO', tw / 2, uk * .7, tw); oc.fillText('OUR REIGN', tw / 2, uk * 1.9, tw);
+    oc.fillText(R9.t('hero.baraAtas'), tw / 2, uk * .7, tw); oc.fillText(R9.t('hero.baraBawah'), tw / 2, uk * 1.9, tw);
     const tx = (w - tw) / 2, ty = gy + lh * .42 - uk * 1.15;
     titik.teks = cuplik(oc, Math.round(tw), th, w < 600 ? 2.5 : 3.2, tx, ty);
     titik.kotakTeks = [tx + tw * .06, ty, tx + tw * .94, ty + th];
@@ -286,6 +289,7 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
   hero.addEventListener('pointerleave', () => { px = py = -999; });
   hero.addEventListener('pointerup', (e) => { if (e.pointerType !== 'mouse') px = py = -999; });
   document.addEventListener('r9:tema', () => { terang = temaSekarang() === 'terang'; butir.forEach((b) => { b.warna = pilihWarna(); }); });
+  document.addEventListener('r9:bahasa', () => { if (w && h) ukur(); });
   new IntersectionObserver(([e]) => { const tadi = jalan; jalan = e.isIntersecting; if (jalan && !tadi) requestAnimationFrame(gambar); }).observe(kanvas);
   let tunggu; addEventListener('resize', () => { clearTimeout(tunggu); tunggu = setTimeout(ukur, 200); });
   try {
@@ -1180,6 +1184,7 @@ function urlMedia(jalur) {
   if (/^(data:image\/|blob:)/i.test(jalur)) return jalur;
   if (/^https?:/i.test(jalur)) { try { const u = new URL(jalur); return ['admin.reign9.site', 'reign9.site', 'www.reign9.site'].includes(u.hostname) && u.protocol === 'https:' ? u.href : ''; } catch { return ''; } }
   const bersih = String(jalur).replace(/^\/+/, '');
+  if (window.R9Desain?.mediaPath.test('/' + bersih)) return ADMIN + '/' + bersih;
   if (bersih.startsWith('gambar/roster/') || bersih.startsWith('gambar/news/') || bersih.startsWith('gambar/prestasi/')) {
     return `${ADMIN}/${bersih}`;
   }
@@ -1267,7 +1272,7 @@ function renderKartuPemain(p) {
     ? `<img class="kartu-pemain__foto" src="${esc(sumberFoto)}" data-cadangan-lokal="${esc(cadanganLokal)}" alt="${esc(p.nickname)}" loading="lazy" width="360" height="600" data-pose-cadangan="${esc(poseIxar)}">`
     : `<div class="kartu-pemain__tanpa"><span class="kartu-pemain__ixar" data-ixar="${esc(poseIxar)}" data-ixar-interaktif></span></div>`;
 
-  return `<li class="kartu-pemain ${coach ? 'kartu-pemain--coach' : ''}">
+  return `<li id="pemain-${idAman(p.id)}" class="kartu-pemain ${coach ? 'kartu-pemain--coach' : ''}">
     <div class="kartu-pemain__isi">
       <span class="lencana-role">${ikonRole}${esc(roleLabel)}</span>
       <span class="lencana-negara-pojok" title="${esc(namaNegara)}">${benderaSvg}<span>${esc(kodeNegara)}</span></span>
@@ -1324,7 +1329,7 @@ function kelompokkanTim(daftar, status) {
 }
 
 function renderKartuBerita(n) {
-  return `<a class="berita" href="news.html?id=${idAman(n.id)}">
+  return `<a id="berita-${idAman(n.id)}" class="berita" href="news.html?id=${idAman(n.id)}">
     ${n.gambar ? `<img src="${esc(urlMedia(n.gambar))}" alt="${esc(R9.teks(n.judul))}" loading="lazy" width="800" height="450">` : ''}
     <span class="berita__isi">
       <time datetime="${esc(n.tanggal)}">${esc(R9.tanggal(n.tanggal))}</time>
@@ -1677,9 +1682,12 @@ gambarData();
 
 // Sinkronisasi data live dari admin.reign9.site/api/publik (fallback ke data/reign9.json)
 (async () => {
+  let urutan = 0, terakhir = '';
   const segarkan = async () => {
+    const permintaan = ++urutan;
     const d = await ambilDataLive();
-    if (d) {
+    if (d && permintaan === urutan && (!d.diperbarui || d.diperbarui !== terakhir)) {
+      terakhir = d.diperbarui;
       DATA = d;
       gambarData();
     }
@@ -1688,6 +1696,7 @@ gambarData();
   // langsung tayang: admin ngirim sinyal tiap ada yang disimpan/diunggah → data diambil saat itu juga (cadangan: cek tiap 15 dtk)
   try {
     const sinyal = new EventSource(`${ADMIN}/api/langsung`);
+    sinyal.addEventListener('open', () => segarkan());
     sinyal.addEventListener('berubah', () => segarkan());
   } catch (e) { /* peramban tanpa EventSource: cukup cek berkala */ }
   setInterval(() => { if (!document.hidden) segarkan(); }, 15000);
@@ -1699,7 +1708,11 @@ gambarData();
   const kanvas = $('.banner__kanvas');
   if (!kanvas) return;
   const c = kanvas.getContext('2d'), isian = $('[name=nama-banner]'), subIsian = $('[name=sub-banner]'), gambar = {};
-  const muat = (n) => gambar[n] || (gambar[n] = new Promise((ok) => { const i = new Image(); i.onload = () => ok(i); i.onerror = () => ok(null); i.src = `gambar/banner/banner-${n}.jpg`; }));
+  const muat = n => {
+    const file=getComputedStyle(document.getElementById('banner-foto-'+n)).getPropertyValue('--r9-foto').trim();
+    const url=window.R9Desain.mediaPath.test('/media/'+file)?ADMIN+'/media/'+file:`gambar/banner/banner-${n}.jpg`;
+    return gambar[url] ||= new Promise(ok=>{const img=new Image();img.crossOrigin='anonymous';img.onload=()=>ok(img);img.onerror=()=>{delete gambar[url];ok(null);};img.src=url;});
+  };
   const lukis = async () => {
     const n = $('[name=banner]:checked').value, img = await muat(n);
     c.clearRect(0, 0, 1500, 500);
@@ -1725,6 +1738,7 @@ gambarData();
     }
     c.shadowBlur = 0;
   };
+  document.addEventListener('r9:desain',lukis);
   $$('[name=banner]').forEach((r) => r.addEventListener('change', lukis));
   isian.addEventListener('input', lukis);
   subIsian?.addEventListener('input', lukis);
@@ -1999,11 +2013,19 @@ gambarData();
   }
 
   // ---- gabung semua ----
-  let antre = Promise.resolve();
+  let antre = Promise.resolve(), lastPhoto='', photo=null;
+  document.addEventListener('r9:desain',()=>lukis());
   const lukis = () => (antre = antre.then(async () => {
     tandai();
     await document.fonts.load('700 80px Reign9Display').catch(() => {});
-    c.clearRect(0, 0, S, S); lukisLatar(c, pilih.latar); lukisIxar();
+    c.clearRect(0, 0, S, S); lukisLatar(c, pilih.latar);
+    const file=getComputedStyle(kanvas).getPropertyValue('--r9-foto').trim();
+    if (file!==lastPhoto) {
+      lastPhoto=file;photo=null;
+      if (window.R9Desain.mediaPath.test('/media/'+file)) photo=await new Promise(ok=>{const im=new Image();im.crossOrigin='anonymous';im.onload=()=>ok(im);im.onerror=()=>ok(null);im.src=ADMIN+'/media/'+file;});
+    }
+    if(photo)c.drawImage(photo,0,0,S,S);
+    lukisIxar();
     const nama = (isian.value || '').trim().toUpperCase();
     if (nama) {
       const g = c.createLinearGradient(0, S - 220, 0, S); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(0,0,0,.75)'); c.fillStyle = g; c.fillRect(0, S - 220, S, 220);

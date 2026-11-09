@@ -239,7 +239,7 @@
     }
     langkah(t) {
       const tujuan = POSE[this.pose] || POSE.diam, n = this.n, cepatLerp = ['jatuh', 'mendarat', 'seret', 'lompat'].includes(this.pose) ? .28 : .16;
-      const k = gerakBoleh ? cepatLerp : 1, w = (t - this.t0) / 1000;
+      const k = gerakBoleh ? cepatLerp : 1, w = ((t - this.t0) / 1000) * (this.tempo ?? 1);
       for (const a of ANGKA) n[a] = lerp(n[a], tujuan[a], k);
       for (const a of ['lk', 'ln', 'kk', 'kn']) for (let i = 0; i < 2; i++) n[a][i] = lerp(n[a][i], tujuan[a][i], k);
       // gerak hidup: napas, ayun tangan, gerak khusus pose

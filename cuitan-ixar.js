@@ -78,3 +78,5 @@ window.R9_CUITAN_IXAR = [
   ['Aku diem bukan karena marah. Lagi loading.', 'I’m quiet, not angry. Just loading.', '我不说话不是生气，是在加载。'],
   ['Colek sekali lagi, aku kasih tameng. Colek dua kali, aku kasih tonjokan.', 'Poke me once more and you get a shield. Twice and you get a punch.', '再戳一下给你一面盾。戳两下给你一拳。'],
 ].map(([id, en, zh]) => ({ id, en, zh }));
+
+window.R9_CUITAN_IXAR.forEach((v,i) => { window.R9_KAMUS['cuitan.'+(i+1)] = {...v}; });
