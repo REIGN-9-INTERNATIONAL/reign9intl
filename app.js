@@ -1476,7 +1476,7 @@ function renderKartuBerita(n) {
       <time datetime="${esc(n.tanggal)}">${esc(R9.tanggal(n.tanggal))}</time>
       <h3>${esc(R9.teks(n.judul))}</h3>
       <p>${esc(R9.teks(n.ringkas) || String(R9.teks(n.isi)).slice(0, 140))}</p>
-      <span class="berita__baca">${esc(R9.t('news.baca'))} →</span>
+      <span class="berita__baca">${esc(R9.t('news.baca'))}</span>
     </span>
   </a>`;
 }
@@ -1532,7 +1532,8 @@ function gambarHalamanBerita(d) {
   const wadahLainnya = $('[data-news-lainnya]');
   if (wadahLainnya) {
     const daftarLain = news.filter((x) => String(x.id) !== String(artikel.id));
-    wadahLainnya.innerHTML = (daftarLain.length ? daftarLain : news).map(renderKartuBerita).join('');
+    wadahLainnya.innerHTML = daftarLain.map(renderKartuBerita).join('');
+    wadahLainnya.closest('section').hidden = !daftarLain.length; // gak ada berita lain: bagian ini disembunyiin
   }
 }
 
@@ -1708,7 +1709,7 @@ function gambarData() {
       ${R9.teks(v.hasil) || v.hadiah ? `<p class="event__meta">${R9.teks(v.hasil) ? `${esc(R9.t('jadwal.hasil'))}: <strong>${esc(R9.teks(v.hasil))}</strong>` : ''}${v.hadiah ? ` · ${esc(R9.t('jadwal.hadiah'))}: <strong>${esc(R9.rupiah(v.hadiah))}</strong>` : ''}</p>` : ''}
       ${(tautanAman(v.link) || tautanAman(v.stream)) ? `<div class="event__aksi">
         ${tautanAman(v.link) ? `<a href="${esc(tautanAman(v.link))}" target="_blank" rel="noopener">${esc(R9.t('jadwal.daftar'))}</a>` : ''}
-        ${tautanAman(v.stream) ? `<a href="${esc(tautanAman(v.stream))}" target="_blank" rel="noopener">▶ ${esc(R9.t('jadwal.tonton'))}</a>` : ''}
+        ${tautanAman(v.stream) ? `<a href="${esc(tautanAman(v.stream))}" target="_blank" rel="noopener">${esc(R9.t('jadwal.tonton'))}</a>` : ''}
       </div>` : ''}
     </div>
   </li>`;
@@ -1722,7 +1723,7 @@ function gambarData() {
   if ($('[data-prestasi]')) {
     $('[data-prestasi]').innerHTML = (d.prestasi || []).map((p) => `<li>
       <button type="button" class="prestasi" data-buka-prestasi="${idAman(p.id)}">
-        <span class="prestasi__lencana">🏆 ${esc(R9.teks(p.peringkat))}</span>
+        <span class="prestasi__lencana">${esc(R9.teks(p.peringkat))}</span>
         <span class="prestasi__nama">${esc(R9.teks(p.turnamen))}<small>${esc([R9.tanggal(p.tanggal), p.divisi].filter(Boolean).join(' · '))}</small></span>
         <span class="prestasi__kanan">
           ${p.hadiah ? `<span class="prestasi__hadiah">${esc(R9.rupiah(p.hadiah))}</span>` : ''}
