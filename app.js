@@ -169,6 +169,9 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
   const kanvas = $('.hero__bara'), wadah = $('.hero__logo'), hero = $('.hero');
   if (!kanvas || !gerakBoleh) { document.documentElement.classList.add('bara-gagal'); return; }
   const c = kanvas.getContext('2d');
+  const kanvasLatar = Object.assign(document.createElement('canvas'), { className: 'hero__latar' });
+  kanvasLatar.setAttribute('aria-hidden', 'true'); kanvas.before(kanvasLatar);
+  const cl = kanvasLatar.getContext('2d');
   const sprite = $('#r9-sprite-logo')?.outerHTML || await fetch(`gambar/logo.svg`).then((r) => r.text()).catch(() => '');
   const m = sprite.match(/id="tegak" viewBox="([^"]+)">(.*?)<\/symbol>/);
   if (!m) { document.documentElement.classList.add('bara-gagal'); return; }
@@ -178,10 +181,12 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
   let w, h, butir = [], lepas = [], titik = {}, px = -999, py = -999, jalan = true, fase = 'teks', mulaiFase = performance.now(), terang = false;
   const kanvasBantu = (lw, lh) => { const o = Object.assign(document.createElement('canvas'), { width: Math.max(1, lw), height: Math.max(1, lh) }); return [o, o.getContext('2d', { willReadFrequently: true })]; };
   // susut > 0: titik cuma dipasang kalau satu butir utuh (±susut px) muat di dalam bentuk, biar celah tipis logo gak ketutup
-  const cuplik = (oc, lw, lh, jarak, gx = 0, gy = 0, susut = 0) => {
+  const cuplik = (oc, lw, lh, jarak, gx = 0, gy = 0, susutAwal = 0) => {
+    const susutDi = typeof susutAwal === 'function' ? susutAwal : () => susutAwal;
     const d = oc.getImageData(0, 0, Math.max(1, lw), Math.max(1, lh)).data, hasil = [];
     const isi = (x, y) => { x = Math.round(x); y = Math.round(y); return x >= 0 && y >= 0 && x < lw && y < lh && d[(y * lw + x) * 4 + 3] > 128; };
     for (let y = 0; y < lh; y += jarak) for (let x = 0; x < lw; x += jarak) {
+      const susut = susutDi(y);
       if (isi(x, y) && (!susut || (isi(x - susut, y) && isi(x + susut, y) && isi(x, y - susut) && isi(x, y + susut)))) hasil.push([gx + x, gy + y]);
     }
     return hasil;
@@ -192,9 +197,12 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
     let [o, oc] = kanvasBantu(lw, lh);
     const s = Math.min(lw / vb[2], lh / vb[3]);
     oc.translate((lw - vb[2] * s) / 2, 0); oc.scale(s, s); oc.translate(-vb[0], -vb[1]); bentuk.forEach(([b, aturan]) => oc.fill(b, aturan));
-    const batas = Math.round((355 - vb[1]) * s), atas = cuplik(oc, lw, batas, lw < 320 ? 2.5 : 3, gx, gy, 1.3);
-    const [, oc2] = kanvasBantu(lw, lh - batas); oc2.drawImage(o, 0, -batas);
-    titik.logo = [...atas, ...cuplik(oc2, lw, lh - batas, 2, gx, gy + batas)];
+    // simbol & tulisan dicuplik sama persis (jarak & susut sama) biar komposisi apinya seragam
+    // jarak sama di semua bagian; kikisan cuma buat simbol & REIGN 9 (huruf INTERNATIONAL terlalu tipis buat dikikis)
+    const garisInternational = (394 - vb[1]) * s;
+    const jarak = lw < 320 ? 2.2 : 2.6, garis = Math.floor(garisInternational);
+    const [, ocBawah] = kanvasBantu(lw, lh - garis); ocBawah.drawImage(o, 0, -garis);
+    titik.logo = [...cuplik(oc, lw, garis, jarak, gx, gy, 1), ...cuplik(ocBawah, lw, lh - garis, jarak * .75, gx, gy + garis)];
     titik.kotakLogo = [gx, gy, gx + lw, gy + lh];
     const tw = Math.min(w * .9, 980), uk = Math.min(tw / 6.5, 142), th = Math.round(uk * 2.7);
     [o, oc] = kanvasBantu(Math.round(tw), th);
@@ -203,29 +211,99 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
     const tx = (w - tw) / 2, ty = gy + lh * .42 - uk * 1.15;
     titik.teks = cuplik(oc, Math.round(tw), th, w < 600 ? 2.5 : 3.2, tx, ty);
     titik.kotakTeks = [tx + tw * .06, ty, tx + tw * .94, ty + th];
-    [o, oc] = kanvasBantu(Math.round(w), Math.round(h));
-    const dasar = h * .97, lebar = Math.min(w * .96, 1500), x0 = (w - lebar) / 2, u = lebar / 100;
-    const gerigi = (x, y, l, t) => { for (let i = 0; i < l; i += t * 2) oc.fillRect(x + i, y - t, t, t); };
-    oc.fillRect(x0, dasar - 22 * u, lebar, 22 * u); gerigi(x0, dasar - 22 * u, lebar, 2.4 * u);
-    [[2, 9, 40], [20, 10, 52], [45, 12, 66], [70, 10, 52], [89, 9, 40]].forEach(([p0, l, t]) => {
-      const x = x0 + p0 * u, y = dasar - t * u; oc.fillRect(x, y, l * u, t * u); gerigi(x, y, l * u, 1.8 * u);
-      oc.clearRect(x + l * u * .35, y + t * u * .25, l * u * .3, t * u * .14);
-    });
-    oc.globalCompositeOperation = 'destination-out'; oc.beginPath(); oc.arc(x0 + 51 * u, dasar - 10 * u, 5 * u, Math.PI, 0); oc.rect(x0 + 46 * u, dasar - 10 * u, 10 * u, 10 * u); oc.fill();
-    const semua = cuplik(oc, Math.round(w), Math.round(h), w < 600 ? 6 : 7), lompat = Math.max(1, semua.length / 2200);
-    titik.kastil = Array.from({ length: Math.min(2200, semua.length) }, (_, i) => semua[Math.floor(i * lompat)]);
   };
-  const WARNA_GELAP = [['#da1617', 34], ['#ff1f1f', 22], ['#b30d10', 18], ['#ff3b26', 14], ['#ff5c5c', 8], ['#ffd6d6', 4]];
-  const WARNA_TERANG = [['#000000', 46], ['#1a0102', 10], ['#da1617', 24], ['#a80309', 20]];
-  const pilihWarna = () => { const daftar = terang ? WARNA_TERANG : WARNA_GELAP; let n = Math.random() * 100; for (const [wr, b] of daftar) { if ((n -= b) < 0) return wr; } return daftar[0][0]; };
+  // warna api logo ikut aturan logo: putih di tema gelap, merah di tema terang. Api latar selalu hitam pekat (beda dari logo).
+  const WARNA_GELAP = [['#ffffff', 46], ['#ffe9e6', 24], ['#ffd0cb', 16], ['#ff8a80', 9], ['#ff5245', 5]];
+  const WARNA_TERANG = [['#da1617', 44], ['#c00f12', 24], ['#ff2a1f', 16], ['#a80309', 16]];
+  const WARNA_LATAR = [['#000000', 62], ['#070000', 24], ['#160205', 14]];
+  const undi = (daftar) => { let n = Math.random() * 100; for (const [wr, b] of daftar) { if ((n -= b) < 0) return wr; } return daftar[0][0]; };
+  const pilihWarna = () => undi(terang ? WARNA_TERANG : WARNA_GELAP);
+
+  // ---------- api latar: siluet hitam pekat sepenuh layar, gonta-ganti bentuk, bisa dimainin IXAR ----------
+  const BENTUK_LATAR = ['kastil', 'api', 'mahkota', 'menara', 'gunung'];
+  let latar = [], titikLatar = {}, iLatar = 0, gantiLatarPada = 0;
+  function gambarLatar(oc, nama) {
+    const dasar = h + 2, x0 = 0;
+    oc.beginPath();
+    if (nama === 'kastil') {
+      const u = w / 100, t = (k) => dasar - Math.min(h * k, w * k * 1.1);
+      const gerigi = (x, y, l, g) => { for (let i = 0; i < l; i += g * 2) oc.rect(x + i, y - g, g, g); };
+      oc.rect(x0, t(.3), w, h); gerigi(x0, t(.3), w, 3 * u);
+      [[1, 12, .5], [18, 12, .64], [41, 18, .8], [70, 12, .64], [87, 12, .5]].forEach(([p0, l, k]) => { oc.rect(p0 * u, t(k), l * u, h); gerigi(p0 * u, t(k), l * u, 2.2 * u); });
+      oc.fill(); oc.globalCompositeOperation = 'destination-out'; oc.beginPath();
+      oc.arc(50 * u, t(.14), 6 * u, Math.PI, 0); oc.rect(44 * u, t(.14), 12 * u, h);
+      [[7, .42], [24, .56], [50, .7], [76, .56], [93, .42]].forEach(([p, k]) => oc.rect((p - 1.2) * u, t(k), 2.4 * u, 6 * u));
+      oc.fill(); oc.globalCompositeOperation = 'source-over'; return;
+    }
+    if (nama === 'api') {
+      oc.moveTo(0, dasar); const n = Math.max(7, Math.round(w / 110));
+      for (let i = 0; i <= n; i++) {
+        const x = (i / n) * w, puncak = dasar - h * (.42 + .32 * Math.abs(Math.sin(i * 2.17)) + (i % 2 ? 0 : .08)), lebar = w / n;
+        oc.quadraticCurveTo(x - lebar * .55, dasar - h * .2, x - lebar * .1, puncak + h * .12); oc.quadraticCurveTo(x, puncak - h * .02, x + lebar * .05, puncak);
+        oc.quadraticCurveTo(x + lebar * .2, puncak + h * .2, x + lebar * .45, dasar - h * .24);
+      }
+      oc.lineTo(w, dasar); oc.closePath(); oc.fill(); return;
+    }
+    if (nama === 'mahkota') {
+      const lebar = Math.min(w * .96, h * 1.5), kiri = (w - lebar) / 2, bawah = dasar, pita = h * .14, tinggi = h * .62, ujung = 5;
+      oc.rect(0, bawah - h * .12, w, h * .12 + 4);
+      oc.moveTo(kiri, bawah - pita);
+      for (let i = 0; i <= ujung * 2; i++) { const x = kiri + (i / (ujung * 2)) * lebar, y = i % 2 ? bawah - pita - tinggi * .45 : bawah - pita - tinggi * (i === ujung ? 1 : .8); oc.lineTo(x, y); }
+      oc.lineTo(kiri + lebar, bawah); oc.lineTo(kiri, bawah); oc.closePath();
+      for (let i = 0; i <= ujung * 2; i += 2) { const x = kiri + (i / (ujung * 2)) * lebar, y = bawah - pita - tinggi * (i === ujung ? 1 : .8); oc.moveTo(x + lebar * .028, y - lebar * .02); oc.arc(x, y - lebar * .02, lebar * .028, 0, Math.PI * 2); }
+      oc.fill(); return;
+    }
+    if (nama === 'menara') { // barisan menara catur = pasukan kepala IXAR
+      const n = w < 600 ? 4 : 6, lebar = w / n;
+      for (let i = 0; i < n; i++) {
+        const tinggi = h * (.45 + .25 * Math.abs(Math.sin(i * 1.9 + 1))), x = i * lebar + lebar * .12, l = lebar * .76, atas = dasar - tinggi, g = l / 7;
+        oc.rect(x + l * .12, atas + g * 1.6, l * .76, tinggi); oc.rect(x, atas + g * .6, l, g * 1.2);
+        for (let k = 0; k < 4; k++) oc.rect(x + k * g * 2, atas - g * .4, g, g * 1.2);
+        oc.rect(x - l * .05, dasar - g * 1.6, l * 1.1, g * 1.6);
+      }
+      oc.rect(0, dasar - h * .06, w, h * .06 + 4); oc.fill(); return;
+    }
+    // gunung
+    oc.moveTo(0, dasar);
+    const pk = [[0, .5], [.12, .68], [.24, .5], [.38, .82], [.52, .55], [.66, .74], [.8, .5], [.9, .64], [1, .48]];
+    pk.forEach(([px2, k]) => oc.lineTo(px2 * w, dasar - h * k));
+    oc.lineTo(w, dasar); oc.closePath(); oc.fill();
+    oc.globalCompositeOperation = 'destination-out'; oc.beginPath(); // jalur salju dibikin bolong biar ada tekstur
+    pk.forEach(([px2, k], i) => { if (i && i < pk.length - 1) { oc.moveTo(px2 * w - w * .025, dasar - h * (k - .07)); oc.lineTo(px2 * w, dasar - h * k + h * .04); oc.lineTo(px2 * w + w * .025, dasar - h * (k - .07)); oc.closePath(); } });
+    oc.fill(); oc.globalCompositeOperation = 'source-over';
+  }
+  function hitungLatar() {
+    const batasN = w < 600 ? 3600 : 5200, jarak = Math.max(6, Math.sqrt(w * h * .62 / batasN));
+    titikLatar = {};
+    for (const nama of BENTUK_LATAR) {
+      const [, oc] = kanvasBantu(Math.round(w), Math.round(h)); oc.fillStyle = '#000'; gambarLatar(oc, nama);
+      let t = cuplik(oc, Math.round(w), Math.round(h), jarak);
+      if (t.length > batasN) { const l = t.length / batasN; t = Array.from({ length: batasN }, (_, i) => t[Math.floor(i * l)]); }
+      for (let i = t.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [t[i], t[j]] = [t[j], t[i]]; }
+      titikLatar[nama] = t;
+    }
+    const n = Math.max(...Object.values(titikLatar).map((t) => t.length));
+    const besar = [jarak * .52, jarak * .14]; // setengah jarak = butir saling nempel → siluet pekat
+    latar = Array.from({ length: n }, (_, i) => latar[i] || { x: Math.random() * w, y: h + Math.random() * h * .3, vx: 0, vy: 0, r: besar[0] + Math.random() * besar[1], kedip: Math.random() * 6.28, warna: undi(WARNA_LATAR) });
+    latar.length = n;
+    latar.sort((a, b) => (a.warna < b.warna ? -1 : a.warna > b.warna ? 1 : 0));
+    arahkanLatar(0);
+  }
+  // pindah ke bentuk berikutnya; asal (titik kanvas) = dari mana gelombang perubahan nyebar
+  function arahkanLatar(asal) {
+    const t = titikLatar[BENTUK_LATAR[iLatar]] || [], cx = asal ? asal[0] : w / 2;
+    latar.forEach((b, i) => { const q = t[i % Math.max(1, t.length)]; [b.tx, b.ty] = q || [Math.random() * w, h + 20]; b.lebih = i >= t.length; b.tunda = asal ? Math.abs(b.x - cx) * 1.1 : Math.random() * 600; });
+    mulaiLatar = performance.now(); gantiLatarPada = mulaiLatar + 9000;
+  }
+  let mulaiLatar = 0;
+  const gantiLatar = (asal) => { iLatar = (iLatar + 1) % BENTUK_LATAR.length; arahkanLatar(asal); };
   const baraLepas = (acak) => ({ x: Math.random() * w, y: acak ? Math.random() * h : h + 10, r: Math.random() * 1.8 + .5, v: Math.random() * .6 + .25, goyang: Math.random() * 6.28, umur: Math.random() * .5 + .4 });
   function aturTujuan(f) {
     fase = f; mulaiFase = performance.now();
     const L = titik.logo.length;
     butir.forEach((b, i) => {
-      b.kastil = false;
       if (f === 'teks') { const t = titik.teks[i]; b.tx = t ? t[0] : null; b.ty = t ? t[1] : null; b.tunda = Math.random() * 700; }
-      else if (f === 'logo') { if (i < L) [b.tx, b.ty] = titik.logo[i]; else { [b.tx, b.ty] = titik.kastil[i - L]; b.kastil = true; } b.tunda = Math.random() * 250; }
+      else if (f === 'logo') { [b.tx, b.ty] = titik.logo[i % L]; b.tunda = Math.random() * 250; }
       else { b.tx = null; b.ty = null; }
     });
   }
@@ -233,18 +311,20 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
     const rasio = Math.min(devicePixelRatio || 1, 2);
     w = kanvas.clientWidth; h = kanvas.clientHeight;
     kanvas.width = w * rasio; kanvas.height = h * rasio; c.setTransform(rasio, 0, 0, rasio, 0, 0);
+    kanvasLatar.width = w; kanvasLatar.height = h;
     hitungTitik();
-    const n = titik.logo.length + titik.kastil.length;
+    const n = titik.logo.length;
     if (titik.teks.length > n) { const lompat = titik.teks.length / n; titik.teks = Array.from({ length: n }, (_, i) => titik.teks[Math.floor(i * lompat)]); }
     for (let i = titik.teks.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [titik.teks[i], titik.teks[j]] = [titik.teks[j], titik.teks[i]]; }
-    butir = Array.from({ length: n }, (_, i) => butir[i] || { x: Math.random() * w, y: h + Math.random() * h * .5, vx: 0, vy: 0, r: Math.random() * .6 + 1, kedip: Math.random() * 6.28, warna: pilihWarna() });
+    butir = Array.from({ length: n }, (_, i) => butir[i] || { x: Math.random() * w, y: h + Math.random() * h * .5, vx: 0, vy: 0, r: Math.random() * .3 + 1, kedip: Math.random() * 6.28, warna: pilihWarna() });
     butir.length = n;
+    hitungLatar();
     lepas = Array.from({ length: Math.round(w / 18) }, () => baraLepas(true));
     aturTujuan(fase);
   };
   const keKanvas = (x, y) => { const k = kanvas.getBoundingClientRect(); return [x - (k.left + scrollX), y - (k.top + scrollY)]; };
   const keHalaman = ([x0, y0, x1, y1]) => { const k = kanvas.getBoundingClientRect(); return { kiri: x0 + k.left + scrollX, atas: y0 + k.top + scrollY, kanan: x1 + k.left + scrollX, bawah: y1 + k.top + scrollY }; };
-  const dorong = (x, y, kuat, jangkau) => butir.forEach((b) => {
+  const dorong = (x, y, kuat, jangkau, kumpulan = butir) => kumpulan.forEach((b) => {
     const dx = b.x - x, dy = b.y - y, d = Math.hypot(dx, dy) || 1;
     if (d > jangkau) return;
     const f = kuat * (1 - d / jangkau); b.vx += dx / d * f + (Math.random() - .5) * kuat * .3; b.vy += dy / d * f - Math.random() * kuat * .2;
@@ -253,13 +333,36 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
   window.R9Hero = {
     get fase() { return fase; }, get umurFase() { return performance.now() - mulaiFase; },
     kotakLogo: () => keHalaman(titik.kotakLogo), kotakTeks: () => keHalaman(titik.kotakTeks),
-    pukul(xh, yh, kuat = 18) { const [x, y] = keKanvas(xh, yh); dorong(x, y, kuat, Math.max(220, w * .25)); goyang(); },
-    tonjokSambut(xh, yh) { const [x, y] = keKanvas(xh, yh); dorong(x, y, 26, w * .9); goyang(); setTimeout(() => aturTujuan('logo'), 260); },
-    hancur(xh, yh) { const [x, y] = keKanvas(xh, yh); dorong(x, y, 34, w); goyang(); aturTujuan('bubar'); setTimeout(() => aturTujuan('teks'), 2200); },
+    pukul(xh, yh, kuat = 18) { const [x, y] = keKanvas(xh, yh); dorong(x, y, kuat, Math.max(220, w * .25)); dorong(x, y, kuat * .6, Math.max(160, w * .18), latar); goyang(); },
+    tonjokSambut(xh, yh) { const [x, y] = keKanvas(xh, yh); dorong(x, y, 26, w * .9); dorong(x, y, 14, w * .5, latar); goyang(); setTimeout(() => aturTujuan('logo'), 260); },
+    hancur(xh, yh) { const [x, y] = keKanvas(xh, yh); dorong(x, y, 34, w); dorong(x, y, 22, w, latar); goyang(); aturTujuan('bubar'); setTimeout(() => aturTujuan('teks'), 2200); },
+    // IXAR (atau pengunjung) nonjok latar: api latar pecah dari titik itu lalu nyusun bentuk berikutnya
+    gantiLatar(xh, yh) { const [x, y] = keKanvas(xh, yh); dorong(x, y, 20, w * .6, latar); goyang(); gantiLatar([x, y]); return BENTUK_LATAR[iLatar]; },
+    get bentukLatar() { return BENTUK_LATAR[iLatar]; },
   };
+  const ixarHero = [$('.hero__ixar'), $('.jelajah__ixar')].filter(Boolean);
   const gambar = (t) => {
     if (!jalan) return;
     c.clearRect(0, 0, w, h);
+    if (t > gantiLatarPada) gantiLatar(null);
+    // posisi IXAR di kanvas: api latar minggir pas IXAR lewat
+    const k = kanvas.getBoundingClientRect(), dorongan = [];
+    for (const el of ixarHero) { const r = el.getBoundingClientRect(); if (r.width && r.bottom > k.top && r.top < k.bottom) dorongan.push([r.left - k.left + r.width / 2, r.top - k.top + r.height * .6, (r.width * .5) ** 2]); }
+    const umurLatar = t - mulaiLatar;
+    for (const b of latar) {
+      if (umurLatar > b.tunda) { const dx = b.tx - b.x, dy = b.ty - b.y; b.vx += dx * .01; b.vy += dy * .01; }
+      b.kedip += .05; b.vx += Math.sin(b.kedip * 1.7) * .03; b.vy -= .012; // api: goyang & naik dikit
+      for (const [ix, iy, rr] of dorongan) { const ex = b.x - ix, ey = b.y - iy, d2 = ex * ex + ey * ey; if (d2 < rr) { const d = Math.sqrt(d2) || 1, f = (1 - d2 / rr) * 3; b.vx += ex / d * f; b.vy += ey / d * f; } }
+      const ex = b.x - px, ey = b.y - py, d2 = ex * ex + ey * ey;
+      if (d2 < 9000) { const f = (9000 - d2) / 9000 * 2.2, d = Math.sqrt(d2) || 1; b.vx += ex / d * f; b.vy += ey / d * f; }
+      b.vx *= .87; b.vy *= .87; b.x += b.vx; b.y += b.vy;
+    }
+    // kanvas latar resolusi 1x (butirnya kotak besar), butir udah urut warna: ringan walau ribuan
+    cl.clearRect(0, 0, w, h); let warnaAktif = '';
+    for (const b of latar) {
+      if (b.warna !== warnaAktif) { warnaAktif = b.warna; cl.fillStyle = warnaAktif; }
+      cl.globalAlpha = b.lebih ? .55 : .94; cl.fillRect(b.x - b.r, b.y - b.r, b.r * 2, b.r * 2);
+    }
     c.globalCompositeOperation = terang ? 'source-over' : 'lighter';
     for (const b of lepas) {
       b.y -= b.v; b.goyang += .02; b.x += Math.sin(b.goyang) * .35;
@@ -275,7 +378,7 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
       const ex = b.x - px, ey = b.y - py, d2 = ex * ex + ey * ey;
       if (d2 < 6400) { const f = (6400 - d2) / 6400 * 2.4, d = Math.sqrt(d2) || 1; b.vx += ex / d * f; b.vy += ey / d * f; }
       b.vx *= .86; b.vy *= .86; b.x += b.vx; b.y += b.vy; b.kedip += .08;
-      c.globalAlpha = (terang ? .9 + Math.sin(b.kedip) * .1 : .75 + Math.sin(b.kedip) * .25) * (b.kastil ? (terang ? .22 : .32) : 1) * (b.tx == null ? .55 : 1);
+      c.globalAlpha = (.88 + Math.sin(b.kedip) * .12) * (b.tx == null ? .55 : 1);
       c.fillStyle = b.warna; c.fillRect(b.x - b.r, b.y - b.r, b.r * 2, b.r * 2);
     }
     c.globalAlpha = 1;
@@ -283,6 +386,7 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
   };
   hero.addEventListener('pointermove', (e) => { const k = kanvas.getBoundingClientRect(); px = e.clientX - k.left; py = e.clientY - k.top; });
   hero.addEventListener('pointerleave', () => { px = py = -999; });
+  hero.addEventListener('click', (e) => { if (!e.target.closest('a, button, input, .hero__ixar, .jelajah__ixar')) window.R9Hero.gantiLatar(e.pageX, e.pageY); });
   hero.addEventListener('pointerup', (e) => { if (e.pointerType !== 'mouse') px = py = -999; });
   document.addEventListener('r9:tema', () => { terang = temaSekarang() === 'terang'; butir.forEach((b) => { b.warna = pilihWarna(); }); });
   document.addEventListener('r9:bahasa', () => { if (w && h) ukur(); });
@@ -449,6 +553,17 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
     await jalanKe(a + Math.random() * (b - a), Math.random() < .35);
   }
 
+  // IXAR main api latar: jalan ke satu titik, lompat, nonjok ke bawah → siluet latar pecah & ganti bentuk
+  async function mainLatar() {
+    const rh = hero.getBoundingClientRect(), [a, b] = batasHeroX();
+    await jalanKe(a + Math.random() * (b - a), Math.random() < .4);
+    if (sedangDiseret) return;
+    await lompatKe(px, lantaiHero(), 150, 620);
+    if (sedangDiseret) return;
+    x()?.lakukan(Math.random() < .5 ? 'tonjok' : 'pedang', 900); await tidur(180);
+    window.R9Hero?.gantiLatar(rh.left + scrollX + px + lebar / 2, rh.top + scrollY + py + tinggi * .8);
+    await tidur(900);
+  }
   async function gayaHero() {
     const daftar = ['pedang', 'tameng', 'tonjok', 'serbu', 'bendera', 'menang', 'lompat'];
     const p = daftar[Math.floor(Math.random() * daftar.length)];
@@ -488,6 +603,7 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
   el.addEventListener('pointerup', lepasHero);
   el.addEventListener('pointercancel', lepasHero);
 
+  el.addEventListener('click', () => { if (!sedangDiseret && window.R9Hero) { const r = el.getBoundingClientRect(); setTimeout(() => window.R9Hero.gantiLatar(r.left + scrollX + r.width / 2, r.bottom + scrollY - 10), 220); } });
   async function otakHero() {
     while (!mati) {
       if (sedangDiseret || sedangJatuh || performance.now() < jedaSampai || !x() || document.hidden || scrollY > innerHeight) {
@@ -501,8 +617,9 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
           if (window.R9Jelajah && scrollY < 80) await duel(); else await tonjokSambutan();
         } else if (H && H.fase === 'logo') {
           const n = Math.random();
-          if (H.umurFase > 8500 && n < .46) await hancurinLogo();
-          else if (n < .62) await jalanJalanHero();
+          if (H.umurFase > 8500 && n < .4) await hancurinLogo();
+          else if (n < .58) await mainLatar();
+          else if (n < .72) await jalanJalanHero();
           else await gayaHero();
         } else {
           await jalanJalanHero();

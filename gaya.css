@@ -886,3 +886,23 @@ button { font: inherit; color: inherit; }
 @media (prefers-color-scheme: light) { :root:not([data-tema="gelap"]) .hero::after { display: none; } }
 /* ganti tema: semua warna meluncur halus barengan (tanpa tutupan, tanpa jeda) */
 html.ganti-tema :is(body, .atas, .bagian, .kaki, .hero) { transition: background-color .4s ease !important; }
+
+/* ---------- hero: langit merah di belakang siluet api hitam (tema gelap); tema terang putih ---------- */
+.hero { background: radial-gradient(70% 45% at 50% 100%, rgba(218, 22, 23, .55), transparent 75%), linear-gradient(180deg, #070102 0%, #1E0306 38%, #6A070C 78%, #9A0A10 100%) !important; }
+:root[data-tema="terang"] .hero { background: radial-gradient(60% 45% at 50% 38%, rgba(218, 22, 23, .08), transparent 70%), #FFFFFF !important; }
+@media (prefers-color-scheme: light) { :root:not([data-tema="gelap"]) .hero { background: radial-gradient(60% 45% at 50% 38%, rgba(218, 22, 23, .08), transparent 70%), #FFFFFF !important; } }
+.hero { background: radial-gradient(80% 50% at 50% 100%, rgba(255, 40, 30, .45), transparent 75%), linear-gradient(180deg, #120204 0%, #4A0509 26%, #8A0A10 58%, #B00D12 100%) !important; }
+:root[data-tema="terang"] .hero { background: radial-gradient(60% 45% at 50% 38%, rgba(218, 22, 23, .08), transparent 70%), #FFFFFF !important; }
+@media (prefers-color-scheme: light) { :root:not([data-tema="gelap"]) .hero { background: radial-gradient(60% 45% at 50% 38%, rgba(218, 22, 23, .08), transparent 70%), #FFFFFF !important; } }
+/* tema terang: teks & tombol hero tetap kebaca di atas siluet api hitam */
+:root[data-tema="terang"] :is(.hero__teks, .hero__sudut) { text-shadow: 0 0 6px #fff, 0 0 14px #fff, 0 0 2px #fff; }
+:root[data-tema="terang"] .hero__aksi .tombol, :root[data-tema="terang"] .hero .sosmed a { box-shadow: 0 0 0 2px #fff, 0 6px 18px rgba(0, 0, 0, .35); }
+:root[data-tema="terang"] .hero .sosmed a { background: #fff; }
+@media (prefers-color-scheme: light) { :root:not([data-tema="gelap"]) :is(.hero__teks, .hero__sudut) { text-shadow: 0 0 6px #fff, 0 0 14px #fff, 0 0 2px #fff; }
+  :root:not([data-tema="gelap"]) .hero__aksi .tombol, :root:not([data-tema="gelap"]) .hero .sosmed a { box-shadow: 0 0 0 2px #fff, 0 6px 18px rgba(0, 0, 0, .35); } :root:not([data-tema="gelap"]) .hero .sosmed a { background: #fff; } }
+/* tema gelap: teks hero putih tetap tajam di atas langit merah */
+.hero__teks { text-shadow: 0 1px 8px rgba(0, 0, 0, .55); }
+:root[data-tema="terang"] .hero__teks > p { background: rgba(255, 255, 255, .9); padding: 8px 12px; text-shadow: none; }
+:root[data-tema="terang"] .hero__aksi .tombol--garis { background: #fff; }
+@media (prefers-color-scheme: light) { :root:not([data-tema="gelap"]) .hero__teks > p { background: rgba(255, 255, 255, .9); padding: 8px 12px; text-shadow: none; } :root:not([data-tema="gelap"]) .hero__aksi .tombol--garis { background: #fff; } }
+.hero__latar { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; image-rendering: pixelated; }
