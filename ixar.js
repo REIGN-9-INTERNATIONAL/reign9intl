@@ -42,6 +42,9 @@
     baca: P({ kep: 8, lk: [-30, 95], ln: [30, -95], mata: 'sayu' }),
     lompatPanji: P({ dy: -40, panjang: 1.3, ln: [100, 150], lk: [-100, -120], kk: [-70, 15], kn: [70, -15], mata: 'senang', alat: 'panji-r9' }),
     pegangTiang: P({ dy: 8, panjang: 1.6, ln: [92, 140], lk: [-62, 40], kk: [-32, -20], kn: [32, 20], mata: 'yakin', gerak: 'kuda' }),
+    duduk: P({ dy: 36, kep: 4, kk: [-72, -4], kn: [72, 4], lk: [-30, 40], ln: [30, -40], mata: 'senang' }),
+    selonjor: P({ dy: 112, kep: 6, kk: [-100, -60], kn: [100, 60], lk: [-40, -20], ln: [40, 20], mata: 'senang' }),
+    dudukMain: P({ dy: 36, kep: 6, panjang: 1.18, kk: [-72, -4], kn: [72, 4], lk: [-18, 52], ln: [18, -52], mata: 'yakin', alat: 'stik-game', gerak: 'main-game' }),
     santai: P({ rot: -70, dx: 340, dy: -195, kep: 28, panjang: 1.2, lk: [-110, -25], ln: [48, -12], kk: [8, 4], kn: [58, -26], mata: 'sayu', gerak: 'napas-tidur' }),
     // ---------- POSE KHUSUS TIAP BAGIAN MENU WEBSITE ----------
     // 1. #rosters: Pro Player fokus push rank / tanding HoK pegang gaming handheld + headset
@@ -136,7 +139,6 @@
       buat('circle', { cx: 716, cy: 741, r: 16, fill: alat }, stik);
       buat('circle', { cx: 818, cy: 728, r: 10, fill: 'var(--ixar-alat-2, #ffffff)' }, stik);
       buat('circle', { cx: 836, cy: 752, r: 10, fill: alat }, stik);
-      buat('path', { d: 'M748 672 L766 640 L776 668 L796 636', fill: 'none', stroke: 'var(--ixar-alat-2, #ffffff)', 'stroke-width': 8, 'stroke-linecap': 'round' }, stik);
 
       // 2. Alat Shop: Tas Belanja Merch R9
       const tas = this.alat['tas-belanja'] = buat('g', { class: 'ixar__alat' }, this.akar);

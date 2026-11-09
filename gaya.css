@@ -840,3 +840,34 @@ button { font: inherit; color: inherit; }
 .panggung-ixar { transition: opacity .35s; }
 .panggung-ixar.minggir { opacity: 0; pointer-events: none !important; }
 .panggung-ixar.minggir * { pointer-events: none !important; }
+
+/* ---------- generator foto profil v2: 4 kotak ringkas + pop-up bisa digulir ---------- */
+.pfp__kotak-grup { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.pfp__kotak { display: grid; gap: 6px; min-height: 72px; padding: 12px 40px 12px 14px; position: relative; text-align: left; border: 1px solid var(--garis); background: var(--pita-a); color: var(--teks); cursor: pointer; transition: border-color .2s; }
+.pfp__kotak::after { content: ''; position: absolute; right: 16px; top: 50%; width: 9px; height: 9px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: translateY(-70%) rotate(45deg); opacity: .7; }
+.pfp__kotak:hover, .pfp__kotak:focus-visible { border-color: var(--merah); outline: none; }
+.pfp__kotak-label { font: 700 12px/1 var(--judul); letter-spacing: .08em; text-transform: uppercase; opacity: .7; }
+.pfp__kotak-nilai { font: 600 15px/1.25 var(--badan); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pfp__dialog { width: min(560px, calc(100vw - 24px)); max-height: min(78vh, 680px); padding: 0; border: 1px solid var(--garis); background: var(--pita-a); color: var(--teks); overflow: hidden; }
+.pfp__dialog[open] { display: flex; flex-direction: column; }
+.pfp__dialog::backdrop { background: rgba(0, 0, 0, .62); }
+.pfp__dialog-kepala { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; border-bottom: 1px solid var(--garis); }
+.pfp__dialog-kepala h3 { margin: 0; font: 700 20px/1.1 var(--judul); text-transform: uppercase; letter-spacing: .04em; }
+.pfp__dialog-catatan { margin: 0; padding: 10px 16px 0; font-size: 14px; line-height: 1.5; opacity: .8; }
+.pfp__dialog-isi { overflow-y: auto; overscroll-behavior: contain; padding: 14px 16px 18px; display: grid; gap: 14px; }
+.pfp__dialog .pfp__pilihan { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 8px; }
+.pfp__dialog .pfp__pilihan[hidden] { display: none; }
+.pfp__dialog .pfp__opsi { display: grid; gap: 8px; justify-items: center; align-content: center; min-height: 48px; padding: 10px; aspect-ratio: auto; border: 1px solid var(--garis); background: transparent; color: var(--teks); font: 600 14px/1.2 var(--badan); text-align: center; }
+.pfp__dialog .pfp__opsi:hover { transform: none; border-color: var(--merah); }
+.pfp__dialog .pfp__opsi[aria-pressed="true"] { border-color: var(--merah); background: var(--merah); color: #fff; }
+.pfp__opsi-gambar { width: 100%; height: auto; aspect-ratio: 1; display: block; }
+.pfp__pilihan--gambar .pfp__opsi { padding: 6px 6px 10px; }
+.pfp__opsi-warna { width: 34px; height: 34px; border-radius: 50%; border: 2px solid currentColor; }
+.pfp__hasil-img { width: 100%; height: auto; display: block; -webkit-touch-callout: default; user-select: auto; -webkit-user-select: auto; }
+@media (max-width: 640px) {
+  .pfp__dialog { width: 100vw; max-width: 100vw; max-height: 74vh; margin: auto 0 0; border-width: 1px 0 0; }
+  .pfp__dialog .pfp__pilihan { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+.pfp__dialog--hasil .pfp__hasil-img { width: auto; max-width: 100%; max-height: min(48vh, 420px); margin-inline: auto; }
+.pfp__dialog--hasil .pfp__dialog-catatan { padding: 0; text-align: center; }
+.pfp__dialog--hasil .pfp__aksi { justify-content: center; }

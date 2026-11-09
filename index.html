@@ -21,8 +21,8 @@
 <link rel="icon" href="gambar/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="font/Reign9Display-Regular.ttf" as="font" type="font/ttf" crossorigin>
 <link rel="preload" href="font/oxanium-500.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="font/font.css?v=2611090824">
-<link rel="stylesheet" href="gaya.css?v=2611090824">
+<link rel="stylesheet" href="font/font.css?v=2611090837">
+<link rel="stylesheet" href="gaya.css?v=2611090837">
 </head>
 <body>
 <!-- Sprite SVG Logo disematkan langsung agar dibuka lewat file:// (klik 2x index.html) tetap jalan 100% tanpa kena blokir CORS browser -->
@@ -332,10 +332,12 @@
     <div class="pfp__kerja">
       <canvas class="pfp__kanvas" width="1080" height="1080" role="img" data-i18n-attr="aria-label:pfp.alt"></canvas>
       <div class="pfp__atur">
-        <fieldset class="pfp__grup"><legend data-i18n="pfp.latar">Latar</legend><div class="pfp__pilihan" data-pfp-latar></div></fieldset>
-        <fieldset class="pfp__grup"><legend data-i18n="pfp.gaya">Gaya IXAR</legend><div class="pfp__pilihan pfp__pilihan--chip" data-pfp-pose></div></fieldset>
-        <fieldset class="pfp__grup"><legend data-i18n="pfp.warna">Warna IXAR</legend><div class="pfp__pilihan pfp__pilihan--chip" data-pfp-warna></div></fieldset>
-        <fieldset class="pfp__grup"><legend data-i18n="pfp.item">Item (boleh lebih dari satu)</legend><div class="pfp__pilihan pfp__pilihan--chip" data-pfp-item></div></fieldset>
+        <div class="pfp__kotak-grup">
+          <button type="button" class="pfp__kotak" data-pfp-buka="latar"><span class="pfp__kotak-label" data-i18n="pfp.latar">Latar</span><span class="pfp__kotak-nilai" data-pfp-nilai="latar"></span></button>
+          <button type="button" class="pfp__kotak" data-pfp-buka="pose"><span class="pfp__kotak-label" data-i18n="pfp.gaya">Gaya IXAR</span><span class="pfp__kotak-nilai" data-pfp-nilai="pose"></span></button>
+          <button type="button" class="pfp__kotak" data-pfp-buka="warna"><span class="pfp__kotak-label" data-i18n="pfp.warna">Warna IXAR</span><span class="pfp__kotak-nilai" data-pfp-nilai="warna"></span></button>
+          <button type="button" class="pfp__kotak" data-pfp-buka="item"><span class="pfp__kotak-label" data-i18n="pfp.itemPendek">Item</span><span class="pfp__kotak-nilai" data-pfp-nilai="item"></span></button>
+        </div>
         <label class="isian"><span data-i18n="pfp.nama">Nama (opsional)</span><input name="nama-pfp" maxlength="16" autocomplete="off" spellcheck="false" data-i18n-attr="placeholder:banner.namaPh"></label>
         <div class="pfp__aksi">
           <button class="tombol tombol--garis" type="button" data-pfp-acak data-i18n="pfp.acak">Acak</button>
@@ -343,6 +345,24 @@
         </div>
       </div>
     </div>
+    <dialog class="pfp__dialog" data-pfp-dialog aria-labelledby="judul-pfp-dialog">
+      <div class="pfp__dialog-kepala"><h3 id="judul-pfp-dialog" data-pfp-dialog-judul></h3><button type="button" class="tombol tombol--utama tombol--kecil" data-pfp-tutup data-i18n="pfp.selesai">Selesai</button></div>
+      <p class="pfp__dialog-catatan" data-pfp-catatan-item data-i18n="pfp.catatanItem" hidden></p>
+      <div class="pfp__dialog-isi">
+        <div class="pfp__pilihan pfp__pilihan--gambar" data-pfp-latar data-grup="latar"></div>
+        <div class="pfp__pilihan" data-pfp-pose data-grup="pose"></div>
+        <div class="pfp__pilihan" data-pfp-warna data-grup="warna"></div>
+        <div class="pfp__pilihan" data-pfp-item data-grup="item"></div>
+      </div>
+    </dialog>
+    <dialog class="pfp__dialog pfp__dialog--hasil" data-pfp-hasil aria-labelledby="judul-pfp-hasil">
+      <div class="pfp__dialog-kepala"><h3 id="judul-pfp-hasil" data-i18n="pfp.hasilJudul">Foto profilmu siap</h3><button type="button" class="tombol tombol--garis tombol--kecil" data-pfp-tutup data-i18n="pfp.tutup">Tutup</button></div>
+      <div class="pfp__dialog-isi">
+        <img class="pfp__hasil-img" data-pfp-hasil-img alt="" width="1080" height="1080">
+        <p class="pfp__dialog-catatan" data-i18n="pfp.hasilPetunjuk">Kalau gak ke-download otomatis, tekan lama gambarnya lalu pilih Simpan.</p>
+        <div class="pfp__aksi"><a class="tombol tombol--utama" data-pfp-simpan href="#" download="reign9-ixar.png" data-i18n="pfp.simpan">Simpan gambar</a><button type="button" class="tombol tombol--garis" data-pfp-bagikan hidden data-i18n="pfp.bagikan">Bagikan</button></div>
+      </div>
+    </dialog>
     <span class="pfp__studio" aria-hidden="true"><span data-ixar="diam" data-pfp-ixar></span></span>
   </section>
 
@@ -423,9 +443,9 @@
   <p class="kaki__hak" data-i18n="kaki.hak">© 2026 Reign 9 International.</p>
 </footer>
 
-<script src="bahasa.js?v=2611090824"></script>
+<script src="bahasa.js?v=2611090837"></script>
 <script src="cuitan-ixar.js?v=26110904"></script>
-<script src="ixar.js?v=2611090824"></script>
-<script src="app.js?v=2611090824"></script>
+<script src="ixar.js?v=2611090837"></script>
+<script src="app.js?v=2611090837"></script>
 </body>
 </html>
