@@ -288,7 +288,7 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
     oc.fill(); oc.globalCompositeOperation = 'source-over';
   }
   function hitungLatar() {
-    const batasN = w < 600 ? 4200 : 6000, jarak = Math.max(6, Math.sqrt(w * h * .85 / batasN));
+    const batasN = w < 600 ? 1800 : 2600, jarak = Math.max(8, Math.sqrt(w * h * .85 / batasN));
     titikLatar = {};
     for (const nama of BENTUK_LATAR) {
       const [, oc] = kanvasBantu(Math.round(w), Math.round(h)); oc.fillStyle = '#000'; gambarLatar(oc, nama);
@@ -324,7 +324,7 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
     });
   }
   const ukur = () => {
-    const rasio = Math.min(devicePixelRatio || 1, 2);
+    const rasio = Math.min(devicePixelRatio || 1, matchMedia('(pointer: coarse)').matches ? 1.25 : 1.5);
     w = kanvas.clientWidth; h = kanvas.clientHeight;
     kanvas.width = w * rasio; kanvas.height = h * rasio; c.setTransform(rasio, 0, 0, rasio, 0, 0);
     kanvasLatar.width = w; kanvasLatar.height = h;
@@ -362,8 +362,9 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
     c.clearRect(0, 0, w, h);
     if (t > gantiLatarPada) gantiLatar(null);
     // posisi IXAR di kanvas: api latar minggir pas IXAR lewat
-    const k = kanvas.getBoundingClientRect(), dorongan = [];
-    for (const el of ixarHero) { const r = el.getBoundingClientRect(); if (r.width && r.bottom > k.top && r.top < k.bottom) dorongan.push([r.left - k.left + r.width / 2, r.top - k.top + r.height * .6, (r.width * .5) ** 2]); }
+    if (!gambar.n || ++gambar.n % 3 === 0) { gambar.k = kanvas.getBoundingClientRect(); gambar.d = []; for (const el of ixarHero) { const r = el.getBoundingClientRect(); if (r.width && r.bottom > gambar.k.top && r.top < gambar.k.bottom) gambar.d.push([r.left - gambar.k.left + r.width / 2, r.top - gambar.k.top + r.height * .6, (r.width * .5) ** 2]); } gambar.t = teksHero?.getBoundingClientRect(); gambar.n = gambar.n || 1; }
+    const k = gambar.k, dorongan = gambar.d;
+    for (const el of []) { const r = el.getBoundingClientRect(); if (r.width && r.bottom > k.top && r.top < k.bottom) dorongan.push([r.left - k.left + r.width / 2, r.top - k.top + r.height * .6, (r.width * .5) ** 2]); }
     const umurLatar = t - mulaiLatar;
     for (const b of latar) {
       if (umurLatar > b.tunda) { const dx = b.tx - b.x, dy = b.ty - b.y; b.vx += dx * .01; b.vy += dy * .01; }
@@ -381,7 +382,7 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
     }
     // pembatas: api latar di belakang tulisan & tombol dihapus pelan-pelan (lingkaran lembut), jadi tulisan kebaca tanpa panel
     if (teksHero) {
-      const r = teksHero.getBoundingClientRect(), cx = r.left - k.left + r.width / 2, cy = r.top - k.top + r.height / 2, rx = Math.max(r.width * .62, 160), ry = Math.max(r.height * .7, 120);
+      const r = gambar.t, cx = r.left - k.left + r.width / 2, cy = r.top - k.top + r.height / 2, rx = Math.max(r.width * .62, 160), ry = Math.max(r.height * .7, 120);
       cl.save(); cl.globalCompositeOperation = 'destination-out'; cl.globalAlpha = terang ? .7 : .78;
       cl.translate(cx, cy); cl.scale(1, ry / rx);
       const g = cl.createRadialGradient(0, 0, rx * .35, 0, 0, rx); g.addColorStop(0, '#000'); g.addColorStop(1, 'rgba(0,0,0,0)');
