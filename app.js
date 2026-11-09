@@ -536,7 +536,7 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
 //    REBAHAN SANTAI, POSE SESUAI BAGIAN MENU, & 200 CUITAN LUCU / FUN FACT!
 // ============================================================================
 (() => {
-  const el = $('.jelajah__ixar'), panggung = $('.panggung-ixar'), hero = $('.hero'), panggungKenal = $('[data-panggung-kenal]');
+  const el = $('.jelajah__ixar'), panggung = $('.panggung-ixar'), hero = $('.hero');
   const elGelembung = $('[data-ixar-gelembung]'), elCuitanTeks = $('[data-ixar-cuitan-teks]'), elCuitanNomor = $('[data-ixar-cuitan-nomor]');
   const elCuitanPanggung = $('[data-ixar-cuitan-panggung]'), elCuitanCounter = $('[data-ixar-cuitan-counter]'), elModeBadge = $('[data-ixar-mode-badge]');
   if (!el) return;
@@ -625,13 +625,6 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
 
   // Deteksi platform/lantai tempat IXAR berpijak
   function infoPlatform() {
-    if (panggungKenal) {
-      const rk = panggungKenal.getBoundingClientRect();
-      if (rk.bottom > tinggi + 110 && rk.top < innerHeight - 130 && rk.width > lebar) {
-        const yPanggung = Math.min(innerHeight - tinggi - 12, rk.bottom - tinggi - 132);
-        return { mode: 'kenal', y: Math.max(72, yPanggung), xMin: Math.max(8, rk.left + 20), xMax: Math.min(innerWidth - lebar - 8, rk.right - lebar - 20) };
-      }
-    }
     return { mode: 'jelajah', y: innerHeight - tinggi - 8, xMin: 8, xMax: Math.max(8, document.documentElement.clientWidth - lebar - 8) };
   }
   const lantai = () => infoPlatform().y;
@@ -1086,29 +1079,41 @@ if (podium) {
 })();
 }
 
-// ---------- Command Deck IXAR (#ixar): Filter Tab, Kartu Pose, & Tombol 200 Cuitan ----------
-$$('[data-tab-pose]').forEach((tab) => tab.addEventListener('click', () => {
-  const kat = tab.dataset.tabPose;
-  $$('[data-tab-pose]').forEach((t) => t.setAttribute('aria-selected', t === tab));
-  $$('[data-pose]').forEach((kartu) => {
-    kartu.hidden = kat !== 'semua' && kartu.dataset.kategoriPose !== kat;
+// ---------- Panggung IXAR (#ixar): IXAR sendiri di panggung, satu baris ikon skill, keterangan di panggung ----------
+(() => {
+  const ixEl = $('[data-ixar-panggung]'), rel = $('[data-rel-skill]'), nama = $('[data-ket-nama]'), isi = $('[data-ket-isi]');
+  if (!ixEl || !rel) return;
+  let aktif = '', urutCuitan = 0;
+  const tulis = () => {
+    if (aktif) { nama.textContent = R9.t(`pose.${aktif}`); isi.textContent = R9.t(`skill.${aktif}`); }
+    else { nama.textContent = 'IXAR'; isi.textContent = R9.t('ixar.ketAwal'); }
+  };
+  const ganti = (efek) => { if (!gerakBoleh) return efek(); nama.parentElement.classList.remove('muncul'); void nama.offsetWidth; efek(); nama.parentElement.classList.add('muncul'); };
+  rel.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-skill]'); if (!b) return;
+    aktif = b.dataset.skill;
+    $$('[data-skill]', rel).forEach((x) => x.setAttribute('aria-pressed', x === b));
+    b.scrollIntoView({ behavior: gerakBoleh ? 'smooth' : 'auto', block: 'nearest', inline: 'center' });
+    ganti(tulis);
+    ixEl.ixar?.lakukan(aktif, aktif === 'tidur' || aktif === 'rebahan' ? 6000 : 4600);
   });
-}));
-$$('[data-pose]').forEach((b) => b.addEventListener('click', (e) => {
-  // efek gelombang dari titik tekan
-  if (gerakBoleh && b.classList.contains('kartu-pose')) { const r = b.getBoundingClientRect(), g = document.createElement('span'); g.className = 'riak'; g.style.left = `${(e.clientX || r.left + r.width / 2) - r.left}px`; g.style.top = `${(e.clientY || r.top + r.height / 2) - r.top}px`; b.append(g); setTimeout(() => g.remove(), 600); }
-  $$('[data-pose]').forEach((x) => x.setAttribute('aria-pressed', x === b));
-  window.R9IxarUtama?.peragakanPose(b.dataset.pose, 4600);
-  window.R9IxarUtama?.tampilkanCuitanAcak(6800);
-}));
-$('[data-panggil-ixar]')?.addEventListener('click', () => {
-  window.R9IxarUtama?.peragakanPose('nyambut', 3200);
-  window.R9IxarUtama?.tampilkanCuitanAcak(6800);
-});
-$('[data-lempar-cuitan]')?.addEventListener('click', () => {
-  window.R9IxarUtama?.tampilkanCuitanAcak(7500);
-  window.R9IxarUtama?.peragakanPose('nyambut', 2000);
-});
+  // colek IXAR = celetukan di keterangan
+  ixEl.addEventListener('click', () => {
+    const daftar = window.R9_CUITAN_IXAR || []; if (!daftar.length) return;
+    if (!urutCuitan) urutCuitan = Math.floor(Math.random() * daftar.length);
+    aktif = ''; $$('[data-skill]', rel).forEach((x) => x.setAttribute('aria-pressed', 'false'));
+    ganti(() => { nama.textContent = 'IXAR'; isi.textContent = `“${daftar[urutCuitan++ % daftar.length]}”`; });
+  });
+  // panah geser + sembunyiin panah di ujung
+  const panah = $$('[data-geser-skill]');
+  panah.forEach((p) => p.addEventListener('click', () => rel.scrollBy({ left: +p.dataset.geserSkill * rel.clientWidth * .7, behavior: gerakBoleh ? 'smooth' : 'auto' })));
+  const cekUjung = () => { const maks = rel.scrollWidth - rel.clientWidth - 2; panah[0].disabled = rel.scrollLeft <= 2; panah[1].disabled = rel.scrollLeft >= maks; rel.classList.toggle('di-awal', rel.scrollLeft <= 2); rel.classList.toggle('di-akhir', rel.scrollLeft >= maks); };
+  rel.addEventListener('scroll', cekUjung, { passive: true }); addEventListener('resize', cekUjung); cekUjung();
+  document.addEventListener('r9:bahasa', () => { if (aktif || !isi.textContent.startsWith('“')) tulis(); });
+  tulis();
+  const jelajah = $('.panggung-ixar');
+  if (jelajah) new IntersectionObserver(([e]) => jelajah.classList.toggle('minggir', e.isIntersecting), { threshold: .35 }).observe($('.kenal__panggung'));
+})();
 
 // ============================================================================
 // KOLEKSI BENDERA NEGARA LENGKAP (SVG)

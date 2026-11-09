@@ -786,3 +786,57 @@ button { font: inherit; color: inherit; }
 .pfp__aksi { display: flex; flex-wrap: wrap; gap: 10px; }
 .pfp__studio { position: absolute; left: -9999px; top: 0; width: 820px; height: 1000px; overflow: hidden; } /* IXAR bayangan buat difoto */
 @media (min-width: 900px) { .pfp__kerja { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); padding: 24px; align-items: start; } }
+
+/* ---------- panggung IXAR v2: tenang & berkelas, satu baris ikon skill ---------- */
+.kenal { align-items: center; }
+@media (min-width: 900px) { .kenal { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 56px; } }
+.kenal__teks { gap: 12px; }
+.kenal__isi { max-width: 46ch; font-size: 17px; line-height: 1.65; opacity: .88; }
+.kenal__arena { display: grid; gap: 14px; min-width: 0; }
+.kenal__panggung { margin: 0; padding: 0; display: block; min-height: 0 !important; aspect-ratio: 4 / 3.4; border: 1px solid var(--garis);
+  background: radial-gradient(52% 70% at 50% 0%, rgba(218, 22, 23, .28), transparent 72%), radial-gradient(40% 18% at 50% 86%, rgba(0, 0, 0, .45), transparent 70%), var(--pita-b) !important; }
+@media (min-width: 900px) { .kenal__panggung { aspect-ratio: 16 / 11; } }
+.kenal__panggung::before { left: 22%; right: 22%; bottom: 10%; height: 9%; transform: none; border-radius: 50%; -webkit-mask: none; mask: none;
+  background: radial-gradient(closest-side, rgba(0, 0, 0, .55), transparent); }
+.kenal__panggung::after { bottom: 10.5%; width: min(320px, 56%); margin-left: min(-160px, -28%); height: 8%; border-width: 1px; animation: none;
+  box-shadow: 0 0 30px rgba(218, 22, 23, .35); opacity: .7; }
+.kenal__lambang { top: 46%; width: 34%; max-width: 220px; opacity: .06; }
+.kenal__ixar { position: absolute; left: 50%; bottom: 11%; width: clamp(140px, 30%, 230px); transform: translateX(-50%); cursor: pointer; z-index: 1; }
+.kenal__ixar:focus-visible { outline: 2px solid var(--merah); outline-offset: 6px; }
+.kenal__ket { position: absolute; left: 20px; top: 18px; right: 20px; z-index: 2; display: grid; gap: 4px; max-width: 30ch; padding-left: 12px; border-left: 2px solid var(--merah); pointer-events: none; }
+.kenal__ket-nama { font: 700 clamp(20px, 2.4vw, 28px)/1 var(--judul); letter-spacing: .04em; text-transform: uppercase; }
+.kenal__ket-isi { font: 500 14px/1.5 var(--badan); opacity: .85; }
+.kenal__ket.muncul { animation: ket-muncul .4s cubic-bezier(.2, .8, .2, 1); }
+@keyframes ket-muncul { from { opacity: 0; transform: translateY(8px); } }
+/* baris ikon skill */
+.kenal__skill { display: grid; grid-template-columns: 40px minmax(0, 1fr) 40px; align-items: center; gap: 6px; }
+.kenal__rel { display: flex; gap: 8px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding: 4px 2px; overscroll-behavior-x: contain;
+  -webkit-mask: linear-gradient(90deg, transparent, #000 28px, #000 calc(100% - 28px), transparent); mask: linear-gradient(90deg, transparent, #000 28px, #000 calc(100% - 28px), transparent); }
+.kenal__rel.di-awal { -webkit-mask: linear-gradient(90deg, #000 calc(100% - 28px), transparent); mask: linear-gradient(90deg, #000 calc(100% - 28px), transparent); }
+.kenal__rel.di-akhir { -webkit-mask: linear-gradient(90deg, transparent, #000 28px); mask: linear-gradient(90deg, transparent, #000 28px); }
+.kenal__rel.di-awal.di-akhir { -webkit-mask: none; mask: none; }
+.kenal__rel::-webkit-scrollbar { display: none; }
+.skill-ixar { flex: 0 0 auto; width: 52px; height: 52px; display: grid; place-items: center; scroll-snap-align: center; border: 1px solid var(--garis); background: transparent; color: var(--teks); cursor: pointer;
+  transition: border-color .2s, background .2s, color .2s, transform .2s; }
+.skill-ixar svg { width: 22px; height: 22px; }
+.skill-ixar:hover { border-color: var(--merah); color: var(--merah); }
+.skill-ixar:active { transform: scale(.94); }
+.skill-ixar[aria-pressed="true"] { background: var(--merah); border-color: var(--merah); color: #fff; }
+.skill-ixar:focus-visible, .kenal__geser:focus-visible { outline: 2px solid var(--merah); outline-offset: 2px; }
+.kenal__geser { width: 40px; height: 52px; display: grid; place-items: center; border: 0; background: none; color: var(--teks); cursor: pointer; transition: opacity .2s, color .2s; }
+.kenal__geser svg { width: 22px; height: 22px; }
+.kenal__geser:hover { color: var(--merah); }
+.kenal__geser:disabled { opacity: .2; cursor: default; }
+@media (prefers-reduced-motion: reduce) { .kenal__ket.muncul { animation: none; } }
+#ixar { --skala-judul: clamp(40px, 5vw, 76px); }
+.kenal__ixar { width: clamp(170px, 36%, 300px); bottom: 9%; --ixar-mata: #120203; }
+.kenal__ixar .ixar { filter: drop-shadow(0 0 10px rgba(218, 22, 23, .45)) !important; }
+:root[data-tema="terang"] .kenal__ixar { --ixar-mata: #FFC2CE; }
+:root[data-tema="terang"] .kenal__ixar .ixar { filter: none !important; }
+@media (prefers-color-scheme: light) { :root:not([data-tema="gelap"]) .kenal__ixar { --ixar-mata: #FFC2CE; } :root:not([data-tema="gelap"]) .kenal__ixar .ixar { filter: none !important; } }
+.kenal__panggung::after { left: 50%; margin-left: 0; transform: translateX(-50%); bottom: 8%; width: min(340px, 62%); }
+.kenal__panggung::before { bottom: 7%; }
+/* IXAR penjelajah minggir pas panggung keliatan: cukup satu IXAR di layar */
+.panggung-ixar { transition: opacity .35s; }
+.panggung-ixar.minggir { opacity: 0; pointer-events: none !important; }
+.panggung-ixar.minggir * { pointer-events: none !important; }
