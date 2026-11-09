@@ -29,7 +29,7 @@ if (window.top !== window.self && !pratinjauAdmin) { try { window.top.location.r
 (() => {
   try {
     console.log(
-      '%c🛡️ REIGN 9 INTERNATIONAL — SECURITY SHIELD ACTIVE',
+      '%c🛡️ REIGN 9 INTERNATIONAL · SECURITY SHIELD ACTIVE',
       'background:#DA1617;color:#fff;font-weight:800;font-size:14px;padding:6px 12px;border-radius:2px;'
     );
     console.log(
@@ -69,7 +69,7 @@ if (window.top !== window.self && !pratinjauAdmin) { try { window.top.location.r
     const sel = String(window.getSelection ? window.getSelection() : '').trim();
     if (sel && sel !== '980982') {
       e.preventDefault();
-      e.clipboardData?.setData('text/plain', '© 2026 Reign 9 International (https://www.reign9.site) — Together We Reign.');
+      e.clipboardData?.setData('text/plain', '© 2026 Reign 9 International (https://www.reign9.site). Together We Reign.');
     }
   });
 })();
@@ -1546,7 +1546,7 @@ function gambarData() {
 
   // 1. Podium, Champion Spotlight (inspirasi nmss.gg), & Hadiah
   const rk = d.ringkas || {};
-  $$('[data-juara]').forEach((el) => { const n = rk[`juara${el.dataset.juara}`]; el.textContent = n ? n : '–'; });
+  $$('[data-juara]').forEach((el) => { const n = rk[`juara${el.dataset.juara}`]; el.textContent = n ? n : '0'; });
   if ($('[data-hadiah]')) $('[data-hadiah]').textContent = R9.rupiah(rk.totalHadiah) || R9.t('hadiah.kosong');
 
   const wadahChampion = $('[data-champion-wadah]');
@@ -1713,7 +1713,7 @@ function gambarData() {
     <div class="event__tgl"><b>${new Date(`${v.mulai}T00:00:00`).getDate()}</b><span>${esc(R9.tanggal(v.mulai, { month: 'short', year: '2-digit' }))}</span></div>
     <div>
       <p class="event__nama">${esc(R9.teks(v.nama))} ${v.skor ? `<span class="event__skor">${esc(v.skor)}</span>` : ''}</p>
-      <p class="event__meta">${esc([R9.t(`jenis.${v.jenis}`), R9.teks(v.tempat), v.selesai && v.selesai !== v.mulai ? `${R9.tanggal(v.mulai)} – ${R9.tanggal(v.selesai)}` : ''].filter(Boolean).join(' · '))}</p>
+      <p class="event__meta">${esc([R9.t(`jenis.${v.jenis}`), R9.teks(v.tempat), v.selesai && v.selesai !== v.mulai ? `${R9.tanggal(v.mulai)} ${R9.t('umum.sampai')} ${R9.tanggal(v.selesai)}` : ''].filter(Boolean).join(' · '))}</p>
       ${R9.teks(v.keterangan) ? `<p>${esc(R9.teks(v.keterangan))}</p>` : ''}
       ${R9.teks(v.hasil) || v.hadiah ? `<p class="event__meta">${R9.teks(v.hasil) ? `${esc(R9.t('jadwal.hasil'))}: <strong>${esc(R9.teks(v.hasil))}</strong>` : ''}${v.hadiah ? ` · ${esc(R9.t('jadwal.hadiah'))}: <strong>${esc(R9.rupiah(v.hadiah))}</strong>` : ''}</p>` : ''}
       ${(tautanAman(v.link) || tautanAman(v.stream)) ? `<div class="event__aksi">
