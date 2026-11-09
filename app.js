@@ -381,6 +381,47 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
     await tidur(900); x()?.lakukan('menang', 1300); await tidur(1300);
   }
 
+  // duel 2 IXAR di bawah tulisan WELCOME: tukar serangan dengan percikan, lalu tonjokan terakhir ngancurin tulisan jadi logo
+  const percik = (vx, vy, besar = 1) => {
+    const p = document.createElement('span'); p.className = 'percik-duel'; p.setAttribute('aria-hidden', 'true');
+    Object.assign(p.style, { left: `${vx}px`, top: `${vy}px`, '--besar': besar }); document.body.append(p);
+    setTimeout(() => p.remove(), 650);
+  };
+  async function duel() {
+    const J = window.R9Jelajah, H = window.R9Hero, t = H?.kotakTeks();
+    if (!J || !t || !(await J.ambilAlih())) return tonjokSambutan();
+    try {
+      const hr = hero.getBoundingClientRect(), kiriHero = hr.left + scrollX, atasHero = hr.top + scrollY;
+      const tengah = (t.kiri + t.kanan) / 2 - kiriHero, lantaiH = lantaiHero(), w = lebar;
+      const lantaiLayar = () => hero.getBoundingClientRect().top + lantaiHero();
+      // dua IXAR jalan saling mendekat
+      const xA = Math.max(8, tengah - w * 1.25), xB = tengah + w * .25;
+      J.set('jalanCepat'); J.hadap(true);
+      await Promise.all([jalanKe(xA, true), J.keLayar(xB + hr.left, lantaiLayar(), 900)]);
+      hadap(false); J.hadap(true); J.set('marah'); x()?.set('marah'); await tidur(500);
+      // tiga ronde tukar serangan
+      for (let r = 0; r < 3; r++) {
+        const tengahBentur = () => [hr.left + (px + w + (J.posisi().x - hr.left)) / 2 + 0, lantaiLayar() + tinggi * .45];
+        if (r % 2 === 0) { x()?.lakukan('serbu', 420); J.set('tameng'); px += w * .15; taruh(); }
+        else { J.lakukan('serbu', 420); x()?.set('tameng'); await J.keLayar(J.posisi().x - w * .15, lantaiLayar(), 160); }
+        await tidur(200);
+        const [bx, by] = tengahBentur(); percik(bx, by, 1 + r * .3); H.pukul(bx + scrollX, by + scrollY - tinggi, 6 + r * 3);
+        if (r % 2 === 0) { x()?.lakukan('tonjok', 380); await J.keLayar(J.posisi().x + w * .35, lantaiLayar(), 300, 40); J.lakukan('kaget', 500); }
+        else { J.lakukan('tonjok', 380); await lompatKe(px - w * .35, lantaiH, 40, 300); x()?.lakukan('kaget', 500); }
+        await tidur(420);
+      }
+      // final: dua-duanya lompat ke tulisan, IXAR pembuka ngasih tonjokan terakhir
+      const yTeks = (t.atas + t.bawah) / 2 - atasHero - tinggi * .5;
+      J.set('lompat'); x()?.set('serbu');
+      await Promise.all([lompatKe(tengah - w * .9, yTeks, 60, 520), J.keLayar(tengah + w * .1 + hr.left, yTeks + hr.top, 520, 60)]);
+      x()?.lakukan('tonjok', 700); J.lakukan('kaget', 700); await tidur(160);
+      const pv = [hr.left + tengah, (t.atas + t.bawah) / 2 - scrollY];
+      percik(pv[0], pv[1], 2.2); H.tonjokSambut(t.kiri + (t.kanan - t.kiri) / 2, (t.atas + t.bawah) / 2);
+      await tidur(500);
+      await Promise.all([turun(), J.keLayar(Math.min(innerWidth - w - 16, tengah + w * 2 + hr.left), lantaiLayar(), 600, 50)]);
+      x()?.lakukan('menang', 1500); J.lakukan('kecewa', 1500); await tidur(1600);
+    } finally { J.lepas(); }
+  }
   async function hancurinLogo() {
     const L = window.R9Hero?.kotakLogo(); if (!L) return;
     const rh = hero.getBoundingClientRect(), ox = rh.left + scrollX, oy = rh.top + scrollY;
@@ -456,7 +497,8 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
       const H = window.R9Hero;
       try {
         if (H && H.fase === 'teks' && H.umurFase > 2400) {
-          await tonjokSambutan();
+          // dua IXAR lagi di atas → duel; kalau pengunjung lagi di bawah, IXAR pembuka nonjok sendiri
+          if (window.R9Jelajah && scrollY < 80) await duel(); else await tonjokSambutan();
         } else if (H && H.fase === 'logo') {
           const n = Math.random();
           if (H.umurFase > 8500 && n < .46) await hancurinLogo();
@@ -965,6 +1007,18 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
       taruh();
     }
   });
+  // pintu buat adegan duel di layar pembuka: IXAR pembuka bisa "minjem" IXAR ini sebentar (posisi = koordinat layar)
+  window.R9Jelajah = {
+    async ambilAlih() { jedaSampai = Infinity; for (let i = 0; i < 50 && (sibuk || sedangJatuh || sedangDiseret); i++) await tidur(100); return !sedangDiseret; },
+    lepas() { jedaSampai = 0; },
+    posisi: () => ({ x: px, y: py, w: lebar, h: tinggi }),
+    hadap, set: (p) => x()?.set(p), lakukan: (p, ms) => x()?.lakukan(p, ms),
+    keLayar(tx, ty, ms, puncak = 0) {
+      const x0 = px, y0 = py;
+      return new Promise((ok) => { const t0 = performance.now(); const f = (t) => { const k = Math.min(1, (t - t0) / ms), e = k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
+        px = x0 + (tx - x0) * e; py = y0 + (ty - y0) * e - Math.sin(Math.PI * k) * puncak; taruh(); if (k < 1) requestAnimationFrame(f); else ok(); }; requestAnimationFrame(f); });
+    },
+  };
   const mulai = () => {
     ukur();
     const [a, b] = batasX();
