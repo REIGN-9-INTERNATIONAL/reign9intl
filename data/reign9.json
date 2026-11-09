@@ -1,5 +1,5 @@
 {
- "diperbarui": "2026-11-09T22:38:41.089Z",
+ "diperbarui": "2026-11-09T22:41:30.384Z",
  "pemain": {
   "aktif": [
    {
@@ -354,25 +354,6 @@
     "foto": "gambar/roster/11.jpg?v=1794197940787"
    },
    {
-    "id": 48,
-    "nickname": "R9.Polin",
-    "role": "Mid Lane",
-    "divisi": "Honor of Kings",
-    "kelompok": "R9 Baron",
-    "instagram": "",
-    "tiktok": "",
-    "hero": [
-     "Princess Frost",
-     "Lady Zhen",
-     "Yixing"
-    ],
-    "periode": "",
-    "gabung": "2026-06-06",
-    "negara": "ID",
-    "jenis": "pemain",
-    "foto": ""
-   },
-   {
     "id": 60,
     "nickname": "R9.Presley",
     "role": "BizDev",
@@ -534,6 +515,25 @@
     "negara": "ID",
     "jenis": "pemain",
     "foto": "gambar/roster/2.jpg?v=1794163145167"
+   },
+   {
+    "id": 48,
+    "nickname": "R9.ZEN",
+    "role": "Mid Lane",
+    "divisi": "Honor of Kings",
+    "kelompok": "R9 Baron",
+    "instagram": "",
+    "tiktok": "",
+    "hero": [
+     "Princess Frost",
+     "Lady Zhen",
+     "Yixing"
+    ],
+    "periode": "",
+    "gabung": "2026-06-06",
+    "negara": "ID",
+    "jenis": "pemain",
+    "foto": ""
    },
    {
     "id": 69,
