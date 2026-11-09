@@ -1,7 +1,121 @@
 {
- "diperbarui": "2026-11-09T01:07:00.249Z",
+ "diperbarui": "2026-11-09T07:24:09.189Z",
  "pemain": {
   "aktif": [
+   {
+    "id": 58,
+    "nickname": "R9. Miwa",
+    "role": "Roaming",
+    "divisi": "Honor of Kings",
+    "kelompok": "R9 Pixel",
+    "instagram": "",
+    "tiktok": "r9.keii",
+    "hero": [
+     "Zhang Fei",
+     "Dyadia",
+     "Dolia"
+    ],
+    "periode": "",
+    "gabung": "2026-05-05",
+    "negara": "MY",
+    "jenis": "pemain",
+    "foto": "gambar/roster/58.jpg?v=1794197696533"
+   },
+   {
+    "id": 45,
+    "nickname": "R9.AY",
+    "role": "Jungling",
+    "divisi": "Honor of Kings",
+    "kelompok": "R9 Academy SGR",
+    "instagram": "",
+    "tiktok": "",
+    "hero": [
+     "Agudo",
+     "Menki",
+     "Nezha"
+    ],
+    "periode": "",
+    "gabung": "2026-11-01",
+    "negara": "ID",
+    "jenis": "pemain",
+    "foto": ""
+   },
+   {
+    "id": 43,
+    "nickname": "R9.bratzzz",
+    "role": "Farm Lane",
+    "divisi": "Honor of Kings",
+    "kelompok": "R9 Academy SGR",
+    "instagram": "",
+    "tiktok": "",
+    "hero": [
+     "Chano",
+     "Di Renjie",
+     "Consort Yu"
+    ],
+    "periode": "",
+    "gabung": "2026-11-01",
+    "negara": "ID",
+    "jenis": "pemain",
+    "foto": ""
+   },
+   {
+    "id": 65,
+    "nickname": "R9.Cellyn",
+    "role": "Media and Publication",
+    "divisi": "Honor of Kings",
+    "kelompok": "Media and Publication",
+    "instagram": "cellynsilverwings",
+    "tiktok": "",
+    "hero": [
+     "Dun",
+     "Lapu-Lapu",
+     "Lianpo"
+    ],
+    "periode": "",
+    "gabung": "2026-01-02",
+    "negara": "ID",
+    "jenis": "coach",
+    "foto": "gambar/roster/65.jpg?v=1794202373727"
+   },
+   {
+    "id": 66,
+    "nickname": "R9.F44",
+    "role": "Roaming",
+    "divisi": "Honor of Kings",
+    "kelompok": "R9 Dewata",
+    "instagram": "",
+    "tiktok": "",
+    "hero": [
+     "Lianpo",
+     "Zhangfei",
+     "Lapu-Lapu"
+    ],
+    "periode": "",
+    "gabung": "2025-07-07",
+    "negara": "ID",
+    "jenis": "pemain",
+    "foto": ""
+   },
+   {
+    "id": 41,
+    "nickname": "R9.Fraud.",
+    "role": "Clash Lane",
+    "divisi": "Honor of Kings",
+    "kelompok": "R9 Academy SGR",
+    "instagram": "",
+    "tiktok": "",
+    "hero": [
+     "Biron",
+     "Fatih",
+     "Dun"
+    ],
+    "periode": "",
+    "gabung": "2026-08-02",
+    "negara": "ID",
+    "jenis": "pemain",
+    "foto": ""
+   },
    {
     "id": 3,
     "nickname": "R9.Grandair",
@@ -22,28 +136,28 @@
     "foto": "gambar/roster/3.jpg?v=1794154654372"
    },
    {
-    "id": 5,
-    "nickname": "R9.inv1nciblE",
-    "role": "Farm Lane",
+    "id": 68,
+    "nickname": "R9.HackClaw/小文",
+    "role": "Jungling",
     "divisi": "Honor of Kings",
-    "kelompok": "R9 Shinigami",
+    "kelompok": "R9 Dewata",
     "instagram": "",
     "tiktok": "",
     "hero": [
-     "Chicha",
-     "Arli",
-     "Loong"
+     "Agudo",
+     "Yang Jian",
+     "Butterfly"
     ],
     "periode": "",
-    "gabung": "2026-05-12",
-    "negara": "CN",
+    "gabung": "2025-07-07",
+    "negara": "ID",
     "jenis": "pemain",
     "foto": ""
    },
    {
     "id": 7,
     "nickname": "R9.Iqueue伊人刃",
-    "role": "",
+    "role": "Pelatih",
     "divisi": "Honor of Kings",
     "kelompok": "Competitive",
     "instagram": "",
@@ -53,7 +167,7 @@
     "gabung": "2026-05-01",
     "negara": "MY",
     "jenis": "coach",
-    "foto": ""
+    "foto": "gambar/roster/7.jpg?v=1794196440721"
    },
    {
     "id": 6,
@@ -72,22 +186,153 @@
     "gabung": "2026-05-02",
     "negara": "ID",
     "jenis": "pemain",
-    "foto": "gambar/roster/6.jpg?v=1794154617024"
+    "foto": "gambar/roster/6.jpg?v=1794197934631"
    },
    {
-    "id": 8,
-    "nickname": "R9.Ladaku78",
-    "role": "Manajer",
+    "id": 67,
+    "nickname": "R9.Katyusha",
+    "role": "Clash Lane",
     "divisi": "Honor of Kings",
-    "kelompok": "",
+    "kelompok": "R9 Dewata",
     "instagram": "",
     "tiktok": "",
-    "hero": [],
+    "hero": [
+     "Mayene",
+     "Fatih",
+     "Dharma"
+    ],
     "periode": "",
-    "gabung": "2025-11-25",
+    "gabung": "2026-01-14",
     "negara": "ID",
     "jenis": "pemain",
     "foto": ""
+   },
+   {
+    "id": 62,
+    "nickname": "R9.Kenn-ssi",
+    "role": "HR & Community",
+    "divisi": "Honor of Kings",
+    "kelompok": "HR & Community",
+    "instagram": "",
+    "tiktok": "",
+    "hero": [
+     "Feyd",
+     "Ukyo",
+     "Li Bai"
+    ],
+    "periode": "",
+    "gabung": "2026-01-01",
+    "negara": "ID",
+    "jenis": "coach",
+    "foto": ""
+   },
+   {
+    "id": 44,
+    "nickname": "R9.Kesayessirr.",
+    "role": "Mid Lane",
+    "divisi": "Honor of Kings",
+    "kelompok": "R9 Academy SGR",
+    "instagram": "",
+    "tiktok": "",
+    "hero": [
+     "Yuhuan",
+     "Haya",
+     "Nuwa"
+    ],
+    "periode": "",
+    "gabung": "2026-11-01",
+    "negara": "ID",
+    "jenis": "pemain",
+    "foto": ""
+   },
+   {
+    "id": 61,
+    "nickname": "R9.Kyanyaa",
+    "role": "Secretariat",
+    "divisi": "Honor of Kings",
+    "kelompok": "Secretariat",
+    "instagram": "",
+    "tiktok": "",
+    "hero": [
+     "Dolia",
+     "Yuhuan"
+    ],
+    "periode": "",
+    "gabung": "2026-02-02",
+    "negara": "ID",
+    "jenis": "coach",
+    "foto": ""
+   },
+   {
+    "id": 47,
+    "nickname": "R9.M1waa",
+    "role": "Farm Lane",
+    "divisi": "Honor of Kings",
+    "kelompok": "R9 Baron",
+    "instagram": "",
+    "tiktok": "",
+    "hero": [
+     "Lady Sun",
+     "Loong",
+     "Di Renjie"
+    ],
+    "periode": "",
+    "gabung": "2026-06-06",
+    "negara": "ID",
+    "jenis": "pemain",
+    "foto": ""
+   },
+   {
+    "id": 64,
+    "nickname": "R9.Miwaa",
+    "role": "Manajer",
+    "divisi": "Honor of Kings",
+    "kelompok": "Competitive",
+    "instagram": "",
+    "tiktok": "r9.keii",
+    "hero": [],
+    "periode": "",
+    "gabung": "2026-05-02",
+    "negara": "MY",
+    "jenis": "coach",
+    "foto": "gambar/roster/64.jpg?v=1794198552755"
+   },
+   {
+    "id": 49,
+    "nickname": "R9.Nichineko",
+    "role": "Roaming",
+    "divisi": "Honor of Kings",
+    "kelompok": "R9 Baron",
+    "instagram": "",
+    "tiktok": "",
+    "hero": [
+     "Zhang Fei",
+     "Lianpo",
+     "Dolia"
+    ],
+    "periode": "",
+    "gabung": "2026-06-06",
+    "negara": "ID",
+    "jenis": "pemain",
+    "foto": ""
+   },
+   {
+    "id": 63,
+    "nickname": "R9.Nitnot",
+    "role": "HR & Community",
+    "divisi": "Honor of Kings",
+    "kelompok": "HR & Community",
+    "instagram": "",
+    "tiktok": "Nitnot.Hok",
+    "hero": [
+     "Agudo",
+     "Flowborn Mage"
+    ],
+    "periode": "",
+    "gabung": "2026-01-02",
+    "negara": "CN",
+    "jenis": "coach",
+    "foto": "gambar/roster/63.jpg?v=1794196108041"
    },
    {
     "id": 11,
@@ -106,7 +351,45 @@
     "gabung": "2026-08-02",
     "negara": "ID",
     "jenis": "pemain",
-    "foto": "gambar/roster/11.jpg?v=1794162825349"
+    "foto": "gambar/roster/11.jpg?v=1794197940787"
+   },
+   {
+    "id": 48,
+    "nickname": "R9.Polin",
+    "role": "Mid Lane",
+    "divisi": "Honor of Kings",
+    "kelompok": "R9 Baron",
+    "instagram": "",
+    "tiktok": "",
+    "hero": [
+     "Princess Frost",
+     "Lady Zhen",
+     "Yixing"
+    ],
+    "periode": "",
+    "gabung": "2026-06-06",
+    "negara": "ID",
+    "jenis": "pemain",
+    "foto": ""
+   },
+   {
+    "id": 60,
+    "nickname": "R9.Presley",
+    "role": "BizDev",
+    "divisi": "Honor of Kings",
+    "kelompok": "BizDev",
+    "instagram": "",
+    "tiktok": "r9.jo",
+    "hero": [
+     "Arli",
+     "Marcopolo",
+     "Mengya"
+    ],
+    "periode": "",
+    "gabung": "2025-07-07",
+    "negara": "ID",
+    "jenis": "coach",
+    "foto": ""
    },
    {
     "id": 4,
@@ -144,19 +427,91 @@
     "gabung": "2026-08-12",
     "negara": "ID",
     "jenis": "pemain",
-    "foto": "gambar/roster/12.jpg?v=1794162812763"
+    "foto": "gambar/roster/12.jpg?v=1794198014030"
    },
    {
     "id": 10,
     "nickname": "R9.Reyi",
     "role": "Manajer",
     "divisi": "Honor of Kings",
-    "kelompok": "",
+    "kelompok": "Competitive",
+    "instagram": "",
+    "tiktok": "eriideullll",
+    "hero": [],
+    "periode": "",
+    "gabung": "2026-09-02",
+    "negara": "ID",
+    "jenis": "coach",
+    "foto": "gambar/roster/10.jpg?v=1794196378222"
+   },
+   {
+    "id": 46,
+    "nickname": "R9.RIHITO",
+    "role": "Jungling",
+    "divisi": "Honor of Kings",
+    "kelompok": "R9 Baron",
+    "instagram": "",
+    "tiktok": "",
+    "hero": [
+     "Feyd",
+     "Augran",
+     "Agudo"
+    ],
+    "periode": "",
+    "gabung": "2026-06-06",
+    "negara": "ID",
+    "jenis": "pemain",
+    "foto": ""
+   },
+   {
+    "id": 42,
+    "nickname": "R9.Ucuk03.",
+    "role": "Roaming",
+    "divisi": "Honor of Kings",
+    "kelompok": "R9 Academy SGR",
+    "instagram": "",
+    "tiktok": "",
+    "hero": [
+     "Lian Po",
+     "Zhang Fei",
+     "Lapu-Lapu"
+    ],
+    "periode": "",
+    "gabung": "2026-11-01",
+    "negara": "ID",
+    "jenis": "pemain",
+    "foto": ""
+   },
+   {
+    "id": 70,
+    "nickname": "R9.Vel君主",
+    "role": "Fa",
+    "divisi": "Honor of Kings",
+    "kelompok": "R9 Dewata",
+    "instagram": "",
+    "tiktok": "",
+    "hero": [
+     "Loong",
+     "Erin",
+     "Chicha"
+    ],
+    "periode": "",
+    "gabung": "2026-07-07",
+    "negara": "ID",
+    "jenis": "pemain",
+    "foto": ""
+   },
+   {
+    "id": 50,
+    "nickname": "R9.WPDandy",
+    "role": "Clash Lane",
+    "divisi": "Honor of Kings",
+    "kelompok": "R9 Baron",
     "instagram": "",
     "tiktok": "",
     "hero": [],
     "periode": "",
-    "gabung": "2026-09-02",
+    "gabung": "",
     "negara": "ID",
     "jenis": "pemain",
     "foto": ""
@@ -181,6 +536,43 @@
     "foto": "gambar/roster/2.jpg?v=1794163145167"
    },
    {
+    "id": 69,
+    "nickname": "R9.成都G0DMID",
+    "role": "Mid Lane",
+    "divisi": "Honor of Kings",
+    "kelompok": "R9 Dewata",
+    "instagram": "",
+    "tiktok": "",
+    "hero": [
+     "Xiao Qiao",
+     "Nuwa"
+    ],
+    "periode": "",
+    "gabung": "2026-07-07",
+    "negara": "ID",
+    "jenis": "pemain",
+    "foto": ""
+   },
+   {
+    "id": 54,
+    "nickname": "R9.BaldJinwoo",
+    "role": "Jungling",
+    "divisi": "Honor of Kings",
+    "kelompok": "R9 Pixel",
+    "instagram": "",
+    "tiktok": "",
+    "hero": [
+     "Luna",
+     "Yang Jian",
+     "Kong Ming"
+    ],
+    "periode": "",
+    "gabung": "2026-07-07",
+    "negara": "MY",
+    "jenis": "pemain",
+    "foto": "gambar/roster/54.jpg?v=1794191148343"
+   },
+   {
     "id": 9,
     "nickname": "R9.Eleanore",
     "role": "Mid Lane",
@@ -197,7 +589,168 @@
     "gabung": "2026-09-14",
     "negara": "ID",
     "jenis": "pemain",
-    "foto": "gambar/roster/9.jpg?v=1794162716187"
+    "foto": "gambar/roster/9.jpg?v=1794197956867"
+   },
+   {
+    "id": 55,
+    "nickname": "R9.FA11STY",
+    "role": "Farm Lane",
+    "divisi": "Honor of Kings",
+    "kelompok": "R9 Pixel",
+    "instagram": "",
+    "tiktok": "faiizani",
+    "hero": [
+     "Flowborn Marksman",
+     "Lady Sun",
+     "Loong"
+    ],
+    "periode": "",
+    "gabung": "2026-07-07",
+    "negara": "MY",
+    "jenis": "pemain",
+    "foto": "gambar/roster/55.jpg?v=1794191239871"
+   },
+   {
+    "id": 5,
+    "nickname": "R9.inv1nciblE",
+    "role": "Farm Lane",
+    "divisi": "Honor of Kings",
+    "kelompok": "R9 Shinigami",
+    "instagram": "",
+    "tiktok": "",
+    "hero": [
+     "Chicha",
+     "Arli",
+     "Loong"
+    ],
+    "periode": "",
+    "gabung": "2026-05-12",
+    "negara": "CN",
+    "jenis": "pemain",
+    "foto": ""
+   },
+   {
+    "id": 53,
+    "nickname": "R9.IzzYPenat",
+    "role": "Clash Lane",
+    "divisi": "Honor of Kings",
+    "kelompok": "R9 Pixel",
+    "instagram": "",
+    "tiktok": "izzdgaf_",
+    "hero": [
+     "Charlotte",
+     "Dharma",
+     "Biron"
+    ],
+    "periode": "",
+    "gabung": "2026-07-07",
+    "negara": "MY",
+    "jenis": "pemain",
+    "foto": "gambar/roster/53.jpg?v=1794191082644"
+   },
+   {
+    "id": 52,
+    "nickname": "R9.Kitna",
+    "role": "Mid Lane",
+    "divisi": "Honor of Kings",
+    "kelompok": "R9 Pixel",
+    "instagram": "",
+    "tiktok": "",
+    "hero": [
+     "Princess Frost",
+     "Yixing",
+     "Xiao Qiao"
+    ],
+    "periode": "",
+    "gabung": "2026-07-02",
+    "negara": "MY",
+    "jenis": "pemain",
+    "foto": "gambar/roster/52.jpg?v=1794190983910"
+   },
+   {
+    "id": 8,
+    "nickname": "R9.Ladaku78",
+    "role": "Manajer",
+    "divisi": "Honor of Kings",
+    "kelompok": "Competitive",
+    "instagram": "",
+    "tiktok": "",
+    "hero": [],
+    "periode": "",
+    "gabung": "2025-11-25",
+    "negara": "ID",
+    "jenis": "coach",
+    "foto": ""
+   },
+   {
+    "id": 51,
+    "nickname": "R9.Melina",
+    "role": "Roaming",
+    "divisi": "Honor of Kings",
+    "kelompok": "R9 Pixel",
+    "instagram": "",
+    "tiktok": "",
+    "hero": [
+     "Dyadia",
+     "Lianpo",
+     "Lapu-Lapu"
+    ],
+    "periode": "",
+    "gabung": "2026-07-02",
+    "negara": "MY",
+    "jenis": "pemain",
+    "foto": "gambar/roster/51.jpg?v=1794197501875"
+   },
+   {
+    "id": 56,
+    "nickname": "R9.Ain",
+    "role": "Clash Lane",
+    "divisi": "Honor of Kings",
+    "kelompok": "R9 Pixel",
+    "instagram": "",
+    "tiktok": "",
+    "hero": [],
+    "periode": "Agustus 2026 - September 2026",
+    "gabung": "",
+    "negara": "ID",
+    "jenis": "pemain",
+    "foto": "gambar/roster/56.jpg?v=1794197488351"
+   },
+   {
+    "id": 57,
+    "nickname": "R9.Helena",
+    "role": "Mid Lane",
+    "divisi": "Honor of Kings",
+    "kelompok": "R9 Pixel",
+    "instagram": "",
+    "tiktok": "cigsaftsexwifeu",
+    "hero": [
+     "Yixing",
+     "Lady Zhen",
+     "Princess Frost"
+    ],
+    "periode": "",
+    "gabung": "2026-10-11",
+    "negara": "MY",
+    "jenis": "pemain",
+    "foto": "gambar/roster/57.jpg?v=1794197494423"
+   },
+   {
+    "id": 59,
+    "nickname": "R9.Toast",
+    "role": "Mid Lane",
+    "divisi": "Honor of Kings",
+    "kelompok": "R9 Pixel",
+    "instagram": "",
+    "tiktok": "toast.hok",
+    "hero": [
+     "Mai Shiranui"
+    ],
+    "periode": "",
+    "gabung": "2026-10-10",
+    "negara": "MY",
+    "jenis": "pemain",
+    "foto": ""
    },
    {
     "id": 13,
@@ -221,6 +774,152 @@
   ],
   "nonaktif": [
    {
+    "id": 27,
+    "nickname": "Nizar Evenaar Myth",
+    "role": "Pelatih",
+    "divisi": "Honor of Kings",
+    "kelompok": "Eternal Reign",
+    "instagram": "",
+    "tiktok": "",
+    "hero": [],
+    "periode": "Maret 2026 - Agustus 2026",
+    "gabung": "2026-03-02",
+    "negara": "ID",
+    "jenis": "coach",
+    "foto": ""
+   },
+   {
+    "id": 39,
+    "nickname": "R9 • KAISAR • IBLIS",
+    "role": "Farm Lane",
+    "divisi": "Honor of Kings",
+    "kelompok": "R9 Universe",
+    "instagram": "",
+    "tiktok": "",
+    "hero": [
+     "Garo Petir",
+     "Garo Lagi",
+     "Garo terus anjinggg capek gw"
+    ],
+    "periode": "Januari 2026 - April 2026",
+    "gabung": "",
+    "negara": "ID",
+    "jenis": "pemain",
+    "foto": "gambar/roster/39.jpg?v=1794194966303"
+   },
+   {
+    "id": 36,
+    "nickname": "R9 • Kenn 死",
+    "role": "Jungling",
+    "divisi": "Honor of Kings",
+    "kelompok": "R9 Universe",
+    "instagram": "",
+    "tiktok": "",
+    "hero": [
+     "Feyd",
+     "Ukyo",
+     "Li Bai"
+    ],
+    "periode": "Januari 2026 - April 2026",
+    "gabung": "2026-01-01",
+    "negara": "ID",
+    "jenis": "pemain",
+    "foto": ""
+   },
+   {
+    "id": 37,
+    "nickname": "R9 • KV",
+    "role": "Clash Lane",
+    "divisi": "Honor of Kings",
+    "kelompok": "R9 Universe",
+    "instagram": "",
+    "tiktok": "",
+    "hero": [
+     "Mayene",
+     "Fatih",
+     "Dharma"
+    ],
+    "periode": "Januari 2026 - April 2026",
+    "gabung": "",
+    "negara": "ID",
+    "jenis": "pemain",
+    "foto": ""
+   },
+   {
+    "id": 40,
+    "nickname": "R9 • Linnn",
+    "role": "Mid Lane",
+    "divisi": "Honor of Kings",
+    "kelompok": "R9 Universe",
+    "instagram": "",
+    "tiktok": "",
+    "hero": [
+     "Kong Ming",
+     "Nuwa"
+    ],
+    "periode": "Januari 2026 - April 2026",
+    "gabung": "",
+    "negara": "ID",
+    "jenis": "pemain",
+    "foto": ""
+   },
+   {
+    "id": 35,
+    "nickname": "R9 • MATCHA 拿铁",
+    "role": "Mid Lane",
+    "divisi": "Honor of Kings",
+    "kelompok": "R9 Universe",
+    "instagram": "",
+    "tiktok": "",
+    "hero": [
+     "Shi",
+     "Nuwa",
+     "Mai Shiranui"
+    ],
+    "periode": "Januari 2026 - April 2026",
+    "gabung": "2026-01-01",
+    "negara": "ID",
+    "jenis": "pemain",
+    "foto": ""
+   },
+   {
+    "id": 38,
+    "nickname": "R9 • Salvation",
+    "role": "Clash Lane",
+    "divisi": "Honor of Kings",
+    "kelompok": "R9 Universe",
+    "instagram": "",
+    "tiktok": "",
+    "hero": [
+     "Sun Ce",
+     "Bai Qi"
+    ],
+    "periode": "Januari 2026 - April 2026",
+    "gabung": "2025-11-11",
+    "negara": "ID",
+    "jenis": "pemain",
+    "foto": ""
+   },
+   {
+    "id": 34,
+    "nickname": "R9 • Xirienne",
+    "role": "Farm Lane",
+    "divisi": "Honor of Kings",
+    "kelompok": "R9 Universe",
+    "instagram": "",
+    "tiktok": "",
+    "hero": [
+     "Arli",
+     "Di Renjie",
+     "Marcopolo"
+    ],
+    "periode": "Januari 2026 - April 2026",
+    "gabung": "2026-01-01",
+    "negara": "ID",
+    "jenis": "pemain",
+    "foto": ""
+   },
+   {
     "id": 18,
     "nickname": "R9.Alang克伦",
     "role": "Analis",
@@ -236,7 +935,7 @@
     "gabung": "2026-05-02",
     "negara": "MY",
     "jenis": "coach",
-    "foto": ""
+    "foto": "gambar/roster/18.jpg?v=1794196579320"
    },
    {
     "id": 16,
@@ -255,6 +954,21 @@
     "gabung": "2026-05-01",
     "negara": "MY",
     "jenis": "pemain",
+    "foto": "gambar/roster/16.jpg?v=1794196573586"
+   },
+   {
+    "id": 26,
+    "nickname": "R9.Ayy",
+    "role": "Manajer",
+    "divisi": "Honor of Kings",
+    "kelompok": "Eternal Reign",
+    "instagram": "",
+    "tiktok": "ayayyy_kapten",
+    "hero": [],
+    "periode": "Maret 2026 - Agustus 2026",
+    "gabung": "2026-03-04",
+    "negara": "ID",
+    "jenis": "coach",
     "foto": ""
    },
    {
@@ -273,6 +987,25 @@
     "periode": "April 2026 - Agustus 2026",
     "gabung": "2026-02-22",
     "negara": "MY",
+    "jenis": "pemain",
+    "foto": "gambar/roster/15.jpg?v=1794196586432"
+   },
+   {
+    "id": 24,
+    "nickname": "R9.inv1nciblE",
+    "role": "Farm Lane",
+    "divisi": "Honor of Kings",
+    "kelompok": "Eternal Reign",
+    "instagram": "",
+    "tiktok": "",
+    "hero": [
+     "Arli",
+     "Lady Sun",
+     "Loong"
+    ],
+    "periode": "Maret 2026 - Agustus 2026",
+    "gabung": "2026-03-23",
+    "negara": "CN",
     "jenis": "pemain",
     "foto": ""
    },
@@ -293,6 +1026,40 @@
     "gabung": "2026-04-12",
     "negara": "MY",
     "jenis": "pemain",
+    "foto": "gambar/roster/14.jpg?v=1794196595861"
+   },
+   {
+    "id": 28,
+    "nickname": "R9.J4",
+    "role": "Analis",
+    "divisi": "Honor of Kings",
+    "kelompok": "Eternal Reign",
+    "instagram": "",
+    "tiktok": "",
+    "hero": [],
+    "periode": "",
+    "gabung": "",
+    "negara": "ID",
+    "jenis": "coach",
+    "foto": ""
+   },
+   {
+    "id": 25,
+    "nickname": "R9.KV",
+    "role": "Clash Lane",
+    "divisi": "Honor of Kings",
+    "kelompok": "Eternal Reign",
+    "instagram": "",
+    "tiktok": "",
+    "hero": [
+     "Mayene",
+     "Fatih",
+     "Dharma"
+    ],
+    "periode": "Januari 2026 - Agustus 2026",
+    "gabung": "2026-01-04",
+    "negara": "ID",
+    "jenis": "pemain",
     "foto": ""
    },
    {
@@ -312,6 +1079,24 @@
     "gabung": "2026-05-02",
     "negara": "MY",
     "jenis": "pemain",
+    "foto": "gambar/roster/17.jpg?v=1794196603152"
+   },
+   {
+    "id": 22,
+    "nickname": "R9.Nirvana",
+    "role": "Mid Lane",
+    "divisi": "Honor of Kings",
+    "kelompok": "Eternal Reign",
+    "instagram": "",
+    "tiktok": "",
+    "hero": [
+     "Nuwa",
+     "Xiao Qiao"
+    ],
+    "periode": "Januari 2026 - Agustus 2026",
+    "gabung": "2026-01-07",
+    "negara": "ID",
+    "jenis": "pemain",
     "foto": ""
    },
    {
@@ -329,6 +1114,154 @@
     ],
     "periode": "April 2026 - Agustus 2026",
     "gabung": "2026-05-02",
+    "negara": "MY",
+    "jenis": "pemain",
+    "foto": "gambar/roster/19.jpg?v=1794196641907"
+   },
+   {
+    "id": 23,
+    "nickname": "R9.Putt",
+    "role": "Roaming",
+    "divisi": "Honor of Kings",
+    "kelompok": "Eternal Reign",
+    "instagram": "",
+    "tiktok": "",
+    "hero": [],
+    "periode": "April 2026 - Agustus 2026",
+    "gabung": "2026-04-02",
+    "negara": "ID",
+    "jenis": "pemain",
+    "foto": ""
+   },
+   {
+    "id": 20,
+    "nickname": "R9.Ray拉伊",
+    "role": "Farm Lane",
+    "divisi": "Honor of Kings",
+    "kelompok": "R9 MY",
+    "instagram": "",
+    "tiktok": "ziqqr._0",
+    "hero": [
+     "Erin",
+     "Chicha",
+     "Loong"
+    ],
+    "periode": "a",
+    "gabung": "2026-05-02",
+    "negara": "MY",
+    "jenis": "pemain",
+    "foto": "gambar/roster/20.jpg?v=1794196609780"
+   },
+   {
+    "id": 21,
+    "nickname": "R9.Vee",
+    "role": "Jungling",
+    "divisi": "Honor of Kings",
+    "kelompok": "Eternal Reign",
+    "instagram": "",
+    "tiktok": "",
+    "hero": [
+     "Ukyo",
+     "Kaizer",
+     "Yao"
+    ],
+    "periode": "Januari 2026 - Agustus 2026",
+    "gabung": "2026-01-19",
+    "negara": "ID",
+    "jenis": "pemain",
+    "foto": ""
+   },
+   {
+    "id": 33,
+    "nickname": "R9永•Alang克伦",
+    "role": "Jungling",
+    "divisi": "Honor of Kings",
+    "kelompok": "R9 Aeternal 永",
+    "instagram": "",
+    "tiktok": "",
+    "hero": [
+     "Jing",
+     "Pei",
+     "Musashi"
+    ],
+    "periode": "Juni 2026 - Agustus 2026",
+    "gabung": "2026-04-06",
+    "negara": "MY",
+    "jenis": "pemain",
+    "foto": ""
+   },
+   {
+    "id": 30,
+    "nickname": "R9永•Hêlena",
+    "role": "Mid Lane",
+    "divisi": "Honor of Kings",
+    "kelompok": "R9 Aeternal 永",
+    "instagram": "",
+    "tiktok": "cigsaftsexwifeu",
+    "hero": [
+     "Yixing",
+     "Lady Zhen",
+     "Princess Frost"
+    ],
+    "periode": "Juni 2026 - Agustus 2026",
+    "gabung": "2026-06-06",
+    "negara": "MY",
+    "jenis": "pemain",
+    "foto": ""
+   },
+   {
+    "id": 29,
+    "nickname": "R9永•Stryder",
+    "role": "Farm Lane",
+    "divisi": "Honor of Kings",
+    "kelompok": "R9 Aeternal 永",
+    "instagram": "",
+    "tiktok": "",
+    "hero": [
+     "Loong",
+     "Erin",
+     "Flowborn Marksman"
+    ],
+    "periode": "Juni 2026 - Agustus 2026",
+    "gabung": "2026-06-06",
+    "negara": "MY",
+    "jenis": "pemain",
+    "foto": ""
+   },
+   {
+    "id": 32,
+    "nickname": "R9永•vvak",
+    "role": "Clash Lane",
+    "divisi": "Honor of Kings",
+    "kelompok": "R9 Aeternal 永",
+    "instagram": "",
+    "tiktok": "",
+    "hero": [
+     "Sun Ce",
+     "Dharma",
+     "Biron"
+    ],
+    "periode": "Juni 2026 - Agustus 2026",
+    "gabung": "2026-06-06",
+    "negara": "MY",
+    "jenis": "pemain",
+    "foto": ""
+   },
+   {
+    "id": 31,
+    "nickname": "R9永•zanzh",
+    "role": "Roaming",
+    "divisi": "Honor of Kings",
+    "kelompok": "R9 Aeternal 永",
+    "instagram": "",
+    "tiktok": "",
+    "hero": [
+     "Lian Po",
+     "Zhang Fei",
+     "Lapu-Lapu"
+    ],
+    "periode": "Juni 2026 - Agustus 2026",
+    "gabung": "2026-06-06",
     "negara": "MY",
     "jenis": "pemain",
     "foto": ""
@@ -413,8 +1346,25 @@
   }
  ],
  "situs": {
-  "teks": {},
-  "info": {}
+  "teks": {
+   "hero.ringkas": {
+    "id": "Organisasi esports global yang saat ini berfokus pada game Honor of Kings, dengan jangkauan lintas negara yang mencakup Indonesia, Malaysia, hingga Tiongkok.",
+    "en": "A global esports organisation currently focusing on the game *Honour of Kings*, with a cross-border reach spanning Indonesia, Malaysia and China.",
+    "zh": "一家目前专注于《王者荣耀》的全球电竞组织，其业务范围横跨印尼、马来西亚乃至中国。"
+   },
+   "about.sejarah": {
+    "id": "Didirikan pada 11 November 2025, REIGN 9 INTERNATIONAL (R9) adalah organisasi esports dengan visi global. Kami berkomitmen untuk mengembangkan potensi pemain, menanamkan disiplin tinggi, dan meraih prestasi di panggung internasional. Dengan lingkungan yang mendukung pemain kasual maupun kompetitif, R9 membangun fondasi yang kuat untuk tumbuh bersama dan mencapai kesuksesan jangka panjang.",
+    "en": "Founded on 11 November 2025, REIGN 9 INTERNATIONAL (R9) is an esports organisation with a global vision. We are committed to developing players’ potential, instilling a high level of discipline, and achieving success on the international stage. With an environment that supports both casual and competitive players, R9 is building a strong foundation for growing together and achieving long-term success.",
+    "zh": "REIGN 9 INTERNATIONAL（R9）成立于2025年11月11日，是一家具有全球视野的电竞组织。 我们致力于发掘选手的潜力，培养高度的纪律性，并在国际舞台上取得佳绩。R9 营造了一个既支持休闲玩家又支持竞技玩家的环境，以此为共同成长和实现长期成功奠定了坚实的基础。"
+   },
+   "guild.judul": {
+    "id": "Guild in game & Open Recruitment",
+    "en": "In-game guild & Open recruitment",
+    "zh": "游戏公会 & 公开招募"
+   }
+  },
+  "info": {},
+  "desain": []
  },
  "ringkas": {
   "juara1": 1,
