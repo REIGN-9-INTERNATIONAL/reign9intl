@@ -448,5 +448,6 @@ Object.assign(window.R9_KAMUS, {
   'turnamen.pemain': { id: 'Pemain', en: 'Players', zh: '参赛选手' },
   'turnamen.ringkas': { id: '{tim} meraih {peringkat} di {nama}.', en: '{tim} placed {peringkat} at {nama}.', zh: '{tim} 在 {nama} 中获得{peringkat}。' },
   'roster.juara': { id: 'Prestasi', en: 'Achievements', zh: '战绩' },
+  'kaki.privasi': { id: 'Kebijakan Privasi & Ketentuan', en: 'Privacy Policy & Terms', zh: '隐私政策与服务条款' },
   'prestasi.total': { id: 'Total hadiah', en: 'Total prize money', zh: '奖金总额' },
 });
