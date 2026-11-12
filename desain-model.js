@@ -12,6 +12,7 @@
     padX: ukuran('Ruang kiri dan kanan', 'padding-inline', 0, 1000), padY: ukuran('Ruang atas dan bawah', 'padding-block', 0, 1000),
     gap: ukuran('Jarak antarisi', 'gap', 0, 500), margin: ukuran('Jarak luar vertikal', 'margin-block', 0, 500),
     radius: ukuran('Lengkung sudut', 'border-radius', 0, 500), line: ukuran('Tebal garis', 'border-width', 0, 60),
+    opacity: ukuran('Transparansi (100 = penuh)', 'opacity', 0, 100, '%'),
     fit: pilihan('Cara foto mengisi bingkai', 'object-fit', {cover:'Penuhi bingkai', contain:'Tampilkan utuh',fill:'Rentangkan'}),
     visible: pilihan('Tampilan', 'display', {none:'Sembunyikan'}),
     namaElemen:{label:'Nama bagian',type:'text'}, url: {label:'Tujuan tautan',type:'url'}, alt: {label:'Keterangan foto',type:'text'},
@@ -35,7 +36,7 @@
     ['Tombol kemampuan IXAR','.skill-ixar'],['Podium','.podium'],['Daftar tim','#rosters'],['Foto pemain','.kartu-pemain__foto'],
     ['Jadwal dan prestasi','#schedule'],['Berita','#news'],['Kartu berita','.berita'],['Foto kartu berita','.berita img'],
     ['Foto artikel','.artikel-berita__gambar'],['Judul bagian','.judul'],['Tombol utama','.tombol--utama'],['Pembuat banner','#banner'],...Array.from({length:5},(_,i)=>['Foto banner '+(i+1),'#banner-foto-'+(i+1)]),['Latar foto profil','.pfp__kanvas'],
-    ['Pembuat foto profil','#pfp'],['Toko','#shop'],['Kontak','#contact'],['Bagian bawah','.kaki']
+    ['Pembuat foto profil','#pfp'],['Toko','#shop'],['Prestasi','#prestasi'],['Management','#management'],['Content Creator Hub','#creator'],['Galeri','#galeri'],['Jersey R9','#jersey'],['Sponsor','#sponsor'],['Kontak','#contact'],['Bagian bawah','.kaki']
   ];
   const mediaPath = /^\/media\/[a-f0-9]{32}\.(?:jpg|png|webp|gif|avif)$/;
   // Pilihan manual memakai selector tetap. Pilihan dari pratinjau memakai jalur ID/kelas/tag sederhana.

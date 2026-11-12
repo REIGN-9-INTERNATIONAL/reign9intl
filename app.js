@@ -1422,9 +1422,9 @@ function renderKartuPemain(p) {
 
   const sumberFoto = urlMedia(p.foto);
   const cadanganLokal = p.foto && !/^(https?:|data:|blob:)/i.test(p.foto) ? String(p.foto).replace(/^\/+/, '') : '';
-  // Rasio foto 3:5 portrait (width="360" height="600")
+  // Rasio foto 4:5 portrait (dipotong otomatis saat diunggah di admin)
   const htmlFoto = sumberFoto
-    ? `<img class="kartu-pemain__foto" src="${esc(sumberFoto)}" data-cadangan-lokal="${esc(cadanganLokal)}" alt="${esc(p.nickname)}" loading="lazy" width="360" height="600" data-pose-cadangan="${esc(poseIxar)}">`
+    ? `<img class="kartu-pemain__foto" src="${esc(sumberFoto)}" data-cadangan-lokal="${esc(cadanganLokal)}" alt="${esc(p.nickname)}" loading="lazy" width="400" height="500" data-pose-cadangan="${esc(poseIxar)}">`
     : `<div class="kartu-pemain__tanpa"><span class="kartu-pemain__ixar" data-ixar="${esc(poseIxar)}" data-ixar-interaktif></span></div>`;
 
   return `<li id="pemain-${idAman(p.id)}" class="kartu-pemain ${coach ? 'kartu-pemain--coach' : ''}">

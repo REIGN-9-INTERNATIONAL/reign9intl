@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-VEvgJRz/b//qv5WfS8NdVDjYWVtd0/DS3/UY55HoEo4='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://admin.reign9.site; font-src 'self'; connect-src 'self' https://admin.reign9.site; media-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self' https://admin.reign9.site; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-VEvgJRz/b//qv5WfS8NdVDjYWVtd0/DS3/UY55HoEo4='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://admin.reign9.site; font-src 'self'; connect-src 'self' https://admin.reign9.site; media-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self' https://admin.reign9.site; frame-src https://www.tiktok.com; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Reign 9 International · Honor of Kings Esports</title>
@@ -21,8 +21,8 @@
 <link rel="icon" href="gambar/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="font/Reign9Display-Regular.otf" as="font" type="font/otf" crossorigin>
 <link rel="preload" href="font/oxanium-500.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="font/font.css?v=2611122011">
-<link rel="stylesheet" href="gaya.css?v=2611122011">
+<link rel="stylesheet" href="font/font.css?v=2611130159">
+<link rel="stylesheet" href="gaya.css?v=2611130159">
 </head>
 <body>
 <!-- Sprite SVG Logo disematkan langsung agar dibuka lewat file:// (klik 2x index.html) tetap jalan 100% tanpa kena blokir CORS browser -->
@@ -35,14 +35,19 @@
   </a>
   <nav class="atas__menu" id="menu" aria-label="Menu">
     <a href="#rosters" data-i18n="menu.rosters">Rosters</a>
+    <a href="#management" data-i18n="menu.management">Management</a>
     <a href="#about" data-i18n="menu.about">About</a>
     <a href="#news" data-i18n="menu.news">News</a>
     <a href="#schedule" data-i18n="menu.schedule">Schedule</a>
     <a href="#banner" data-i18n="menu.banner">Banner</a>
+    <a href="#creator" data-i18n="menu.creator">Creator Hub</a>
     <a href="#shop" data-i18n="menu.shop">Shop</a>
     <a href="#contact" class="atas__kontak" data-i18n="menu.contact">Contact Us</a>
+    <a href="https://user.reign9.site/#daftar" class="atas__akun-menu atas__akun-hp" data-akun-link data-i18n="akun.daftar">Daftar</a>
+    <a href="https://user.reign9.site/" class="atas__akun-menu" data-akun-link data-i18n="akun.masuk">Login</a>
   </nav>
   <div class="atas__alat">
+    <a class="atas__daftar" href="https://user.reign9.site/#daftar" data-akun-link data-i18n="akun.daftar" data-i18n-attr="title:akun.label">Daftar</a>
     <div class="bahasa" role="group" data-i18n-attr="aria-label:bahasa.pilih" aria-label="Pilih bahasa">
       <button type="button" data-bahasa="id" aria-pressed="true">ID</button>
       <button type="button" data-bahasa="en" aria-pressed="false">EN</button>
@@ -248,6 +253,14 @@
   </section>
 
   <!-- ========== schedule ========== -->
+  <section class="bagian management" id="management" aria-labelledby="judul-management">
+    <div class="kepala-bagian">
+      <h2 id="judul-management" class="judul" data-i18n-html="mgmt.judul">Struktur <span class="aksen-merah">Management</span></h2>
+      <p data-i18n="mgmt.sub">Enam divisi yang menjalankan Reign 9.</p>
+    </div>
+    <ol class="management__grid" data-management></ol>
+  </section>
+
   <section class="bagian jadwal" id="schedule" aria-labelledby="judul-jadwal">
     <div class="kepala-bagian">
       <h2 id="judul-jadwal" class="judul" data-i18n-html="jadwal.judul">Match <span class="aksen-merah" data-i18n="tambahan.Schedule">Schedule</span></h2>
@@ -261,6 +274,7 @@
       </div>
       <div>
         <h3 class="sub-judul" data-i18n="prestasi.judul">Riwayat prestasi</h3>
+        <p class="prestasi-total" data-prestasi-total hidden><span data-i18n="prestasi.total">Total hadiah</span> <b data-prestasi-total-angka></b></p>
         <ol class="daftar-prestasi" data-prestasi></ol>
         <h3 class="sub-judul sub-judul--jarak" data-i18n="jadwal.lewat" data-event-lewat-judul hidden>Riwayat pertandingan & event</h3>
         <ol class="daftar-event daftar-event--lewat" data-event-lewat></ol>
@@ -292,6 +306,21 @@
       <form method="dialog"><button class="tombol tombol--utama" data-i18n="news.tutup">Tutup</button></form>
     </article>
   </dialog>
+
+  <!-- ========== creator hub & galeri ========== -->
+  <section class="bagian creator" id="creator" aria-labelledby="judul-creator">
+    <div class="kepala-bagian">
+      <h2 id="judul-creator" class="judul" data-i18n-html="creator.judul">Content <span class="aksen-merah">Creator Hub</span></h2>
+      <p data-i18n="creator.sub">Video TikTok dari member Reign 9.</p>
+    </div>
+    <div class="creator__grid" data-creator></div>
+    <p class="kosong" data-creator-kosong data-i18n="creator.kosong" hidden>Belum ada video.</p>
+    <a class="tombol tombol--garis" href="https://user.reign9.site/#tiktok" data-akun-link data-i18n="creator.kirim">Kirim videomu</a>
+  </section>
+  <section class="bagian galeri" id="galeri" aria-labelledby="judul-galeri" hidden>
+    <div class="kepala-bagian"><h2 id="judul-galeri" class="judul" data-i18n-html="galeri.judul"><span class="aksen-merah">Galeri</span></h2></div>
+    <div class="galeri__grid" data-galeri></div>
+  </section>
 
   <!-- ========== banner ========== -->
   <section class="bagian banner" id="banner" aria-labelledby="judul-banner">
@@ -372,6 +401,7 @@
       <h2 class="judul" data-i18n-html="sponsor.judul">Mitra & <span class="aksen-merah" data-i18n="tambahan.Sponsorship">Sponsorship</span></h2>
       <p data-i18n="sponsor.sub"></p>
     </div>
+    <div class="sponsor-logo" data-sponsor hidden><p class="sponsor-logo__judul" data-i18n="sponsor.resmi">Didukung oleh</p><div class="sponsor-logo__baris" data-sponsor-baris></div></div>
     <div class="sponsor-grid">
       <div class="sponsor-slot">
         <strong data-i18n="tambahan.OFFICIALTITLEPARTNER">OFFICIAL TITLE PARTNER</strong>
@@ -390,6 +420,16 @@
       </div>
     </div>
 
+    <div class="jersey" id="jersey" data-jersey hidden>
+      <img class="jersey__foto" data-jersey-foto alt="" loading="lazy" width="480" height="600" hidden>
+      <div class="jersey__info">
+        <h2 class="judul" data-i18n-html="jersey.judul">Jersey <span class="aksen-merah">R9</span></h2>
+        <p class="jersey__nama" data-jersey-nama></p>
+        <p class="jersey__harga" data-jersey-harga></p>
+        <p class="jersey__catatan" data-jersey-catatan></p>
+        <a class="tombol tombol--utama" data-jersey-link target="_blank" rel="noopener" data-i18n="jersey.pesan" hidden>Pesan sekarang</a>
+      </div>
+    </div>
     <div class="shop">
       <svg class="shop__logo" viewBox="0 0 105.63 183.98" aria-hidden="true"><use href="#simbol"/></svg>
       <div>
@@ -438,16 +478,19 @@
     <a href="#rosters" data-i18n="menu.rosters">Rosters</a><a href="#about" data-i18n="menu.about">About</a>
     <a href="#news" data-i18n="menu.news">News</a><a href="#schedule" data-i18n="menu.schedule">Schedule</a>
     <a href="#banner" data-i18n="menu.banner">Banner</a><a href="#shop" data-i18n="menu.shop">Shop</a>
+    <a href="#management" data-i18n="menu.management">Management</a><a href="#creator" data-i18n="menu.creator">Creator Hub</a>
     <a href="#contact" data-i18n="menu.contact">Contact Us</a>
+    <a href="https://user.reign9.site/#daftar" data-akun-link data-i18n="akun.daftar">Daftar</a><a href="https://user.reign9.site/" data-akun-link data-i18n="akun.masuk">Login</a>
   </nav>
   <p class="kaki__hak" data-i18n="kaki.hak">© 2026 Reign 9 International.</p>
 </footer>
 
-<script src="bahasa.js?v=2611122011"></script>
-<script src="cuitan-ixar.js?v=2611122011"></script>
-<script src="ixar.js?v=2611122011"></script>
-<script src="desain-model.js?v=2611122011"></script>
-<script src="desain.js?v=2611122011"></script>
-<script src="app.js?v=2611122011"></script>
+<script src="bahasa.js?v=2611130159"></script>
+<script src="cuitan-ixar.js?v=2611130159"></script>
+<script src="ixar.js?v=2611130159"></script>
+<script src="desain-model.js?v=2611130159"></script>
+<script src="desain.js?v=2611130159"></script>
+<script src="app.js?v=2611130159"></script>
+<script src="bagian-baru.js?v=2611130159"></script>
 </body>
 </html>

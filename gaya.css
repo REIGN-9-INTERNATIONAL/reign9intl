@@ -462,7 +462,7 @@ button { font: inherit; color: inherit; }
 @media (prefers-reduced-motion: no-preference) { .kartu-pemain { animation: putar-bingkai 5s linear infinite; } .kartu-pemain:hover { animation-duration: 1.6s; } }
 @keyframes putar-bingkai { to { --sudut: 360deg; } }
 .kartu-pemain__isi { position: relative; display: grid; grid-template-rows: auto 1fr; background: linear-gradient(180deg, var(--gradasi-b), var(--gradasi-a)); clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px); height: 100%; }
-.kartu-pemain__foto { aspect-ratio: 3 / 5; width: 100%; object-fit: cover; object-position: center top; background: rgba(0, 0, 0, .25); transition: transform .5s cubic-bezier(.2, .7, .2, 1); }
+.kartu-pemain__foto { aspect-ratio: 4 / 5; width: 100%; object-fit: cover; object-position: center top; background: rgba(0, 0, 0, .25); transition: transform .5s cubic-bezier(.2, .7, .2, 1); }
 .kartu-pemain:hover .kartu-pemain__foto { transform: scale(1.05); }
 
 /* FOTO DUMMY / STOCK DARI IXAR JIKA PEMAIN TIDAK ADA FOTO (RASIO 3:5) */
@@ -1004,3 +1004,57 @@ p, li, h1, h2, h3, h4, dt, dd, small, label, blockquote { max-height: 1000000px;
 .bahasa button { min-height: 40px; }
 .tombol--kecil { min-height: 40px; }
 .kaki__menu a { padding: 14px 0; }
+
+/* ---------- T-63: akun, management, creator hub, galeri, jersey, sponsor, turnamen ---------- */
+.atas__daftar { display: inline-flex; align-items: center; min-height: 36px; padding: 0 12px; background: var(--tombol); color: var(--tombol-teks); font: 600 14px/1 var(--badan); text-decoration: none; border-radius: 2px; transition: filter var(--cepat); white-space: nowrap; }
+.atas__daftar:hover { filter: brightness(1.15); }
+@media (max-width: 380px) { .atas__daftar { padding: 0 8px; font-size: 13px; } }
+.management__grid { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); }
+.divisi-kartu { position: relative; padding: 22px 20px 18px; background: var(--kartu); border-top: 3px solid var(--merah); animation: muncul .5s ease-out both; }
+.divisi-kartu__no { position: absolute; top: 14px; right: 16px; font: 400 32px/1 var(--judul); color: var(--teks-merah); opacity: .55; }
+.divisi-kartu h3 { margin: 0 44px 14px 0; font: 400 22px/1.15 var(--judul); color: var(--teks); }
+.divisi-kartu dl { margin: 0; display: grid; gap: 4px; }
+.divisi-kartu dt { margin-top: 8px; font-weight: 700; color: var(--teks-merah-lembut); font-size: 15px; }
+.divisi-kartu dd { margin: 0; color: var(--teks-redup); font-size: 15px; line-height: 1.45; }
+.creator__grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(min(46%, 220px), 1fr)); margin-bottom: 24px; }
+.creator-kartu { display: grid; gap: 8px; animation: muncul .5s ease-out both; }
+.creator-kartu__putar { position: relative; display: grid; place-items: center; width: 100%; aspect-ratio: 9 / 16; padding: 0; border: 1px solid var(--garis); background: linear-gradient(160deg, var(--merah-tua), #000); color: #fff; cursor: pointer; overflow: hidden; }
+.creator-kartu__putar img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .6; transition: opacity var(--cepat), transform .4s; }
+.creator-kartu__putar:hover img { opacity: .8; transform: scale(1.04); }
+.creator-kartu__putar svg { position: relative; width: 56px; height: 56px; padding: 14px; border-radius: 50%; background: var(--merah); box-shadow: 0 6px 24px rgba(0, 0, 0, .5); }
+.creator-kartu__video { width: 100%; aspect-ratio: 9 / 16; min-height: 520px; border: 0; background: #000; }
+.creator-kartu__nama { font-weight: 700; color: var(--teks); }
+.galeri__grid { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(min(46%, 240px), 1fr)); }
+.galeri__grid figure { margin: 0; display: grid; gap: 6px; animation: muncul .5s ease-out both; }
+.galeri__grid img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; background: var(--kartu); }
+.galeri__grid figcaption { font-size: 14px; color: var(--teks-redup); }
+.jersey { display: grid; gap: 24px; align-items: center; margin: 0 0 40px; padding: 20px; background: var(--kartu); border-left: 3px solid var(--merah); }
+@media (min-width: 760px) { .jersey { grid-template-columns: minmax(220px, 360px) 1fr; padding: 28px; } }
+.jersey__foto { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; }
+.jersey__info { display: grid; gap: 10px; justify-items: start; }
+.jersey__nama { font-size: 20px; font-weight: 700; color: var(--teks); }
+.jersey__harga { font: 400 34px/1 var(--judul); color: var(--teks-merah); }
+.jersey__catatan { color: var(--teks-redup); white-space: pre-line; }
+.sponsor-logo { margin-bottom: 32px; display: grid; gap: 14px; }
+.sponsor-logo__judul { font-weight: 700; letter-spacing: .12em; text-transform: uppercase; font-size: 13px; color: var(--teks-redup); }
+.sponsor-logo__baris { display: flex; flex-wrap: wrap; gap: 14px 28px; align-items: center; }
+.sponsor-logo__baris img { height: 56px; width: auto; max-width: 180px; object-fit: contain; }
+.sponsor-logo__baris a, .sponsor-logo__item { display: inline-flex; align-items: center; min-height: 56px; color: var(--teks); font-weight: 700; text-decoration: none; }
+.prestasi-total { margin: -4px 0 14px; color: var(--teks-redup); }
+.prestasi-total b { font: 400 26px/1 var(--judul); color: var(--teks-merah); margin-left: 6px; }
+.kartu-pemain__juara { display: grid; gap: 4px; margin-top: 8px; font-size: 13px; }
+.kartu-pemain__juara > span { font-weight: 700; text-transform: uppercase; letter-spacing: .08em; font-size: 11px; color: var(--teks-redup); }
+.kartu-pemain__juara a { color: var(--teks); text-decoration: none; overflow-wrap: anywhere; }
+.kartu-pemain__juara a:hover { color: var(--teks-merah-lembut); }
+.berita__lencana { display: inline-block; margin: 4px 0; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--teks-merah-lembut); }
+.turnamen-fakta { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0; }
+.turnamen-fakta div { padding: 10px 14px; background: var(--kartu); border-left: 3px solid var(--merah); }
+.turnamen-fakta dt { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--teks-redup); }
+.turnamen-fakta dd { margin: 2px 0 0; font-weight: 700; font-size: 18px; }
+.turnamen-sub { margin: 18px 0 10px; font: 400 22px/1.1 var(--judul); }
+.juara-daftar { list-style: none; margin: 0 0 18px; padding: 0; display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); }
+.juara-pemain { display: grid; gap: 6px; text-align: center; font-weight: 700; font-size: 14px; animation: muncul .4s ease-out both; }
+.juara-pemain img, .juara-pemain__kosong { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: top; background: var(--kartu); display: block; }
+.juara-daftar--dialog { margin-top: 12px; }
+.atas__akun-hp { display: none; }
+@media (max-width: 559px) { .atas__daftar { display: none; } .atas__akun-hp { display: revert; } }
