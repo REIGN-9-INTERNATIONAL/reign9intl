@@ -30,11 +30,25 @@
       const u = new URL(a.getAttribute('href').replace('https://user.reign9.site/', PORTAL), location.href); u.searchParams.set('l', R9.bahasa); a.href = u.href;
     }
   }
-  function management() {
+  // Management: nama & foto pengurus per divisi (jobdesc cuma di admin)
+  const DIVISI_WEB = [['Community Leader', 1], ['Competitive', 2], ['Media and Publication', 3], ['HR & Community', 4], ['Secretariat', 5], ['BizDev', 6]];
+  function management(d) {
     const w = $('[data-management]'); if (!w) return;
-    w.innerHTML = [1, 2, 3, 4, 5, 6].map((n) => `<li class="divisi-kartu">
-      <span class="divisi-kartu__no">0${n}</span><h3>${esc(R9.t(`mgmt.${n}.nama`))}</h3>
-      <dl>${[1, 2, 3].map((k) => `<dt>${esc(R9.t(`mgmt.${n}.${k}.peran`))}</dt><dd>${esc(R9.t(`mgmt.${n}.${k}.tugas`))}</dd>`).join('')}</dl></li>`).join('');
+    const orang = (d.pemain?.aktif || []).filter((p) => apakahManagement(p) || /community leader/i.test(`${p.kelompok} ${p.role}`));
+    const grup = new Map();
+    for (const p of orang) {
+      const k = /community leader/i.test(`${p.kelompok} ${p.role}`) ? 'Community Leader' : namaTimPemain(p, 'management');
+      if (!grup.has(k)) grup.set(k, []); grup.get(k).push(p);
+    }
+    const urut = [...DIVISI_WEB.map(([k]) => k).filter((k) => grup.has(k)), ...[...grup.keys()].filter((k) => !DIVISI_WEB.some(([x]) => x === k))];
+    w.closest('section').hidden = !urut.length;
+    w.innerHTML = urut.map((k, i) => {
+      const no = DIVISI_WEB.find(([x]) => x === k)?.[1], nama = no ? R9.t(`mgmt.${no}.nama`) : (R9.t(`kelompok.${k}`) !== `kelompok.${k}` ? R9.t(`kelompok.${k}`) : k);
+      return `<li class="divisi-kartu"><span class="divisi-kartu__no">0${i + 1}</span><h3>${esc(nama)}</h3>
+        <ul class="divisi-anggota">${grup.get(k).map((p) => `<li>
+          ${p.foto ? `<img src="${esc(urlMedia(p.foto))}" alt="" loading="lazy" width="120" height="150">` : `<span class="divisi-anggota__kosong" aria-hidden="true">${esc(String(p.nickname).replace(/^R9\.?\s*/i, '').slice(0, 1).toUpperCase())}</span>`}
+          <b>${esc(p.nickname)}</b>${p.role ? `<small>${esc(R9.t(`role.${p.role}`) !== `role.${p.role}` ? R9.t(`role.${p.role}`) : p.role)}</small>` : ''}</li>`).join('')}</ul></li>`;
+    }).join('');
   }
   function news(d) {
     const w = $('[data-news]'); if (!w || $('[data-artikel-berita]')) return;
@@ -139,7 +153,7 @@
 
   function gambarBaru() {
     const d = DATA || {};
-    akunLink(); management(); news(d); artikelTurnamen(d); prestasiTotal(d); rosterJuara(d); creator(d); galeri(d); jersey(d); sponsor(d);
+    akunLink(); management(d); news(d); artikelTurnamen(d); prestasiTotal(d); rosterJuara(d); creator(d); galeri(d); jersey(d); sponsor(d);
   }
   const asli = gambarData;
   gambarData = function () { asli(); try { gambarBaru(); } catch (e) { console.error(e); } };

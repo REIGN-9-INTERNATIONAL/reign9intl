@@ -462,7 +462,7 @@ button { font: inherit; color: inherit; }
 @media (prefers-reduced-motion: no-preference) { .kartu-pemain { animation: putar-bingkai 5s linear infinite; } .kartu-pemain:hover { animation-duration: 1.6s; } }
 @keyframes putar-bingkai { to { --sudut: 360deg; } }
 .kartu-pemain__isi { position: relative; display: grid; grid-template-rows: auto 1fr; background: linear-gradient(180deg, var(--gradasi-b), var(--gradasi-a)); clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px); height: 100%; }
-.kartu-pemain__foto { aspect-ratio: 4 / 5; width: 100%; object-fit: cover; object-position: center top; background: rgba(0, 0, 0, .25); transition: transform .5s cubic-bezier(.2, .7, .2, 1); }
+.kartu-pemain__foto { aspect-ratio: 4 / 5; width: 100%; height: auto; object-fit: cover; object-position: center top; background: rgba(0, 0, 0, .25); transition: transform .5s cubic-bezier(.2, .7, .2, 1); }
 .kartu-pemain:hover .kartu-pemain__foto { transform: scale(1.05); }
 
 /* FOTO DUMMY / STOCK DARI IXAR JIKA PEMAIN TIDAK ADA FOTO (RASIO 3:5) */
@@ -1012,7 +1012,7 @@ p, li, h1, h2, h3, h4, dt, dd, small, label, blockquote { max-height: 1000000px;
 .management__grid { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); }
 .divisi-kartu { position: relative; padding: 22px 20px 18px; background: var(--kartu); border-top: 3px solid var(--merah); animation: muncul .5s ease-out both; }
 .divisi-kartu__no { position: absolute; top: 14px; right: 16px; font: 400 32px/1 var(--judul); color: var(--teks-merah); opacity: .55; }
-.divisi-kartu h3 { margin: 0 44px 14px 0; font: 400 22px/1.15 var(--judul); color: var(--teks); }
+.divisi-kartu h3 { margin: 0 60px 14px 0; font: 400 22px/1.15 var(--judul); color: var(--teks); }
 .divisi-kartu dl { margin: 0; display: grid; gap: 4px; }
 .divisi-kartu dt { margin-top: 8px; font-weight: 700; color: var(--teks-merah-lembut); font-size: 15px; }
 .divisi-kartu dd { margin: 0; color: var(--teks-redup); font-size: 15px; line-height: 1.45; }
@@ -1058,3 +1058,9 @@ p, li, h1, h2, h3, h4, dt, dd, small, label, blockquote { max-height: 1000000px;
 .juara-daftar--dialog { margin-top: 12px; }
 .atas__akun-hp { display: none; }
 @media (max-width: 559px) { .atas__daftar { display: none; } .atas__akun-hp { display: revert; } }
+.divisi-anggota { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(92px, 1fr)); }
+.divisi-anggota li { display: grid; gap: 4px; justify-items: center; text-align: center; animation: muncul .4s ease-out both; }
+.divisi-anggota img, .divisi-anggota__kosong { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: top; background: var(--kartu); border: 1px solid var(--garis); }
+.divisi-anggota__kosong { display: grid; place-items: center; font: 400 34px/1 var(--judul); color: var(--teks-merah); }
+.divisi-anggota b { font-size: 14px; color: var(--teks); overflow-wrap: anywhere; }
+.divisi-anggota small { font-size: 12px; color: var(--teks-redup); }
