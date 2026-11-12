@@ -323,8 +323,10 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
       else { b.tx = null; b.ty = null; }
     });
   }
+  // mode hemat otomatis: 0 penuh, 1 api latar digambar tiap 2 frame, 2 tiap 3 frame + kanvas resolusi 1x
+  let hemat = 0;
   const ukur = () => {
-    const rasio = Math.min(devicePixelRatio || 1, matchMedia('(pointer: coarse)').matches ? 1.25 : 1.5);
+    const rasio = hemat > 1 ? 1 : Math.min(devicePixelRatio || 1, matchMedia('(pointer: coarse)').matches ? 1.25 : 1.5);
     w = kanvas.clientWidth; h = kanvas.clientHeight;
     kanvas.width = w * rasio; kanvas.height = h * rasio; c.setTransform(rasio, 0, 0, rasio, 0, 0);
     kanvasLatar.width = w; kanvasLatar.height = h;
@@ -364,8 +366,18 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
     // posisi IXAR di kanvas: api latar minggir pas IXAR lewat
     if (!gambar.n || ++gambar.n % 3 === 0) { gambar.k = kanvas.getBoundingClientRect(); gambar.d = []; for (const el of ixarHero) { const r = el.getBoundingClientRect(); if (r.width && r.bottom > gambar.k.top && r.top < gambar.k.bottom) gambar.d.push([r.left - gambar.k.left + r.width / 2, r.top - gambar.k.top + r.height * .6, (r.width * .5) ** 2]); } gambar.t = teksHero?.getBoundingClientRect(); gambar.n = gambar.n || 1; }
     const k = gambar.k, dorongan = gambar.d;
-    for (const el of []) { const r = el.getBoundingClientRect(); if (r.width && r.bottom > k.top && r.top < k.bottom) dorongan.push([r.left - k.left + r.width / 2, r.top - k.top + r.height * .6, (r.width * .5) ** 2]); }
+    // ukur kelancaran: rata-rata 50 frame di atas 24 ms (di bawah ±42 fps) = perangkat kedodoran, naik satu tingkat hemat
+    const selang = t - (gambar.tl || t); gambar.tl = t; gambar.f = (gambar.f | 0) + 1;
+    if (selang > 0 && selang < 200 && gambar.f > 40 && hemat < 2) {
+      gambar.jml = (gambar.jml || 0) + selang; gambar.cnt = (gambar.cnt | 0) + 1;
+      if (gambar.cnt >= 50) {
+        if (gambar.jml / gambar.cnt > 24 && ++hemat > 1) { const r = 1; kanvas.width = w * r; kanvas.height = h * r; c.setTransform(r, 0, 0, r, 0, 0); }
+        gambar.jml = gambar.cnt = 0;
+      }
+    }
+    const lukisLatar = !hemat || gambar.f % (hemat + 1) === 0;
     const umurLatar = t - mulaiLatar;
+    if (lukisLatar) {
     for (const b of latar) {
       if (umurLatar > b.tunda) { const dx = b.tx - b.x, dy = b.ty - b.y; b.vx += dx * .01; b.vy += dy * .01; }
       b.kedip += .05; b.vx += Math.sin(b.kedip * 1.7) * .03; b.vy -= .012; // api: goyang & naik dikit
@@ -387,6 +399,7 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
       cl.translate(cx, cy); cl.scale(1, ry / rx);
       const g = cl.createRadialGradient(0, 0, rx * .35, 0, 0, rx); g.addColorStop(0, '#000'); g.addColorStop(1, 'rgba(0,0,0,0)');
       cl.fillStyle = g; cl.fillRect(-rx, -rx, rx * 2, rx * 2); cl.restore();
+    }
     }
     c.globalCompositeOperation = terang ? 'source-over' : 'lighter';
     for (const b of lepas) {
@@ -1873,7 +1886,8 @@ gambarData();
     }
     c.shadowBlur = 0;
   };
-  document.addEventListener('r9:desain',lukis);
+  let dekat = false; // foto banner besar baru diunduh pas bagian ini udah dekat layar
+  document.addEventListener('r9:desain', () => { if (dekat) lukis(); });
   $$('[name=banner]').forEach((r) => r.addEventListener('change', lukis));
   isian.addEventListener('input', lukis);
   subIsian?.addEventListener('input', lukis);
@@ -1883,7 +1897,7 @@ gambarData();
     a.download = `reign9-banner-${(isian.value.trim() || 'r9').toLowerCase().replace(/[^a-z0-9]+/g, '-')}.png`;
     a.href = kanvas.toDataURL('image/png'); a.click();
   });
-  lukis();
+  new IntersectionObserver((d, o) => { if (d.some((e) => e.isIntersecting)) { o.disconnect(); dekat = true; lukis(); } }, { rootMargin: '500px' }).observe(kanvas);
 })();
 
 // ---------- contact ----------

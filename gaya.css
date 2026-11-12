@@ -999,3 +999,8 @@ body { overflow-x: clip !important; }
 /* "Situs desktop" di HP: matiin pembesar teks otomatis peramban (font boosting) biar ukuran tulisan sesuai desain */
 html { -webkit-text-size-adjust: 100%; -moz-text-size-adjust: 100%; text-size-adjust: 100%; }
 p, li, h1, h2, h3, h4, dt, dd, small, label, blockquote { max-height: 1000000px; } /* trik kedua: peramban HP gak ngegedein teks yang punya max-height */
+
+/* tombol & tautan kecil: tinggi minimal 40px biar gampang dipencet di HP */
+.bahasa button { min-height: 40px; }
+.tombol--kecil { min-height: 40px; }
+.kaki__menu a { padding: 14px 0; }
