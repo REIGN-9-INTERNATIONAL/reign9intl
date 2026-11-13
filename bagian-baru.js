@@ -14,7 +14,7 @@
   const kartuBeritaTurnamen = (n) => `<a id="berita-${esc(n.id)}" class="berita berita--turnamen" href="news.html?id=${esc(n.id)}">
     ${n.gambar ? `<img src="${esc(urlMedia(n.gambar))}" alt="${esc(n.judul)}" loading="lazy" width="800" height="450">` : ''}
     <span class="berita__isi"><time datetime="${esc(n.tanggal)}">${esc(R9.tanggal(n.tanggal))}</time>
-      <span class="berita__lencana">🏆 ${esc(R9.t('turnamen.lencana'))}</span>
+      <span class="berita__lencana">${TROFI_SVG} ${esc(R9.t('turnamen.lencana'))}</span>
       <h3>${esc(n.judul)}</h3><p>${esc(n.ringkas)}</p><span class="berita__baca">${esc(R9.t('news.baca'))}</span></span></a>`;
   const daftarJuara = (d, ids) => {
     const peta = new Map(semuaPemain(d).map((p) => [p.id, p]));
@@ -75,7 +75,7 @@
     document.title = `${n.judul} · Reign 9 International News`;
     w.innerHTML = `${t.gambar ? `<img class="artikel-berita__gambar" src="${esc(urlMedia(t.gambar))}" alt="${esc(n.judul)}" width="1200" height="675">` : ''}
       <div class="artikel-berita__badan">
-        <div class="artikel-berita__meta"><span class="artikel-berita__lencana">🏆 ${esc(R9.t('turnamen.lencana'))}</span>
+        <div class="artikel-berita__meta"><span class="artikel-berita__lencana">${TROFI_SVG} ${esc(R9.t('turnamen.lencana'))}</span>
           <time class="artikel-berita__tanggal" datetime="${esc(t.tanggal)}">${esc(R9.tanggal(t.tanggal))}</time></div>
         <h1 class="artikel-berita__judul">${esc(n.judul)}</h1>
         <dl class="turnamen-fakta">
@@ -103,7 +103,7 @@
       const juara = k.bracket.ronde.at(-1)[0].menang;
       return `<article class="bracket-web"><header><h3 class="sub-judul">${esc(R9.teks(k.nama))}</h3><span>${esc(R9.tanggal(k.tanggal))}${k.hadiah ? ' · ' + esc(R9.rupiah(k.hadiah)) : ''}</span></header>
         <div class="bracket">${k.bracket.ronde.map((ronde, r) => `<div class="br-ronde"><h4>${esc(judulRonde(r))}</h4><div class="br-laga-daftar">${ronde.map((l) => `<div class="br-laga">${slot(l, 'a', r)}${slot(l, 'b', r)}</div>`).join('')}</div></div>`).join('')}
-        ${juara != null ? `<div class="br-ronde"><h4>${esc(R9.t('bracket.juara'))}</h4><div class="br-laga-daftar"><div class="br-trofi">🏆 ${esc(nama.get(juara) || '')}</div></div></div>` : ''}</div></article>`;
+        ${juara != null ? `<div class="br-ronde"><h4>${esc(R9.t('bracket.juara'))}</h4><div class="br-laga-daftar"><div class="br-trofi">${TROFI_SVG} ${esc(nama.get(juara) || '')}</div></div></div>` : ''}</div></article>`;
     }).join('');
   }
   function prestasiTotal(d) {
@@ -119,7 +119,7 @@
       const daftar = p.turnamen.map((i) => prestasi.get(i)).filter((t) => t && t.juara > 0);
       if (!daftar.length) continue;
       info.insertAdjacentHTML('beforeend', `<div class="kartu-pemain__juara"><span>${esc(R9.t('roster.juara'))}</span>${daftar.slice(0, 4).map((t) =>
-        `<a href="news.html?id=t${t.id}">🏆 ${esc(juaraTeks(t))} · ${esc(R9.teks(t.turnamen))}</a>`).join('')}</div>`);
+        `<a href="news.html?id=t${t.id}">${TROFI_SVG} ${esc(juaraTeks(t))} · ${esc(R9.teks(t.turnamen))}</a>`).join('')}</div>`);
     }
   }
   function creator(d) {

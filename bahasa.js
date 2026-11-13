@@ -172,7 +172,7 @@ window.R9_KAMUS = {
   'roster.kategori.kompetitifSub': { id: '5 Divisi Manajemen R9: Media and Publication, Competitive, HR & Community, Secretariat, dan BizDev', en: '5 R9 Management Divisions: Media and Publication, Competitive, HR & Community, Secretariat, and BizDev', zh: 'R9 五大管理部门：媒体宣传、竞技部、人事与社区、秘书处及商务拓展' },
 
   'roster.pilihKategori': { id: 'Pilih kategori di atas untuk membuka daftar tim.', en: 'Pick a category above to open its teams.', zh: '选择上方类别查看战队。' },
-  'roster.pilihTim': { id: '👆 Klik salah satu nama tim atau divisi di atas untuk menampilkan daftar anggotanya.', en: '👆 Click a team or division name above to display its members.', zh: '👆 请点击上方具体的队伍或部门名称以显示成员名单。' },
+  'roster.pilihTim': { id: 'Klik salah satu nama tim atau divisi di atas untuk menampilkan daftar anggotanya.', en: 'Click a team or division name above to display its members.', zh: '请点击上方具体的队伍或部门名称以显示成员名单。' },
 
   // Nama Tim & 5 Divisi Management
   'kelompok.R9 Main Roster': { id: 'R9 Main Roster', en: 'R9 Main Roster', zh: 'R9 主力战队 (Main Roster)' },

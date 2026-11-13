@@ -1398,6 +1398,8 @@ async function ambilDataLive() {
 const hariIni = () => new Date().toISOString().slice(0, 10);
 
 // Deteksi apakah anggota termasuk kategori Management (Media and Publication, Competitive, HR & Community, Secretariat, BizDev)
+// ikon piala garis (warna ikut teks; pengganti emoji kuning)
+const TROFI_SVG = '<svg class="trofi" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v4a5 5 0 0 1-10 0zM5 5H3v2a3 3 0 0 0 3 3M19 5h2v2a3 3 0 0 1-3 3M12 13v4M8 21h8M9 17h6"/></svg>';
 function apakahManagement(p) {
   if (!p) return false;
   if (p.status === 'management' || p.status === 'kompetitif') return true;
@@ -1607,7 +1609,7 @@ function gambarData() {
     const juaraUtama = (d.prestasi || []).find((p) => p.juara === 1) || (d.prestasi || [])[0];
     if (juaraUtama) {
       wadahChampion.innerHTML = `<button type="button" class="kartu-champion" data-buka-prestasi="${idAman(juaraUtama.id)}">
-        <span class="kartu-champion__lencana">🏆 ${esc(R9.teks(juaraUtama.peringkat))}</span>
+        <span class="kartu-champion__lencana">${TROFI_SVG} ${esc(R9.teks(juaraUtama.peringkat))}</span>
         <span class="kartu-champion__info">
           <span class="kartu-champion__judul">${esc(R9.teks(juaraUtama.turnamen))}</span>
           <span class="kartu-champion__sub">${esc([juaraUtama.divisi || 'Honor of Kings', R9.tanggal(juaraUtama.tanggal, { month: 'long', year: 'numeric' })].filter(Boolean).join(' · '))}</span>
@@ -1836,12 +1838,12 @@ document.addEventListener('click', (e) => {
       visual.hidden = false;
       visual.innerHTML = `<div class="baca__visual-isi">
         <svg class="baca__visual-piala" viewBox="0 0 64 64" aria-hidden="true"><path d="M18 6h28v6h10v8c0 8-6 14-13 15-2 5-5 8-9 9v8h10v6H20v-6h10v-8c-4-1-7-4-9-9C14 34 8 28 8 20v-8h10zm-4 12v2c0 4 2 7 5 8-1-3-1-6-1-10zm36 0h-4c0 4 0 7-1 10 3-1 5-4 5-8z" fill="currentColor"/></svg>
-        <span class="baca__visual-peringkat">🏆 ${esc(peringkat)}</span>
+        <span class="baca__visual-peringkat">${TROFI_SVG} ${esc(peringkat)}</span>
         <strong class="baca__visual-judul">${esc(turnamen)}</strong>
       </div>`;
     }
   }
-  if (lencana) { lencana.hidden = false; lencana.textContent = `🏆 ${peringkat}`; }
+  if (lencana) { lencana.hidden = false; lencana.innerHTML = `${TROFI_SVG} ${esc(peringkat)}`; }
   $('.baca__tanggal', dlg).textContent = R9.tanggal(p.tanggal);
   $('.baca__judul', dlg).textContent = turnamen;
   if (meta) {
