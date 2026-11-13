@@ -1200,3 +1200,13 @@ p, li, h1, h2, h3, h4, dt, dd, small, label, blockquote { max-height: 1000000px;
 .br-tim--kalah { opacity: .45; }
 .br-tim--kosong { color: var(--teks-redup); font-style: italic; }
 .br-trofi { padding: 18px 14px; text-align: center; font: 700 16px/1.3 var(--sub); border: 2px solid var(--merah); color: var(--teks); background: var(--kartu); }
+
+/* ---------- produk toko di web ---------- */
+.produk-web { display: grid; gap: 18px; justify-items: start; margin-bottom: 40px; }
+.produk-web__grid { width: 100%; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(46%, 220px), 1fr)); gap: 14px; }
+.produk-web__kartu { position: relative; display: grid; gap: 6px; padding-bottom: 12px; color: var(--teks); text-decoration: none; background: var(--kartu); border: 1px solid var(--garis); }
+.produk-web__foto { display: block; aspect-ratio: 4 / 5; background: #000; overflow: hidden; } .produk-web__foto img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s; }
+.produk-web__kartu:hover img { transform: scale(1.04); }
+.produk-web__kartu b, .produk-web__harga { padding: 0 12px; } .produk-web__kartu b { font: 700 15px/1.25 var(--sub); text-transform: uppercase; }
+.produk-web__harga { font: 700 15px/1.3 var(--sub); color: var(--teks-merah); } .produk-web__harga small { display: block; font-weight: 600; color: var(--teks-redup); }
+.produk-web__habis { position: absolute; top: 10px; left: 10px; padding: 4px 8px; background: #000; color: #fff; font: 700 11px/1 var(--sub); text-transform: uppercase; letter-spacing: .1em; }

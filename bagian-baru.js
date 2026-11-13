@@ -157,6 +157,17 @@
     $('[data-jersey-catatan]').textContent = j.catatan || '';
     const a = $('[data-jersey-link]'); const link = tautanAman(j.link); a.hidden = !link; if (link) a.href = link;
   }
+  // produk toko (diatur BizDev) → checkout di portal member
+  function produkWeb(d) {
+    const w = $('[data-produk-web]'); if (!w) return;
+    const x = d.produk || []; w.hidden = !x.length; if (!x.length) return;
+    w.innerHTML = `<div class="produk-web__grid">${x.map((p) => `<a class="produk-web__kartu" href="${PORTAL}#toko" data-akun-link>
+      <span class="produk-web__foto">${p.foto ? `<img src="${esc(urlMedia(p.foto))}" alt="" loading="lazy">` : ''}</span><b>${esc(R9.teks(p.nama))}</b>
+      <span class="produk-web__harga">${esc(R9.rupiah(p.harga))}${p.harga_member ? ` <small>${esc(R9.t('toko.member').replace('{h}', R9.rupiah(p.harga_member)))}</small>` : ''}</span>
+      ${p.habis ? `<span class="produk-web__habis">${esc(R9.t('toko.habis'))}</span>` : ''}</a>`).join('')}</div>
+      <a class="tombol tombol--utama" href="${PORTAL}#toko" data-akun-link>${esc(R9.t('toko.beli'))}</a>`;
+    akunLink();
+  }
   function sponsor(d) {
     const w = $('[data-sponsor]'); if (!w) return;
     const s = (d.sponsor || []).filter((x) => x.logo || x.nama);
@@ -181,10 +192,10 @@
 
   function gambarBaru() {
     const d = DATA || {};
-    akunLink(); management(d); news(d); artikelTurnamen(d); prestasiTotal(d); bracketWeb(d); rosterJuara(d); creator(d); galeri(d); jersey(d); sponsor(d);
+    akunLink(); management(d); news(d); artikelTurnamen(d); prestasiTotal(d); bracketWeb(d); rosterJuara(d); creator(d); galeri(d); jersey(d); produkWeb(d); sponsor(d);
   }
   // ---------- gerak: muncul saat di-scroll, garis judul memanjang, menu nandain bagian yang lagi dibaca ----------
-  const GERAK = '.bracket-web, .kepala-bagian, .kartu-pemain, .berita, .daftar-prestasi > li, .daftar-event > li, .mgmt__divisi, .creator-kartu, .galeri__grid figure, .sponsor-slot, .jersey, .shop, .ethos__pilar li, .fakta > *, .podium, .kartu-champion, .wilayah, .roster__kategori, .roster__tim-daftar, .kontak__isi > *, .kenal__isi > *, .banner__isi > *, .pfp__isi > *, .artikel-berita__badan > *';
+  const GERAK = '.produk-web__kartu, .bracket-web, .kepala-bagian, .kartu-pemain, .berita, .daftar-prestasi > li, .daftar-event > li, .mgmt__divisi, .creator-kartu, .galeri__grid figure, .sponsor-slot, .jersey, .shop, .ethos__pilar li, .fakta > *, .podium, .kartu-champion, .wilayah, .roster__kategori, .roster__tim-daftar, .kontak__isi > *, .kenal__isi > *, .banner__isi > *, .pfp__isi > *, .artikel-berita__badan > *';
   const gerakBolehWeb = !matchMedia('(prefers-reduced-motion: reduce)').matches;
   const io = gerakBolehWeb && 'IntersectionObserver' in window ? new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('tampil'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px', threshold: .08 }) : null;
   function pasangGerak() {
