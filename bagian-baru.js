@@ -90,6 +90,22 @@
     const lain = $('[data-news-lainnya]');
     if (lain) { const x = [...(d.news || []).map(renderKartuBerita), ...beritaTurnamen(d).filter((b) => b.id !== id).map(kartuBeritaTurnamen)]; lain.innerHTML = x.join(''); lain.closest('section').hidden = !x.length; }
   }
+  // bracket turnamen internal (diacak pengurus Competitive)
+  function bracketWeb(d) {
+    const w = $('[data-bracket]'); if (!w) return;
+    const daftar = (d.kompetisi || []).filter((k) => k.bracket?.ronde?.length);
+    w.hidden = !daftar.length;
+    w.innerHTML = daftar.map((k) => {
+      const nama = new Map(k.tim.map((t) => [t.id, t.nama])), n = k.bracket.ronde.length;
+      const judulRonde = (r) => R9.t(r === n - 1 ? 'bracket.final' : r === n - 2 ? 'bracket.semi' : r === n - 3 ? 'bracket.perempat' : 'bracket.ronde').replace('{n}', r + 1);
+      const slot = (l, sisi, r) => { const id = l[sisi], menang = l.menang != null && l.menang === id, kalah = l.menang != null && id != null && !menang;
+        return `<div class="br-tim${menang ? ' br-tim--menang' : ''}${kalah ? ' br-tim--kalah' : ''}${id == null ? ' br-tim--kosong' : ''}"><span>${id == null ? (r ? 'TBD' : 'BYE') : esc(nama.get(id) || '?')}</span>${menang ? '<b>✓</b>' : ''}</div>`; };
+      const juara = k.bracket.ronde.at(-1)[0].menang;
+      return `<article class="bracket-web"><header><h3 class="sub-judul">${esc(R9.teks(k.nama))}</h3><span>${esc(R9.tanggal(k.tanggal))}${k.hadiah ? ' · ' + esc(R9.rupiah(k.hadiah)) : ''}</span></header>
+        <div class="bracket">${k.bracket.ronde.map((ronde, r) => `<div class="br-ronde"><h4>${esc(judulRonde(r))}</h4><div class="br-laga-daftar">${ronde.map((l) => `<div class="br-laga">${slot(l, 'a', r)}${slot(l, 'b', r)}</div>`).join('')}</div></div>`).join('')}
+        ${juara != null ? `<div class="br-ronde"><h4>${esc(R9.t('bracket.juara'))}</h4><div class="br-laga-daftar"><div class="br-trofi">🏆 ${esc(nama.get(juara) || '')}</div></div></div>` : ''}</div></article>`;
+    }).join('');
+  }
   function prestasiTotal(d) {
     const w = $('[data-prestasi-total]'); if (!w) return;
     const total = d.ringkas?.totalHadiah || 0;
@@ -165,10 +181,10 @@
 
   function gambarBaru() {
     const d = DATA || {};
-    akunLink(); management(d); news(d); artikelTurnamen(d); prestasiTotal(d); rosterJuara(d); creator(d); galeri(d); jersey(d); sponsor(d);
+    akunLink(); management(d); news(d); artikelTurnamen(d); prestasiTotal(d); bracketWeb(d); rosterJuara(d); creator(d); galeri(d); jersey(d); sponsor(d);
   }
   // ---------- gerak: muncul saat di-scroll, garis judul memanjang, menu nandain bagian yang lagi dibaca ----------
-  const GERAK = '.kepala-bagian, .kartu-pemain, .berita, .daftar-prestasi > li, .daftar-event > li, .mgmt__divisi, .creator-kartu, .galeri__grid figure, .sponsor-slot, .jersey, .shop, .ethos__pilar li, .fakta > *, .podium, .kartu-champion, .wilayah, .roster__kategori, .roster__tim-daftar, .kontak__isi > *, .kenal__isi > *, .banner__isi > *, .pfp__isi > *, .artikel-berita__badan > *';
+  const GERAK = '.bracket-web, .kepala-bagian, .kartu-pemain, .berita, .daftar-prestasi > li, .daftar-event > li, .mgmt__divisi, .creator-kartu, .galeri__grid figure, .sponsor-slot, .jersey, .shop, .ethos__pilar li, .fakta > *, .podium, .kartu-champion, .wilayah, .roster__kategori, .roster__tim-daftar, .kontak__isi > *, .kenal__isi > *, .banner__isi > *, .pfp__isi > *, .artikel-berita__badan > *';
   const gerakBolehWeb = !matchMedia('(prefers-reduced-motion: reduce)').matches;
   const io = gerakBolehWeb && 'IntersectionObserver' in window ? new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('tampil'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px', threshold: .08 }) : null;
   function pasangGerak() {

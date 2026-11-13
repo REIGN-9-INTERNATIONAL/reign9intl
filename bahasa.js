@@ -450,5 +450,10 @@ Object.assign(window.R9_KAMUS, {
   'turnamen.ringkas': { id: '{tim} meraih {peringkat} di {nama}.', en: '{tim} placed {peringkat} at {nama}.', zh: '{tim} 在 {nama} 中获得{peringkat}。' },
   'roster.juara': { id: 'Prestasi', en: 'Achievements', zh: '战绩' },
   'kaki.privasi': { id: 'Kebijakan Privasi & Ketentuan', en: 'Privacy Policy & Terms', zh: '隐私政策与服务条款' },
+  'bracket.final': { id: 'Final', en: 'Final', zh: '决赛' },
+  'bracket.semi': { id: 'Semifinal', en: 'Semifinal', zh: '半决赛' },
+  'bracket.perempat': { id: 'Perempat final', en: 'Quarterfinal', zh: '四分之一决赛' },
+  'bracket.ronde': { id: 'Ronde {n}', en: 'Round {n}', zh: '第 {n} 轮' },
+  'bracket.juara': { id: 'Juara', en: 'Champion', zh: '冠军' },
   'prestasi.total': { id: 'Total hadiah', en: 'Total prize money', zh: '奖金总额' },
 });
