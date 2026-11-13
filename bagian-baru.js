@@ -167,8 +167,34 @@
     const d = DATA || {};
     akunLink(); management(d); news(d); artikelTurnamen(d); prestasiTotal(d); rosterJuara(d); creator(d); galeri(d); jersey(d); sponsor(d);
   }
+  // ---------- gerak: muncul saat di-scroll, garis judul memanjang, menu nandain bagian yang lagi dibaca ----------
+  const GERAK = '.kepala-bagian, .kartu-pemain, .berita, .daftar-prestasi > li, .daftar-event > li, .mgmt__divisi, .creator-kartu, .galeri__grid figure, .sponsor-slot, .jersey, .shop, .ethos__pilar li, .fakta > *, .podium, .kartu-champion, .wilayah, .roster__kategori, .roster__tim-daftar, .kontak__isi > *, .kenal__isi > *, .banner__isi > *, .pfp__isi > *, .artikel-berita__badan > *';
+  const gerakBolehWeb = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const io = gerakBolehWeb && 'IntersectionObserver' in window ? new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('tampil'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px', threshold: .08 }) : null;
+  function pasangGerak() {
+    if (!io) return;
+    for (const el of $$(GERAK)) {
+      if (el.dataset.gerak) continue;
+      el.dataset.gerak = '1';
+      const saudara = [...el.parentElement.children].filter((x) => x.matches(GERAK));
+      el.style.setProperty('--urut', String(Math.min(saudara.indexOf(el), 7)));
+      const r = el.getBoundingClientRect();
+      if (r.top < innerHeight && r.bottom > 0) { el.classList.add('tampil'); continue; } // yang udah kelihatan langsung tampil
+      io.observe(el);
+    }
+  }
+  const tautanMenu = () => $$('.atas__bilah a, .atas__menu > a');
+  const pengintai = 'IntersectionObserver' in window ? new IntersectionObserver((es) => es.forEach((e) => {
+    if (!e.isIntersecting) return;
+    for (const a of tautanMenu()) a.classList.toggle('aktif', a.getAttribute('href').endsWith('#' + e.target.id));
+    const kini = $(`.atas__bilah a.aktif`); if (kini) kini.parentElement.scrollTo({ left: kini.offsetLeft - 40, behavior: gerakBolehWeb ? 'smooth' : 'auto' });
+  }), { rootMargin: '-45% 0px -50% 0px' }) : null;
+  if (pengintai) $$('main > section[id]').forEach((sec) => pengintai.observe(sec));
+  const atas = $('.atas'); let tadiTurun = false;
+  addEventListener('scroll', () => { const turun = scrollY > 24; if (turun !== tadiTurun) { atas?.classList.toggle('atas--turun', turun); tadiTurun = turun; } }, { passive: true });
+
   const asli = gambarData;
-  gambarData = function () { asli(); try { gambarBaru(); } catch (e) { console.error(e); } };
-  document.addEventListener('r9:bahasa', () => { try { gambarBaru(); } catch (e) { console.error(e); } });
-  gambarBaru();
+  gambarData = function () { asli(); try { gambarBaru(); pasangGerak(); } catch (e) { console.error(e); } };
+  document.addEventListener('r9:bahasa', () => { try { gambarBaru(); pasangGerak(); } catch (e) { console.error(e); } });
+  gambarBaru(); pasangGerak();
 })();

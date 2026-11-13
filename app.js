@@ -230,7 +230,7 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
     // simbol & tulisan dicuplik sama persis (jarak & susut sama) biar komposisi apinya seragam
     // jarak sama di semua bagian; kikisan cuma buat simbol & REIGN 9 (huruf INTERNATIONAL terlalu tipis buat dikikis)
     const garisInternational = (394 - vb[1]) * s;
-    const jarak = lw < 320 ? 2.6 : 3, garis = Math.floor(garisInternational);
+    const jarak = lw < 320 ? 2.2 : 2.6, garis = Math.floor(garisInternational);
     const [, ocBawah] = kanvasBantu(lw, lh - garis); ocBawah.drawImage(o, 0, -garis);
     const atasLogo = cuplik(oc, lw, garis, jarak, gx, gy, 1);
     titik.logo = [...atasLogo, ...cuplik(ocBawah, lw, lh - garis, jarak * .55, gx, gy + garis)]; titik.awalKecil = atasLogo.length;
@@ -244,8 +244,9 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
     titik.kotakTeks = [tx + tw * .06, ty, tx + tw * .94, ty + th];
   };
   // warna api logo ikut aturan logo: putih di tema gelap, merah di tema terang. Api latar selalu hitam pekat (beda dari logo).
-  const WARNA_GELAP = [['#ffffff', 46], ['#ffe9e6', 24], ['#ffd0cb', 16], ['#ff8a80', 9], ['#ff5245', 5]];
-  const WARNA_TERANG = [['#da1617', 44], ['#c00f12', 24], ['#ff2a1f', 16], ['#a80309', 16]];
+  // logo satu warna (aturan logo R9): putih di latar gelap/merah, hitam di latar pink. Gak dicampur biar gak belang.
+  const WARNA_GELAP = [['#ffffff', 100]];
+  const WARNA_TERANG = [['#000000', 100]];
   const LATAR_GELAP = [['#000000', 62], ['#070000', 24], ['#160205', 14]];
   const LATAR_TERANG = [['#FFD3DC', 55], ['#FFC4D0', 25], ['#FFE2E8', 20]];
   const warnaLatar = () => (terang ? LATAR_TERANG : LATAR_GELAP);
@@ -352,8 +353,7 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
     const n = titik.logo.length;
     if (titik.teks.length > n) { const lompat = titik.teks.length / n; titik.teks = Array.from({ length: n }, (_, i) => titik.teks[Math.floor(i * lompat)]); }
     for (let i = titik.teks.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [titik.teks[i], titik.teks[j]] = [titik.teks[j], titik.teks[i]]; }
-    butir = Array.from({ length: n }, (_, i) => butir[i] || { x: Math.random() * w, y: h + Math.random() * h * .5, vx: 0, vy: 0, r: Math.random() * .3 + 1.15, kedip: Math.random() * 6.28, warna: pilihWarna() });
-    butir.sort((a, b) => (a.warna < b.warna ? -1 : 1)); // urut warna: ganti warna kuas lebih jarang
+    butir = Array.from({ length: n }, (_, i) => butir[i] || { x: Math.random() * w, y: h + Math.random() * h * .5, vx: 0, vy: 0, r: Math.random() * .3 + 1, kedip: Math.random() * 6.28, warna: pilihWarna() });
     cacheDepan = null; cacheBasi = true; bangun(true, true, 3000);
     butir.length = n;
     hitungLatar();
@@ -466,7 +466,7 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
   hero.addEventListener('click', (e) => { if (!e.target.closest('a, button, input, .hero__ixar, .jelajah__ixar')) window.R9Hero.gantiLatar(e.pageX, e.pageY); });
   hero.addEventListener('pointerup', (e) => { if (e.pointerType !== 'mouse') px = py = -999; });
   document.addEventListener('r9:tema', () => {
-    terang = temaSekarang() === 'terang'; butir.forEach((b) => { b.warna = pilihWarna(); }); butir.sort((a, b) => (a.warna < b.warna ? -1 : 1)); bangun(true, true, 600);
+    terang = temaSekarang() === 'terang'; butir.forEach((b) => { b.warna = pilihWarna(); }); cacheBasi = true; bangun(true, true, 600);
     latar.forEach((b) => { b.warna = undi(warnaLatar()); }); latar.sort((a, b) => (a.warna < b.warna ? -1 : a.warna > b.warna ? 1 : 0));
   });
   document.addEventListener('r9:bahasa', () => { if (w && h) ukur(); });
