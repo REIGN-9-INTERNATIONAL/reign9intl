@@ -150,7 +150,7 @@ const pasangTema = (t) => { document.documentElement.dataset.tema = t; try { loc
 // ganti tema halus: semua warna meluncur barengan dari tema lama ke tema baru (transisi CSS sementara di <html>).
 // Gak pakai tutupan layar (bikin layar diam dulu) & gak pakai View Transitions (kedip di sebagian HP).
 let timerTema = 0;
-$('.tema').addEventListener('click', () => {
+$$('.tema').forEach((tm) => tm.addEventListener('click', () => {
   const baru = temaSekarang() === 'terang' ? 'gelap' : 'terang', html = document.documentElement;
   if (!gerakBoleh) return pasangTema(baru);
   clearTimeout(timerTema);
@@ -158,7 +158,19 @@ $('.tema').addEventListener('click', () => {
   void html.offsetWidth; // transisi harus kepasang dulu sebelum warna berubah
   pasangTema(baru);
   timerTema = setTimeout(() => html.classList.remove('ganti-tema'), 600);
-});
+}));
+
+// ---------- pilih bahasa ringkas (header) ----------
+const pilihBhs = $('.pilih-bhs__tombol'), daftarBhs = $('.pilih-bhs__daftar');
+if (pilihBhs) {
+  const tutupBhs = () => { pilihBhs.setAttribute('aria-expanded', 'false'); daftarBhs.hidden = true; };
+  pilihBhs.addEventListener('click', (e) => { e.stopPropagation(); const buka = daftarBhs.hidden; daftarBhs.hidden = !buka; pilihBhs.setAttribute('aria-expanded', String(buka)); });
+  daftarBhs.addEventListener('click', tutupBhs);
+  document.addEventListener('click', (e) => { if (!e.target.closest('.pilih-bhs')) tutupBhs(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') tutupBhs(); });
+  const kini = () => { const el = $('[data-bahasa-kini]'); if (el) el.textContent = { id: 'ID', en: 'EN', zh: '中文' }[R9.bahasa]; };
+  document.addEventListener('r9:bahasa', kini); kini();
+}
 
 // ---------- menu HP ----------
 const tombolMenu = $('.atas__buka'), menu = $('#menu');
@@ -183,6 +195,9 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
   const c = kanvas.getContext('2d');
   const kanvasLatar = Object.assign(document.createElement('canvas'), { className: 'hero__latar' });
   kanvasLatar.setAttribute('aria-hidden', 'true'); kanvas.before(kanvasLatar);
+  // lapisan logo diam: digambar sekali pas butiran udah tenang, gak ikut digambar ulang tiap frame
+  const kanvasDiam = Object.assign(document.createElement('canvas'), { className: 'hero__diam' });
+  kanvasDiam.setAttribute('aria-hidden', 'true'); kanvas.before(kanvasDiam); let diamTampil = false;
   const cl = kanvasLatar.getContext('2d');
   const sprite = $('#r9-sprite-logo')?.outerHTML || await fetch(`gambar/logo.svg`).then((r) => r.text()).catch(() => '');
   const m = sprite.match(/id="tegak" viewBox="([^"]+)">(.*?)<\/symbol>/);
@@ -191,6 +206,9 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
   const vb = m[1].split(' ').map(Number), bentuk = [...m[2].matchAll(/<path([^>]*)>/g)].map((x) => [new Path2D(x[1].match(/ d="([^"]+)"/)[1]), (x[1].match(/fill-rule="(\w+)"/) || [])[1] === 'evenodd' ? 'evenodd' : 'nonzero']);
   await document.fonts.load('700 100px Reign9Display').catch(() => {});
   let w, h, butir = [], lepas = [], titik = {}, px = -999, py = -999, jalan = true, fase = 'teks', mulaiFase = performance.now(), terang = false;
+  // hemat tenaga: butiran cuma dihitung selama 'bangun' (lagi bergerak). Pas diam, gambar terakhir dipakai ulang.
+  let bangunDepan = 0, bangunLatar = 0, cacheDepan = null, cacheBasi = true, jejakIxar = '';
+  const bangun = (depan, latarJuga, ms = 3000) => { const t = performance.now() + ms; if (depan) bangunDepan = Math.max(bangunDepan, t); if (latarJuga) bangunLatar = Math.max(bangunLatar, t); };
   const kanvasBantu = (lw, lh) => { const o = Object.assign(document.createElement('canvas'), { width: Math.max(1, lw), height: Math.max(1, lh) }); return [o, o.getContext('2d', { willReadFrequently: true })]; };
   // susut > 0: titik cuma dipasang kalau satu butir utuh (±susut px) muat di dalam bentuk, biar celah tipis logo gak ketutup
   const cuplik = (oc, lw, lh, jarak, gx = 0, gy = 0, susutAwal = 0) => {
@@ -212,7 +230,7 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
     // simbol & tulisan dicuplik sama persis (jarak & susut sama) biar komposisi apinya seragam
     // jarak sama di semua bagian; kikisan cuma buat simbol & REIGN 9 (huruf INTERNATIONAL terlalu tipis buat dikikis)
     const garisInternational = (394 - vb[1]) * s;
-    const jarak = lw < 320 ? 2.2 : 2.6, garis = Math.floor(garisInternational);
+    const jarak = lw < 320 ? 2.6 : 3, garis = Math.floor(garisInternational);
     const [, ocBawah] = kanvasBantu(lw, lh - garis); ocBawah.drawImage(o, 0, -garis);
     const atasLogo = cuplik(oc, lw, garis, jarak, gx, gy, 1);
     titik.logo = [...atasLogo, ...cuplik(ocBawah, lw, lh - garis, jarak * .55, gx, gy + garis)]; titik.awalKecil = atasLogo.length;
@@ -288,7 +306,7 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
     oc.fill(); oc.globalCompositeOperation = 'source-over';
   }
   function hitungLatar() {
-    const batasN = w < 600 ? 1800 : 2600, jarak = Math.max(8, Math.sqrt(w * h * .85 / batasN));
+    const batasN = w < 600 ? 900 : 1500, jarak = Math.max(9, Math.sqrt(w * h * .85 / batasN));
     titikLatar = {};
     for (const nama of BENTUK_LATAR) {
       const [, oc] = kanvasBantu(Math.round(w), Math.round(h)); oc.fillStyle = '#000'; gambarLatar(oc, nama);
@@ -298,7 +316,7 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
       titikLatar[nama] = t;
     }
     const n = Math.max(...Object.values(titikLatar).map((t) => t.length));
-    const besar = [jarak * .52, jarak * .14]; // setengah jarak = butir saling nempel → siluet pekat
+    const besar = [Math.min(jarak * .36, 4), jarak * .06]; // butir kecil berjarak (gaya piksel IXAR), jumlahnya dibatasi biar ringan
     latar = Array.from({ length: n }, (_, i) => latar[i] || { x: Math.random() * w, y: h + Math.random() * h * .3, vx: 0, vy: 0, r: besar[0] + Math.random() * besar[1], kedip: Math.random() * 6.28, warna: undi(warnaLatar()) });
     latar.length = n;
     latar.sort((a, b) => (a.warna < b.warna ? -1 : a.warna > b.warna ? 1 : 0));
@@ -308,13 +326,13 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
   function arahkanLatar(asal) {
     const t = titikLatar[BENTUK_LATAR[iLatar]] || [], cx = asal ? asal[0] : w / 2;
     latar.forEach((b, i) => { const q = t[i % Math.max(1, t.length)]; [b.tx, b.ty] = q || [Math.random() * w, h + 20]; b.lebih = i >= t.length; b.tunda = asal ? Math.abs(b.x - cx) * 1.1 : Math.random() * 600; });
-    mulaiLatar = performance.now(); gantiLatarPada = mulaiLatar + 9000;
+    mulaiLatar = performance.now(); gantiLatarPada = mulaiLatar + 14000; bangun(false, true, 4500 + (asal ? w * 1.1 : 600));
   }
   let mulaiLatar = 0;
   const gantiLatar = (asal) => { iLatar = (iLatar + 1) % BENTUK_LATAR.length; arahkanLatar(asal); };
   const baraLepas = (acak) => ({ x: Math.random() * w, y: acak ? Math.random() * h : h + 10, r: Math.random() * 1.8 + .5, v: Math.random() * .6 + .25, goyang: Math.random() * 6.28, umur: Math.random() * .5 + .4 });
   function aturTujuan(f) {
-    fase = f; mulaiFase = performance.now();
+    fase = f; mulaiFase = performance.now(); bangun(true, false, f === 'logo' ? 3500 : 4500);
     const L = titik.logo.length;
     butir.forEach((b, i) => {
       b.kecil = false;
@@ -334,7 +352,9 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
     const n = titik.logo.length;
     if (titik.teks.length > n) { const lompat = titik.teks.length / n; titik.teks = Array.from({ length: n }, (_, i) => titik.teks[Math.floor(i * lompat)]); }
     for (let i = titik.teks.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [titik.teks[i], titik.teks[j]] = [titik.teks[j], titik.teks[i]]; }
-    butir = Array.from({ length: n }, (_, i) => butir[i] || { x: Math.random() * w, y: h + Math.random() * h * .5, vx: 0, vy: 0, r: Math.random() * .3 + 1, kedip: Math.random() * 6.28, warna: pilihWarna() });
+    butir = Array.from({ length: n }, (_, i) => butir[i] || { x: Math.random() * w, y: h + Math.random() * h * .5, vx: 0, vy: 0, r: Math.random() * .3 + 1.15, kedip: Math.random() * 6.28, warna: pilihWarna() });
+    butir.sort((a, b) => (a.warna < b.warna ? -1 : 1)); // urut warna: ganti warna kuas lebih jarang
+    cacheDepan = null; cacheBasi = true; bangun(true, true, 3000);
     butir.length = n;
     hitungLatar();
     lepas = Array.from({ length: Math.round(w / 18) }, () => baraLepas(true));
@@ -342,7 +362,7 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
   };
   const keKanvas = (x, y) => { const k = kanvas.getBoundingClientRect(); return [x - (k.left + scrollX), y - (k.top + scrollY)]; };
   const keHalaman = ([x0, y0, x1, y1]) => { const k = kanvas.getBoundingClientRect(); return { kiri: x0 + k.left + scrollX, atas: y0 + k.top + scrollY, kanan: x1 + k.left + scrollX, bawah: y1 + k.top + scrollY }; };
-  const dorong = (x, y, kuat, jangkau, kumpulan = butir) => kumpulan.forEach((b) => {
+  const dorong = (x, y, kuat, jangkau, kumpulan = butir) => (bangun(kumpulan === butir, kumpulan !== butir, 3000), kumpulan).forEach((b) => {
     const dx = b.x - x, dy = b.y - y, d = Math.hypot(dx, dy) || 1;
     if (d > jangkau) return;
     const f = kuat * (1 - d / jangkau); b.vx += dx / d * f + (Math.random() - .5) * kuat * .3; b.vy += dy / d * f - Math.random() * kuat * .2;
@@ -361,11 +381,17 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
   const ixarHero = [$('.hero__ixar'), $('.jelajah__ixar')].filter(Boolean), teksHero = $('.hero__teks');
   const gambar = (t) => {
     if (!jalan) return;
+    gambar.g = !gambar.g;
+    // pas logo diam, bara kecil cukup 30x/detik
+    if (t >= bangunDepan && t >= bangunLatar && fase !== 'bubar' && !cacheBasi && gambar.g) { requestAnimationFrame(gambar); return; }
     c.clearRect(0, 0, w, h);
     if (t > gantiLatarPada) gantiLatar(null);
     // posisi IXAR di kanvas: api latar minggir pas IXAR lewat
     if (!gambar.n || ++gambar.n % 3 === 0) { gambar.k = kanvas.getBoundingClientRect(); gambar.d = []; for (const el of ixarHero) { const r = el.getBoundingClientRect(); if (r.width && r.bottom > gambar.k.top && r.top < gambar.k.bottom) gambar.d.push([r.left - gambar.k.left + r.width / 2, r.top - gambar.k.top + r.height * .6, (r.width * .5) ** 2]); } gambar.t = teksHero?.getBoundingClientRect(); gambar.n = gambar.n || 1; }
     const k = gambar.k, dorongan = gambar.d;
+    // IXAR lewat & bergerak di depan latar → latar bangun sebentar
+    // (napas IXAR ±3px gak dihitung: cuma pindah tempat > 14px yang bikin latar bangun)
+    const jejak = dorongan.map((d) => `${Math.round(d[0] / 14)},${Math.round(d[1] / 14)}`).join('|'); if (jejak && jejak !== jejakIxar) bangun(false, true, 900); jejakIxar = jejak;
     // ukur kelancaran: rata-rata 50 frame di atas 24 ms (di bawah ±42 fps) = perangkat kedodoran, naik satu tingkat hemat
     const selang = t - (gambar.tl || t); gambar.tl = t; gambar.f = (gambar.f | 0) + 1;
     if (selang > 0 && selang < 200 && gambar.f > 40 && hemat < 2) {
@@ -375,7 +401,7 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
         gambar.jml = gambar.cnt = 0;
       }
     }
-    const lukisLatar = !hemat || gambar.f % (hemat + 1) === 0;
+    const lukisLatar = t < bangunLatar && (!hemat || gambar.f % (hemat + 1) === 0);
     const umurLatar = t - mulaiLatar;
     if (lukisLatar) {
     for (const b of latar) {
@@ -401,15 +427,27 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
       cl.fillStyle = g; cl.fillRect(-rx, -rx, rx * 2, rx * 2); cl.restore();
     }
     }
-    c.globalCompositeOperation = terang ? 'source-over' : 'lighter';
+    c.fillStyle = terang ? '#000' : '#ff2a1a';
     for (const b of lepas) {
       b.y -= b.v; b.goyang += .02; b.x += Math.sin(b.goyang) * .35;
       c.globalAlpha = Math.max(0, Math.min(1, b.y / h)) * b.umur * (terang ? .5 : 1);
-      c.fillStyle = terang ? '#000' : '#ff2a1a'; c.beginPath(); c.arc(b.x, b.y, b.r, 0, 6.29); c.fill();
+      c.fillRect(b.x - b.r, b.y - b.r, b.r * 2, b.r * 2);
       if (b.y < -10) Object.assign(b, baraLepas(false));
     }
-    c.globalCompositeOperation = 'source-over';
     const umur = t - mulaiFase;
+    // logo diam: pakai gambar simpanan, gak ngitung ribuan butir tiap frame
+    if (t >= bangunDepan && fase !== 'bubar') {
+      if (cacheBasi) {
+        kanvasDiam.width = kanvas.width; kanvasDiam.height = kanvas.height;
+        const cc = kanvasDiam.getContext('2d'); cc.setTransform(kanvas.width / w, 0, 0, kanvas.height / h, 0, 0); let wr = '';
+        for (const b of butir) { if (b.warna !== wr) { wr = b.warna; cc.fillStyle = wr; } const r = b.kecil && fase === 'logo' ? .62 : b.r; cc.globalAlpha = b.tx == null ? .5 : .94; cc.fillRect(b.x - r, b.y - r, r * 2, r * 2); }
+        cacheBasi = false;
+      }
+      if (!diamTampil) { kanvasDiam.style.visibility = 'visible'; diamTampil = true; }
+      requestAnimationFrame(gambar); return;
+    }
+    if (diamTampil) { kanvasDiam.style.visibility = 'hidden'; diamTampil = false; }
+    cacheBasi = true; let wrAktif = '';
     for (const b of butir) {
       if (b.tx != null && umur > b.tunda) { const dx = b.tx - b.x, dy = b.ty - b.y; b.vx += dx * .012 - dy * .002; b.vy += dy * .012 + dx * .002; }
       else { b.vx += (Math.random() - .5) * .12; b.vy += -.02 + (Math.random() - .5) * .1; if (b.y < -20) { b.y = h + 10; b.x = Math.random() * w; } }
@@ -418,17 +456,17 @@ $$('[data-salin]').forEach((b) => b.addEventListener('click', async () => {
       b.vx *= .86; b.vy *= .86; b.x += b.vx; b.y += b.vy; b.kedip += .08;
       c.globalAlpha = (.88 + Math.sin(b.kedip) * .12) * (b.tx == null ? .55 : 1);
       const r = b.kecil && fase === 'logo' ? .62 : b.r;
-      c.fillStyle = b.warna; c.fillRect(b.x - r, b.y - r, r * 2, r * 2);
+      if (b.warna !== wrAktif) { wrAktif = b.warna; c.fillStyle = wrAktif; } c.fillRect(b.x - r, b.y - r, r * 2, r * 2);
     }
     c.globalAlpha = 1;
     requestAnimationFrame(gambar);
   };
-  hero.addEventListener('pointermove', (e) => { const k = kanvas.getBoundingClientRect(); px = e.clientX - k.left; py = e.clientY - k.top; });
+  hero.addEventListener('pointermove', (e) => { const k = kanvas.getBoundingClientRect(); px = e.clientX - k.left; py = e.clientY - k.top; bangun(true, true, 1200); });
   hero.addEventListener('pointerleave', () => { px = py = -999; });
   hero.addEventListener('click', (e) => { if (!e.target.closest('a, button, input, .hero__ixar, .jelajah__ixar')) window.R9Hero.gantiLatar(e.pageX, e.pageY); });
   hero.addEventListener('pointerup', (e) => { if (e.pointerType !== 'mouse') px = py = -999; });
   document.addEventListener('r9:tema', () => {
-    terang = temaSekarang() === 'terang'; butir.forEach((b) => { b.warna = pilihWarna(); });
+    terang = temaSekarang() === 'terang'; butir.forEach((b) => { b.warna = pilihWarna(); }); butir.sort((a, b) => (a.warna < b.warna ? -1 : 1)); bangun(true, true, 600);
     latar.forEach((b) => { b.warna = undi(warnaLatar()); }); latar.sort((a, b) => (a.warna < b.warna ? -1 : a.warna > b.warna ? 1 : 0));
   });
   document.addEventListener('r9:bahasa', () => { if (w && h) ukur(); });
@@ -1321,7 +1359,7 @@ const POSE_IXAR_ROLE = {
 // ---------- state menu 3 tingkat & sinkronisasi live ----------
 let DATA = null;
 let newsTampil = 6;
-let kategoriTerpilih = null; // null | 'aktif' | 'nonaktif' | 'management' (Diklik dulu baru muncul daftar tim/divisi!)
+let kategoriTerpilih = 'aktif'; // null | 'aktif' | 'nonaktif' | 'management' (Diklik dulu baru muncul daftar tim/divisi!)
 let timTerpilih = null;      // null | string nama tim/divisi (Diklik dulu baru muncul daftar pemain/anggota!)
 
 // 5 Divisi Resmi di bawah Management (плюс bisa ditambah divisi baru lewat Admin Panel)
@@ -1597,7 +1635,7 @@ function gambarData() {
     idManagement.add(kunci);
     return true;
   });
-  const anggotaAktifTotal = [...aktif, ...management];
+  const anggotaAktifTotal = [...aktif]; // Management punya bagian sendiri
   const hitungNegara = {};
   anggotaAktifTotal.forEach((p) => {
     const neg = (p.negara || 'ID').toUpperCase();
@@ -1662,7 +1700,8 @@ function gambarData() {
           ? grupManagement
           : grupNonaktif;
       const daftarNamaTim = [...mapSekarang.keys()];
-      if (timTerpilih && !mapSekarang.has(timTerpilih)) timTerpilih = null;
+      // langsung tampilkan tim pertama (gak perlu klik dulu)
+      if (!timTerpilih || !mapSekarang.has(timTerpilih)) timTerpilih = daftarNamaTim[0] || null;
 
       elTimWadah.hidden = false;
       if (!daftarNamaTim.length) {
@@ -1761,13 +1800,7 @@ $('[data-roster-kategori]')?.addEventListener('click', (e) => {
   const b = e.target.closest('[data-pilih-kategori]');
   if (!b) return;
   const kat = b.dataset.pilihKategori;
-  if (kategoriTerpilih === kat) {
-    kategoriTerpilih = null;
-    timTerpilih = null;
-  } else {
-    kategoriTerpilih = kat;
-    timTerpilih = null;
-  }
+  if (kategoriTerpilih !== kat) { kategoriTerpilih = kat; timTerpilih = null; }
   gambarData();
 });
 
@@ -1776,7 +1809,7 @@ $('[data-roster-tim-wadah]')?.addEventListener('click', (e) => {
   const b = e.target.closest('[data-pilih-tim]');
   if (!b) return;
   const tim = b.dataset.pilihTim;
-  timTerpilih = timTerpilih === tim ? null : tim;
+  timTerpilih = tim;
   gambarData();
 });
 

@@ -148,7 +148,7 @@ window.R9_KAMUS = {
 
   // ---------- roster (3-Level Drilldown: Active Squads, Inactive Squads, & Management) ----------
   'roster.judul': { id: 'Tim <span class="aksen-merah">Kami</span>', en: 'Our <span class="aksen-merah">Team</span>', zh: '我们的<span class="aksen-merah">团队</span>' },
-  'roster.sub': { id: 'Pilih kategori (Management, Active Squads, atau Inactive Squads), lalu klik nama tim/divisi untuk melihat daftar anggota.', en: 'Select a category (Management, Active Squads, or Inactive Squads), then click a team or division to view its members.', zh: '选择类别（现役战队、历史荣誉阵容或管理层部门），再点击具体战队或部门名称查看成员。' },
+  'roster.sub': { id: 'Pemain yang membawa panji Reign 9 di Honor of Kings.', en: 'The players carrying the Reign 9 banner in Honor of Kings.', zh: '代表 Reign 9 出战王者荣耀国际版的选手。' },
   'roster.wilayah': { id: 'Skuad lintas negara', en: 'Multinational squad', zh: '跨国阵容' },
   'roster.wilayahIsi': { id: 'Berawal dari Indonesia, kini Reign 9 menyatukan talenta terbaik dari berbagai negara Asia dalam satu bendera kompetitif.', en: 'Starting in Indonesia, Reign 9 now unites top Asian talents under one competitive banner.', zh: '从印度尼西亚起步，Reign 9 现已将亚洲多国顶尖人才汇聚在同一面竞技旗帜之下。' },
   'roster.pemain': { id: 'anggota', en: 'members', zh: '名成员' },
@@ -431,6 +431,7 @@ Object.assign(window.R9_KAMUS, {
   'mgmt.6.2.tugas': { id: 'Jersey R9 (produksi, harga, pesanan), aktifkan slot jersey.', en: 'R9 jersey (production, pricing, orders); activates the jersey slot.', zh: 'R9 球衣（生产、定价、订单），开启球衣板块。' },
   'mgmt.6.3.peran': { id: 'Kemitraan', en: 'Partnerships', zh: '合作伙伴' },
   'mgmt.6.3.tugas': { id: 'Kerja sama guild/EO/brand, laporan bulanan.', en: 'Collaborations with guilds, event organisers and brands; monthly report.', zh: '与公会、赛事主办方及品牌合作，每月提交报告。' },
+  'mgmt.segera': { id: 'Segera diumumkan', en: 'To be announced', zh: '即将公布' },
   'creator.judul': { id: 'Content <span class="aksen-merah">Creator Hub</span>', en: 'Content <span class="aksen-merah">Creator Hub</span>', zh: '内容<span class="aksen-merah">创作者中心</span>' },
   'creator.sub': { id: 'Video TikTok dari member Reign 9, dipilih tim Media.', en: 'TikTok videos from Reign 9 members, picked by our Media team.', zh: 'Reign 9 会员的 TikTok 视频，由媒体团队精选。' },
   'creator.putar': { id: 'Putar video dari {ign}', en: 'Play video by {ign}', zh: '播放 {ign} 的视频' },

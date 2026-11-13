@@ -191,7 +191,8 @@
         const id = `bara-${Math.random().toString(36).slice(2, 8)}`, defs = buat('defs', {}), pola = buat('pattern', { id, width: 34, height: 34, patternUnits: 'userSpaceOnUse' }, defs);
         [[0, 0, 1], [17, 0, 2], [8, 17, 3], [25, 17, 1], [0, 17, 4], [17, 17, 2], [8, 0, 3], [25, 0, 4]].forEach(([x, y, k], i) => {
           const r = buat('rect', { x: x + 2, y: y + 2, width: 11, height: 11, style: `fill:var(--bara-${k})` }, pola);
-          if (gerakBoleh) buat('animate', { attributeName: 'opacity', values: '1;.35;1', dur: `${(.9 + (i * .37) % 1.3).toFixed(2)}s`, repeatCount: 'indefinite', begin: `${(i * .23).toFixed(2)}s` }, r);
+          // butir diam (tanpa kedip SMIL): kedip per-butir bikin seluruh IXAR digambar ulang tiap frame → patah-patah di HP
+          if (k % 2 === 0) r.setAttribute('opacity', '.8');
         });
         s.prepend(defs);
         this.badan.setAttribute('fill', `url(#${id})`); this.badan.setAttribute('stroke', `url(#${id})`);
@@ -372,6 +373,8 @@
   document.querySelectorAll('[data-ixar]').forEach((el) => window.IXAR.pasang(el));
   addEventListener('pointermove', (e) => keliatan.forEach((x) => x.lihat(e.clientX, e.clientY)), { passive: true });
   addEventListener('pointerdown', (e) => keliatan.forEach((x) => x.lihat(e.clientX, e.clientY)), { passive: true });
-  const jalan = (t) => { keliatan.forEach((x) => x.langkah(t)); requestAnimationFrame(jalan); };
+  // 30 langkah/detik: cukup halus buat maskot, separuh beban gambar ulang SVG (yang lagi diseret tetap tiap frame)
+  let ganjil = false;
+  const jalan = (t) => { ganjil = !ganjil; keliatan.forEach((x) => { if (ganjil || x.sedangDiseret) x.langkah(t); }); requestAnimationFrame(jalan); };
   requestAnimationFrame(jalan);
 })();

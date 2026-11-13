@@ -31,6 +31,7 @@
     }
   }
   // Management: nama & foto pengurus per divisi (jobdesc cuma di admin)
+  const DIVISI_MIRIP = /^(media and publication|media & publication|hr & community|hr and community|secretariat|bizdev|business development|competitive( division)?|community leader)$/i;
   const DIVISI_WEB = [['Community Leader', 1], ['Competitive', 2], ['Media and Publication', 3], ['HR & Community', 4], ['Secretariat', 5], ['BizDev', 6]];
   function management(d) {
     const w = $('[data-management]'); if (!w) return;
@@ -40,18 +41,19 @@
       const k = /community leader/i.test(`${p.kelompok} ${p.role}`) ? 'Community Leader' : namaTimPemain(p, 'management');
       if (!grup.has(k)) grup.set(k, []); grup.get(k).push(p);
     }
-    const urut = [...DIVISI_WEB.map(([k]) => k).filter((k) => grup.has(k)), ...[...grup.keys()].filter((k) => !DIVISI_WEB.some(([x]) => x === k))];
+    // 6 divisi resmi selalu tampil sesuai struktur (Community Leader paling atas); yang belum ada orangnya ditandai 'segera diumumkan'
+    const urut = [...DIVISI_WEB.map(([k]) => k), ...[...grup.keys()].filter((k) => !DIVISI_WEB.some(([x]) => x === k))];
     w.closest('section').hidden = !urut.length;
     let n = 0;
     w.innerHTML = urut.map((k, i) => {
       const no = DIVISI_WEB.find(([x]) => x === k)?.[1], nama = no ? R9.t(`mgmt.${no}.nama`) : (R9.t(`kelompok.${k}`) !== `kelompok.${k}` ? R9.t(`kelompok.${k}`) : k);
-      const daftar = grup.get(k);
+      const daftar = grup.get(k) || [];
       return `<section class="mgmt__divisi"><div class="mgmt__kepala"><span class="mgmt__no">${String(i + 1).padStart(2, '0')}</span><h3 class="mgmt__nama">${esc(nama)}</h3>
-        <span class="mgmt__jumlah">${daftar.length} ${esc(R9.t('roster.pemain'))}</span></div>
-        <ul class="mgmt__orang">${daftar.map((p) => `<li class="orang" style="--i:${n++}">
+        <span class="mgmt__jumlah">${daftar.length ? `${daftar.length} ${esc(R9.t('roster.pemain'))}` : esc(R9.t('mgmt.segera'))}</span></div>
+        <ul class="mgmt__orang">${daftar.length ? '' : `<li class="orang orang--kosong" style="--i:${n++}"><div class="orang__bingkai"><div class="orang__ixar"><span data-ixar="diam" data-ixar-interaktif aria-hidden="true"></span></div></div><span class="orang__nama">${esc(R9.t('mgmt.segera'))}</span></li>`}${daftar.map((p) => `<li class="orang" style="--i:${n++}">
           <div class="orang__bingkai">${p.foto ? `<img src="${esc(urlMedia(p.foto))}" alt="${esc(p.nickname)}" loading="lazy" width="400" height="500">`
             : `<div class="orang__ixar"><span data-ixar="manajer" data-ixar-interaktif aria-hidden="true"></span></div>`}</div>
-          <span class="orang__nama">${esc(p.nickname)}</span>${p.role ? `<span class="orang__peran">${esc(R9.t(`role.${p.role}`) !== `role.${p.role}` ? R9.t(`role.${p.role}`) : p.role)}</span>` : ''}</li>`).join('')}</ul></section>`;
+          <span class="orang__nama">${esc(p.nickname)}</span>${p.role && !DIVISI_MIRIP.test(p.role) ? `<span class="orang__peran">${esc(R9.t(`role.${p.role}`) !== `role.${p.role}` ? R9.t(`role.${p.role}`) : p.role)}</span>` : ''}</li>`).join('')}</ul></section>`;
     }).join('');
     // foto gagal dimuat → IXAR (rasio tetap 4:5)
     $$('.orang__bingkai img', w).forEach((img) => img.addEventListener('error', () => { img.outerHTML = '<div class="orang__ixar"><span data-ixar="manajer" data-ixar-interaktif aria-hidden="true"></span></div>'; }, { once: true }));
@@ -109,16 +111,19 @@
     const v = d.creator || [];
     $('[data-creator-kosong]').hidden = v.length > 0;
     w.innerHTML = v.map((c) => `<div class="creator-kartu">
-      <button type="button" class="creator-kartu__putar" data-tiktok="${esc(c.vid)}" aria-label="${esc(ganti(R9.t('creator.putar'), { ign: c.ign }))}">
-        ${c.foto ? `<img src="${esc(urlMedia(c.foto))}" alt="" loading="lazy" width="320" height="400">` : ''}
+      <button type="button" class="creator-kartu__putar creator-kartu__putar--${c.jenis === 'youtube' ? 'yt' : 'tt'}" data-video="${c.jenis === 'youtube' ? 'youtube' : 'tiktok'}:${esc(c.vid)}" aria-label="${esc(ganti(R9.t('creator.putar'), { ign: c.ign }))}">
+        ${c.jenis === 'youtube' && /^[\w-]{11}$/.test(c.vid) ? `<img src="https://i.ytimg.com/vi/${c.vid}/hqdefault.jpg" alt="" loading="lazy" width="480" height="360">` : c.foto ? `<img src="${esc(urlMedia(c.foto))}" alt="" loading="lazy" width="320" height="400">` : ''}
+        <span class="creator-kartu__label">${c.jenis === 'youtube' ? 'YouTube' : 'TikTok'}</span>
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></button>
       <span class="creator-kartu__nama">${esc(c.ign)}</span></div>`).join('');
   }
   document.addEventListener('click', (e) => {
-    const b = e.target.closest('[data-tiktok]'); if (!b || !/^\d{8,25}$/.test(b.dataset.tiktok)) return;
+    const b = e.target.closest('[data-video]'); if (!b) return;
+    const [jenis, id] = b.dataset.video.split(':'); if (!/^[\w-]{8,25}$/.test(id)) return;
     const f = document.createElement('iframe');
-    f.src = `https://www.tiktok.com/embed/v2/${b.dataset.tiktok}`; f.title = b.getAttribute('aria-label') || 'TikTok';
-    f.allow = 'encrypted-media; fullscreen'; f.loading = 'lazy'; f.className = 'creator-kartu__video';
+    f.src = jenis === 'youtube' ? `https://www.youtube-nocookie.com/embed/${id}?autoplay=1` : `https://www.tiktok.com/embed/v2/${id}`;
+    f.title = b.getAttribute('aria-label') || 'Video'; f.allow = 'encrypted-media; fullscreen; picture-in-picture'; f.allowFullscreen = true; f.loading = 'lazy';
+    f.className = `creator-kartu__video creator-kartu__video--${jenis}`;
     b.replaceWith(f);
   });
   function galeri(d) {

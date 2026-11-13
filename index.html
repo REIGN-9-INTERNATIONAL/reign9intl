@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-VEvgJRz/b//qv5WfS8NdVDjYWVtd0/DS3/UY55HoEo4='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://admin.reign9.site; font-src 'self'; connect-src 'self' https://admin.reign9.site; media-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self' https://admin.reign9.site; frame-src https://www.tiktok.com; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-VEvgJRz/b//qv5WfS8NdVDjYWVtd0/DS3/UY55HoEo4='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://admin.reign9.site https://i.ytimg.com; font-src 'self'; connect-src 'self' https://admin.reign9.site; media-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self' https://admin.reign9.site; frame-src https://www.tiktok.com https://www.youtube-nocookie.com; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Reign 9 International · Honor of Kings Esports</title>
@@ -21,8 +21,8 @@
 <link rel="icon" href="gambar/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="font/Reign9Display-Regular.otf" as="font" type="font/otf" crossorigin>
 <link rel="preload" href="font/oxanium-500.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="font/font.css?v=2611130800">
-<link rel="stylesheet" href="gaya.css?v=2611130800">
+<link rel="stylesheet" href="font/font.css?v=2611130841">
+<link rel="stylesheet" href="gaya.css?v=2611130841">
 </head>
 <body>
 <!-- Sprite SVG Logo disematkan langsung agar dibuka lewat file:// (klik 2x index.html) tetap jalan 100% tanpa kena blokir CORS browser -->
@@ -34,29 +34,39 @@
     <svg viewBox="0 0 428.51 163.23" aria-hidden="true"><use href="#datar"/></svg>
   </a>
   <nav class="atas__menu" id="menu" aria-label="Menu">
-    <a href="#rosters" data-i18n="menu.rosters">Rosters</a>
-    <a href="#management" data-i18n="menu.management">Management</a>
-    <a href="#about" data-i18n="menu.about">About</a>
-    <a href="#news" data-i18n="menu.news">News</a>
     <a href="#schedule" data-i18n="menu.schedule">Schedule</a>
-    <a href="#banner" data-i18n="menu.banner">Banner</a>
+    <a href="#news" data-i18n="menu.news">News</a>
+    <a href="#rosters" data-i18n="menu.rosters">Team</a>
     <a href="#creator" data-i18n="menu.creator">Creator Hub</a>
     <a href="#shop" data-i18n="menu.shop">Shop</a>
-    <a href="#contact" class="atas__kontak" data-i18n="menu.contact">Contact Us</a>
-    <a href="https://user.reign9.site/#daftar" class="atas__akun-menu atas__akun-hp" data-akun-link data-i18n="akun.daftar">Daftar</a>
-    <a href="https://user.reign9.site/" class="atas__akun-menu" data-akun-link data-i18n="akun.masuk">Login</a>
+    <a href="#management" class="menu-ekstra" data-i18n="menu.management">Management</a>
+    <a href="#about" class="menu-ekstra" data-i18n="menu.about">About</a>
+    <a href="#banner" class="menu-ekstra" data-i18n="menu.banner">Banner</a>
+    <a href="#contact" class="menu-ekstra" data-i18n="menu.contact">Contact Us</a>
+    <div class="menu-hp">
+      <a href="https://user.reign9.site/" class="menu-hp__masuk" data-akun-link data-i18n="akun.masuk">Login</a>
+      <div class="bahasa" role="group" data-i18n-attr="aria-label:bahasa.pilih" aria-label="Pilih bahasa">
+        <button type="button" data-bahasa="id" aria-pressed="true">ID</button>
+        <button type="button" data-bahasa="en" aria-pressed="false">EN</button>
+        <button type="button" data-bahasa="zh" aria-pressed="false" lang="zh-CN">中文</button>
+      </div>
+      <button class="tema" type="button" data-i18n-attr="aria-label:tema.ganti" aria-label="Ganti mode terang/gelap">
+        <svg class="tema__matahari" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M4.6 19.4l2.1-2.1M17.3 6.7l2.1-2.1" stroke="currentColor" stroke-width="2.2"/></svg>
+        <svg class="tema__bulan" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z" fill="currentColor"/></svg>
+      </button>
+    </div>
   </nav>
   <div class="atas__alat">
-    <a class="atas__daftar" href="https://user.reign9.site/#daftar" data-akun-link data-i18n="akun.daftar" data-i18n-attr="title:akun.label">Daftar</a>
-    <div class="bahasa" role="group" data-i18n-attr="aria-label:bahasa.pilih" aria-label="Pilih bahasa">
-      <button type="button" data-bahasa="id" aria-pressed="true">ID</button>
-      <button type="button" data-bahasa="en" aria-pressed="false">EN</button>
-      <button type="button" data-bahasa="zh" aria-pressed="false" lang="zh-CN">中文</button>
+    <div class="pilih-bhs">
+      <button type="button" class="pilih-bhs__tombol" aria-expanded="false" data-i18n-attr="aria-label:bahasa.pilih" aria-label="Pilih bahasa"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3 12h18M12 3c2.5 2.7 2.5 15.3 0 18M12 3c-2.5 2.7-2.5 15.3 0 18" fill="none" stroke="currentColor" stroke-width="1.8"/></svg><span data-bahasa-kini>ID</span></button>
+      <div class="pilih-bhs__daftar" role="group" hidden>
+        <button type="button" data-bahasa="id" aria-pressed="true">Bahasa Indonesia</button>
+        <button type="button" data-bahasa="en" aria-pressed="false">English</button>
+        <button type="button" data-bahasa="zh" aria-pressed="false" lang="zh-CN">简体中文</button>
+      </div>
     </div>
-    <button class="tema" type="button" data-i18n-attr="aria-label:tema.ganti" aria-label="Ganti mode terang/gelap">
-      <svg class="tema__matahari" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M4.6 19.4l2.1-2.1M17.3 6.7l2.1-2.1" stroke="currentColor" stroke-width="2.2"/></svg>
-      <svg class="tema__bulan" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z" fill="currentColor"/></svg>
-    </button>
+    <a class="atas__masuk" href="https://user.reign9.site/" data-akun-link data-i18n="akun.masuk">Login</a>
+    <a class="atas__daftar" href="https://user.reign9.site/#daftar" data-akun-link data-i18n="akun.daftar" data-i18n-attr="title:akun.label">Daftar</a>
     <button class="atas__buka" type="button" aria-expanded="false" aria-controls="menu">
       <span class="sr" data-i18n="menu.buka">Buka menu</span><i></i><i></i><i></i>
     </button>
@@ -72,7 +82,6 @@
 </div>
 
 <main id="isi">
-  <!-- ========== layar pembuka ========== -->
   <section class="hero" aria-labelledby="judul-hero">
     <canvas class="hero__bara" aria-hidden="true"></canvas>
     <!-- IXAR khusus penjaga dashboard utama (meninju WELCOME TO OUR REIGN & logo R9) -->
@@ -110,7 +119,142 @@
     </div>
   </div>
 
-  <!-- ========== about ========== -->
+  <section class="bagian jadwal" id="schedule" aria-labelledby="judul-jadwal">
+    <div class="kepala-bagian">
+      <h2 id="judul-jadwal" class="judul" data-i18n-html="jadwal.judul">Match <span class="aksen-merah" data-i18n="tambahan.Schedule">Schedule</span></h2>
+      <p data-i18n="jadwal.sub">Turnamen, hasil scrim, dan acara komunitas R9.</p>
+    </div>
+    <div class="jadwal__isi">
+      <div>
+        <h3 class="sub-judul" data-i18n="jadwal.akan">Akan datang & Live</h3>
+        <ol class="daftar-event" data-event-akan></ol>
+        <p class="kosong" data-event-kosong data-i18n="jadwal.kosong">Belum ada jadwal.</p>
+      </div>
+      <div>
+        <h3 class="sub-judul" data-i18n="prestasi.judul">Riwayat prestasi</h3>
+        <p class="prestasi-total" data-prestasi-total hidden><span data-i18n="prestasi.total">Total hadiah</span> <b data-prestasi-total-angka></b></p>
+        <ol class="daftar-prestasi" data-prestasi></ol>
+        <h3 class="sub-judul sub-judul--jarak" data-i18n="jadwal.lewat" data-event-lewat-judul hidden>Riwayat pertandingan & event</h3>
+        <ol class="daftar-event daftar-event--lewat" data-event-lewat></ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="bagian news" id="news" aria-labelledby="judul-news">
+    <div class="kepala-bagian">
+      <h2 id="judul-news" class="judul" data-i18n-html="news.judul">Latest <span class="aksen-merah" data-i18n="tambahan.News">News</span></h2>
+      <p data-i18n="news.sub">Kabar terbaru dari Reign 9 International.</p>
+    </div>
+    <div class="news__grid" data-news></div>
+    <p class="kosong" data-news-kosong data-i18n="news.kosong">Belum ada berita.</p>
+    <button class="tombol tombol--garis" type="button" data-news-lebih hidden data-i18n="news.lebih">Lihat berita lama</button>
+  </section>
+  <dialog class="baca" data-baca>
+    <article>
+      <div class="baca__visual" data-baca-visual hidden></div>
+      <img class="baca__gambar" alt="" hidden>
+      <div class="baca__kepala">
+        <span class="baca__lencana" data-baca-lencana hidden></span>
+        <time class="baca__tanggal"></time>
+      </div>
+      <h3 class="baca__judul"></h3>
+      <div class="baca__meta" data-baca-meta hidden></div>
+      <div class="baca__isi"></div>
+      <form method="dialog"><button class="tombol tombol--utama" data-i18n="news.tutup">Tutup</button></form>
+    </article>
+  </dialog>
+
+  <section class="bagian roster" id="rosters" aria-labelledby="judul-roster">
+    <div class="kepala-bagian">
+      <h2 id="judul-roster" class="judul" data-i18n-html="roster.judul">Our <span class="aksen-merah" data-i18n="tambahan.Rosters">Rosters</span></h2>
+      <p data-i18n="roster.sub">Pemain, pelatih, dan staf yang membawa panji Reign 9 International.</p>
+    </div>
+
+    <!-- Kotak Statistik Wilayah & Bendera Dinamis -->
+    <div class="wilayah">
+      <div class="wilayah__bendera" data-wilayah-bendera aria-hidden="true"></div>
+      <div>
+        <h3 data-i18n="roster.wilayah">Skuad lintas negara</h3>
+        <p data-i18n="roster.wilayahIsi"></p>
+        <div class="wilayah__hitung" data-hitung-negara></div>
+      </div>
+    </div>
+
+    <!-- Tingkat 1: Pilihan Kategori Skuad (Active Squads vs Inactive Squads / History) -->
+    <div class="roster__kategori" data-roster-kategori role="group" aria-label="Kategori Skuad"></div>
+
+    <!-- Tingkat 2: Pilihan Nama Tim / Divisi (Muncul setelah kategori diklik) -->
+    <div class="roster__tim-wadah" data-roster-tim-wadah hidden></div>
+
+    <!-- Tingkat 3: Kartu Pemain, Coach, Analyst & Manager (Muncul setelah nama tim diklik) -->
+    <div class="roster__wadah" data-roster-wadah hidden></div>
+
+    <!-- Petunjuk interaktif bertahap -->
+    <p class="kosong" data-roster-petunjuk data-i18n="roster.pilihKategori">👆 Klik kategori skuad di atas (Active Squads, Inactive Squads, atau Management) untuk membuka daftar tim/divisi.</p>
+    <p class="kosong" data-roster-kosong data-i18n="roster.kosong" hidden>Roster lagi disiapin. Pantau terus ya.</p>
+  </section>
+
+  <section class="bagian management" id="management" aria-labelledby="judul-management">
+    <div class="kepala-bagian">
+      <h2 id="judul-management" class="judul" data-i18n-html="mgmt.judul">Struktur <span class="aksen-merah">Management</span></h2>
+      <p data-i18n="mgmt.sub">Orang-orang di balik Reign 9, dari tiap divisi.</p>
+    </div>
+    <div class="mgmt" data-management></div>
+  </section>
+
+  <section class="bagian creator" id="creator" aria-labelledby="judul-creator">
+    <div class="kepala-bagian">
+      <h2 id="judul-creator" class="judul" data-i18n-html="creator.judul">Content <span class="aksen-merah">Creator Hub</span></h2>
+      <p data-i18n="creator.sub">Video TikTok dari member Reign 9.</p>
+    </div>
+    <div class="creator__grid" data-creator></div>
+    <p class="kosong" data-creator-kosong data-i18n="creator.kosong" hidden>Belum ada video.</p>
+    <a class="tombol tombol--garis" href="https://user.reign9.site/#tiktok" data-akun-link data-i18n="creator.kirim">Kirim videomu</a>
+  </section>
+  <section class="bagian" id="shop" aria-labelledby="judul-shop">
+    <div class="kepala-bagian">
+      <h2 class="judul" data-i18n-html="sponsor.judul">Mitra & <span class="aksen-merah" data-i18n="tambahan.Sponsorship">Sponsorship</span></h2>
+      <p data-i18n="sponsor.sub"></p>
+    </div>
+    <div class="sponsor-logo" data-sponsor hidden><p class="sponsor-logo__judul" data-i18n="sponsor.resmi">Didukung oleh</p><div class="sponsor-logo__baris" data-sponsor-baris></div></div>
+    <div class="sponsor-grid">
+      <div class="sponsor-slot">
+        <strong data-i18n="tambahan.OFFICIALTITLEPARTNER">OFFICIAL TITLE PARTNER</strong>
+        <span data-i18n="tambahan.SlotTerbukaJerseyDadaDepanHeader">Slot Terbuka · Jersey Dada Depan & Header</span>
+        <a class="tombol tombol--kecil" href="#contact" data-i18n="sponsor.cta">Ajukan Kerja Sama</a>
+      </div>
+      <div class="sponsor-slot">
+        <strong data-i18n="tambahan.GAMINGGEARPERIPHERAL">GAMING GEAR / PERIPHERAL</strong>
+        <span data-i18n="tambahan.SlotTerbukaLenganJerseyStreamOverlay">Slot Terbuka · Lengan Jersey & Stream Overlay</span>
+        <a class="tombol tombol--kecil" href="#contact" data-i18n="sponsor.cta">Ajukan Kerja Sama</a>
+      </div>
+      <div class="sponsor-slot">
+        <strong data-i18n="tambahan.COMMUNITYTOPUPPARTNER">COMMUNITY & TOP UP PARTNER</strong>
+        <span data-i18n="tambahan.SlotTerbukaEventTurnamenDiscordR9">Slot Terbuka · Event Turnamen & Discord R9</span>
+        <a class="tombol tombol--kecil" href="#contact" data-i18n="sponsor.cta">Ajukan Kerja Sama</a>
+      </div>
+    </div>
+
+    <div class="jersey" id="jersey" data-jersey hidden>
+      <img class="jersey__foto" data-jersey-foto alt="" loading="lazy" width="480" height="600" hidden>
+      <div class="jersey__info">
+        <h2 class="judul" data-i18n-html="jersey.judul">Jersey <span class="aksen-merah">R9</span></h2>
+        <p class="jersey__nama" data-jersey-nama></p>
+        <p class="jersey__harga" data-jersey-harga></p>
+        <p class="jersey__catatan" data-jersey-catatan></p>
+        <a class="tombol tombol--utama" data-jersey-link target="_blank" rel="noopener" data-i18n="jersey.pesan" hidden>Pesan sekarang</a>
+      </div>
+    </div>
+    <div class="shop">
+      <svg class="shop__logo" viewBox="0 0 105.63 183.98" aria-hidden="true"><use href="#simbol"/></svg>
+      <div>
+        <h2 id="judul-shop" class="judul" data-i18n-html="shop.judul">R9 <span class="aksen-merah" data-i18n="tambahan.Shop">Shop</span></h2>
+        <p data-i18n="shop.isi"></p>
+        <p class="shop__segera" data-i18n="shop.segera">Segera hadir</p>
+      </div>
+    </div>
+  </section>
+
   <section class="bagian about" id="about" aria-labelledby="judul-about">
     <div class="about__kiri">
       <h2 id="judul-about" class="judul" data-i18n-html="about.judul">Together<br>we reign</h2>
@@ -147,7 +291,6 @@
     </div>
   </section>
 
-  <!-- ========== ethos ========== -->
   <section class="bagian ethos" aria-labelledby="judul-ethos">
     <h2 id="judul-ethos" class="judul" data-i18n-html="ethos.judul">Reign 9 <span class="aksen-merah" data-i18n="tambahan.Ethos">Ethos</span></h2>
     <p class="ethos__isi" data-i18n="ethos.isi"></p>
@@ -173,7 +316,6 @@
     </div>
   </section>
 
-  <!-- ========== IXAR (Modern Interactive Command Deck) ========== -->
   <section class="bagian kenal" id="ixar" aria-labelledby="judul-ixar">
     <div class="kenal__teks">
       <h2 id="judul-ixar" class="judul" data-i18n-html="ixar.judul">Kenalan sama <span class="aksen-merah" data-i18n="tambahan.IXAR">IXAR</span></h2>
@@ -221,108 +363,11 @@
     </div>
   </section>
 
-  <!-- ========== rosters (Menu 3-Tingkat: Active Squads / Inactive Squads / Management -> Tim / Divisi -> Anggota) ========== -->
-  <section class="bagian roster" id="rosters" aria-labelledby="judul-roster">
-    <div class="kepala-bagian">
-      <h2 id="judul-roster" class="judul" data-i18n-html="roster.judul">Our <span class="aksen-merah" data-i18n="tambahan.Rosters">Rosters</span></h2>
-      <p data-i18n="roster.sub">Pemain, pelatih, dan staf yang membawa panji Reign 9 International.</p>
-    </div>
-
-    <!-- Kotak Statistik Wilayah & Bendera Dinamis -->
-    <div class="wilayah">
-      <div class="wilayah__bendera" data-wilayah-bendera aria-hidden="true"></div>
-      <div>
-        <h3 data-i18n="roster.wilayah">Skuad lintas negara</h3>
-        <p data-i18n="roster.wilayahIsi"></p>
-        <div class="wilayah__hitung" data-hitung-negara></div>
-      </div>
-    </div>
-
-    <!-- Tingkat 1: Pilihan Kategori Skuad (Active Squads vs Inactive Squads / History) -->
-    <div class="roster__kategori" data-roster-kategori role="group" aria-label="Kategori Skuad"></div>
-
-    <!-- Tingkat 2: Pilihan Nama Tim / Divisi (Muncul setelah kategori diklik) -->
-    <div class="roster__tim-wadah" data-roster-tim-wadah hidden></div>
-
-    <!-- Tingkat 3: Kartu Pemain, Coach, Analyst & Manager (Muncul setelah nama tim diklik) -->
-    <div class="roster__wadah" data-roster-wadah hidden></div>
-
-    <!-- Petunjuk interaktif bertahap -->
-    <p class="kosong" data-roster-petunjuk data-i18n="roster.pilihKategori">👆 Klik kategori skuad di atas (Active Squads, Inactive Squads, atau Management) untuk membuka daftar tim/divisi.</p>
-    <p class="kosong" data-roster-kosong data-i18n="roster.kosong" hidden>Roster lagi disiapin. Pantau terus ya.</p>
-  </section>
-
-  <!-- ========== schedule ========== -->
-  <section class="bagian management" id="management" aria-labelledby="judul-management">
-    <div class="kepala-bagian">
-      <h2 id="judul-management" class="judul" data-i18n-html="mgmt.judul">Struktur <span class="aksen-merah">Management</span></h2>
-      <p data-i18n="mgmt.sub">Orang-orang di balik Reign 9, dari tiap divisi.</p>
-    </div>
-    <div class="mgmt" data-management></div>
-  </section>
-
-  <section class="bagian jadwal" id="schedule" aria-labelledby="judul-jadwal">
-    <div class="kepala-bagian">
-      <h2 id="judul-jadwal" class="judul" data-i18n-html="jadwal.judul">Match <span class="aksen-merah" data-i18n="tambahan.Schedule">Schedule</span></h2>
-      <p data-i18n="jadwal.sub">Turnamen, hasil scrim, dan acara komunitas R9.</p>
-    </div>
-    <div class="jadwal__isi">
-      <div>
-        <h3 class="sub-judul" data-i18n="jadwal.akan">Akan datang & Live</h3>
-        <ol class="daftar-event" data-event-akan></ol>
-        <p class="kosong" data-event-kosong data-i18n="jadwal.kosong">Belum ada jadwal.</p>
-      </div>
-      <div>
-        <h3 class="sub-judul" data-i18n="prestasi.judul">Riwayat prestasi</h3>
-        <p class="prestasi-total" data-prestasi-total hidden><span data-i18n="prestasi.total">Total hadiah</span> <b data-prestasi-total-angka></b></p>
-        <ol class="daftar-prestasi" data-prestasi></ol>
-        <h3 class="sub-judul sub-judul--jarak" data-i18n="jadwal.lewat" data-event-lewat-judul hidden>Riwayat pertandingan & event</h3>
-        <ol class="daftar-event daftar-event--lewat" data-event-lewat></ol>
-      </div>
-    </div>
-  </section>
-
-  <!-- ========== news ========== -->
-  <section class="bagian news" id="news" aria-labelledby="judul-news">
-    <div class="kepala-bagian">
-      <h2 id="judul-news" class="judul" data-i18n-html="news.judul">Latest <span class="aksen-merah" data-i18n="tambahan.News">News</span></h2>
-      <p data-i18n="news.sub">Kabar terbaru dari Reign 9 International.</p>
-    </div>
-    <div class="news__grid" data-news></div>
-    <p class="kosong" data-news-kosong data-i18n="news.kosong">Belum ada berita.</p>
-    <button class="tombol tombol--garis" type="button" data-news-lebih hidden data-i18n="news.lebih">Lihat berita lama</button>
-  </section>
-  <dialog class="baca" data-baca>
-    <article>
-      <div class="baca__visual" data-baca-visual hidden></div>
-      <img class="baca__gambar" alt="" hidden>
-      <div class="baca__kepala">
-        <span class="baca__lencana" data-baca-lencana hidden></span>
-        <time class="baca__tanggal"></time>
-      </div>
-      <h3 class="baca__judul"></h3>
-      <div class="baca__meta" data-baca-meta hidden></div>
-      <div class="baca__isi"></div>
-      <form method="dialog"><button class="tombol tombol--utama" data-i18n="news.tutup">Tutup</button></form>
-    </article>
-  </dialog>
-
-  <!-- ========== creator hub & galeri ========== -->
-  <section class="bagian creator" id="creator" aria-labelledby="judul-creator">
-    <div class="kepala-bagian">
-      <h2 id="judul-creator" class="judul" data-i18n-html="creator.judul">Content <span class="aksen-merah">Creator Hub</span></h2>
-      <p data-i18n="creator.sub">Video TikTok dari member Reign 9.</p>
-    </div>
-    <div class="creator__grid" data-creator></div>
-    <p class="kosong" data-creator-kosong data-i18n="creator.kosong" hidden>Belum ada video.</p>
-    <a class="tombol tombol--garis" href="https://user.reign9.site/#tiktok" data-akun-link data-i18n="creator.kirim">Kirim videomu</a>
-  </section>
   <section class="bagian galeri" id="galeri" aria-labelledby="judul-galeri" hidden>
     <div class="kepala-bagian"><h2 id="judul-galeri" class="judul" data-i18n-html="galeri.judul"><span class="aksen-merah">Galeri</span></h2></div>
     <div class="galeri__grid" data-galeri></div>
   </section>
 
-  <!-- ========== banner ========== -->
   <section class="bagian banner" id="banner" aria-labelledby="judul-banner">
     <div class="kepala-bagian">
       <h2 id="judul-banner" class="judul" data-i18n-html="banner.judul">Bikin <span class="aksen-merah" data-i18n="tambahan.BannerKamu">Banner Kamu</span></h2>
@@ -352,7 +397,6 @@
     </div>
   </section>
 
-  <!-- ========== foto profil custom: IXAR + latar + item, persegi 1080 ========== -->
   <section class="bagian pfp" id="pfp" aria-labelledby="judul-pfp">
     <div class="kepala-bagian">
       <h2 id="judul-pfp" class="judul" data-i18n-html="pfp.judul">Bikin <span class="aksen-merah" data-i18n="tambahan.fotoprofil">foto profil</span></h2>
@@ -395,52 +439,6 @@
     <span class="pfp__studio" aria-hidden="true"><span data-ixar="diam" data-pfp-ixar></span></span>
   </section>
 
-  <!-- ========== sponsor & shop ========== -->
-  <section class="bagian" id="shop" aria-labelledby="judul-shop">
-    <div class="kepala-bagian">
-      <h2 class="judul" data-i18n-html="sponsor.judul">Mitra & <span class="aksen-merah" data-i18n="tambahan.Sponsorship">Sponsorship</span></h2>
-      <p data-i18n="sponsor.sub"></p>
-    </div>
-    <div class="sponsor-logo" data-sponsor hidden><p class="sponsor-logo__judul" data-i18n="sponsor.resmi">Didukung oleh</p><div class="sponsor-logo__baris" data-sponsor-baris></div></div>
-    <div class="sponsor-grid">
-      <div class="sponsor-slot">
-        <strong data-i18n="tambahan.OFFICIALTITLEPARTNER">OFFICIAL TITLE PARTNER</strong>
-        <span data-i18n="tambahan.SlotTerbukaJerseyDadaDepanHeader">Slot Terbuka · Jersey Dada Depan & Header</span>
-        <a class="tombol tombol--kecil" href="#contact" data-i18n="sponsor.cta">Ajukan Kerja Sama</a>
-      </div>
-      <div class="sponsor-slot">
-        <strong data-i18n="tambahan.GAMINGGEARPERIPHERAL">GAMING GEAR / PERIPHERAL</strong>
-        <span data-i18n="tambahan.SlotTerbukaLenganJerseyStreamOverlay">Slot Terbuka · Lengan Jersey & Stream Overlay</span>
-        <a class="tombol tombol--kecil" href="#contact" data-i18n="sponsor.cta">Ajukan Kerja Sama</a>
-      </div>
-      <div class="sponsor-slot">
-        <strong data-i18n="tambahan.COMMUNITYTOPUPPARTNER">COMMUNITY & TOP UP PARTNER</strong>
-        <span data-i18n="tambahan.SlotTerbukaEventTurnamenDiscordR9">Slot Terbuka · Event Turnamen & Discord R9</span>
-        <a class="tombol tombol--kecil" href="#contact" data-i18n="sponsor.cta">Ajukan Kerja Sama</a>
-      </div>
-    </div>
-
-    <div class="jersey" id="jersey" data-jersey hidden>
-      <img class="jersey__foto" data-jersey-foto alt="" loading="lazy" width="480" height="600" hidden>
-      <div class="jersey__info">
-        <h2 class="judul" data-i18n-html="jersey.judul">Jersey <span class="aksen-merah">R9</span></h2>
-        <p class="jersey__nama" data-jersey-nama></p>
-        <p class="jersey__harga" data-jersey-harga></p>
-        <p class="jersey__catatan" data-jersey-catatan></p>
-        <a class="tombol tombol--utama" data-jersey-link target="_blank" rel="noopener" data-i18n="jersey.pesan" hidden>Pesan sekarang</a>
-      </div>
-    </div>
-    <div class="shop">
-      <svg class="shop__logo" viewBox="0 0 105.63 183.98" aria-hidden="true"><use href="#simbol"/></svg>
-      <div>
-        <h2 id="judul-shop" class="judul" data-i18n-html="shop.judul">R9 <span class="aksen-merah" data-i18n="tambahan.Shop">Shop</span></h2>
-        <p data-i18n="shop.isi"></p>
-        <p class="shop__segera" data-i18n="shop.segera">Segera hadir</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ========== contact ========== -->
   <section class="bagian kontak" id="contact" aria-labelledby="judul-kontak">
     <!-- ala nmss: tanda R9 + IXAR kecil di pojok kiri (kayak ikon N di nmss), kode batang di kanan, judul di tengah -->
     <div class="kontak__sudut" aria-hidden="true">
@@ -467,6 +465,7 @@
       <p class="kontak__info" role="status" aria-live="polite"></p>
     </form>
   </section>
+
 </main>
 
 <footer class="kaki">
@@ -486,12 +485,12 @@
   <p class="kaki__hak" data-i18n="kaki.hak">© 2026 Reign 9 International.</p>
 </footer>
 
-<script src="bahasa.js?v=2611130800"></script>
-<script src="cuitan-ixar.js?v=2611130800"></script>
-<script src="ixar.js?v=2611130800"></script>
-<script src="desain-model.js?v=2611130800"></script>
-<script src="desain.js?v=2611130800"></script>
-<script src="app.js?v=2611130800"></script>
-<script src="bagian-baru.js?v=2611130800"></script>
+<script src="bahasa.js?v=2611130841"></script>
+<script src="cuitan-ixar.js?v=2611130841"></script>
+<script src="ixar.js?v=2611130841"></script>
+<script src="desain-model.js?v=2611130841"></script>
+<script src="desain.js?v=2611130841"></script>
+<script src="app.js?v=2611130841"></script>
+<script src="bagian-baru.js?v=2611130841"></script>
 </body>
 </html>

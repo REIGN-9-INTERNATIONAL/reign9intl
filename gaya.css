@@ -1081,3 +1081,62 @@ p, li, h1, h2, h3, h4, dt, dd, small, label, blockquote { max-height: 1000000px;
 .orang__nama { font: 700 16px/1.15 var(--sub); text-transform: uppercase; letter-spacing: .04em; color: var(--teks); overflow-wrap: anywhere; }
 .orang__peran { font-size: 13px; color: var(--teks-redup); margin-top: -6px; }
 @media (prefers-reduced-motion: reduce) { .orang { opacity: 1; transform: none; animation: none; } }
+.hero__diam { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; visibility: hidden; }
+
+/* ---------- header ringkas (acuan nmss.gg): 5 menu + bahasa ringkas + Daftar; sisanya di ☰ ---------- */
+.atas__alat { gap: 10px; }
+.atas__daftar { min-height: 38px; padding: 0 18px; background: #000; color: #fff; font: 700 13px/1 var(--sub); letter-spacing: .1em; text-transform: uppercase; clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px); border-radius: 0; }
+.atas__daftar:hover { filter: none; background: #fff; color: var(--merah-pekat); }
+.atas__masuk { display: none; font: 700 13px/1 var(--sub); letter-spacing: .1em; text-transform: uppercase; color: #000; text-decoration: none; padding: 8px 4px; }
+.atas__masuk:hover { text-decoration: underline; text-underline-offset: 4px; }
+.pilih-bhs { position: relative; display: none; }
+.pilih-bhs__tombol { display: inline-flex; align-items: center; gap: 6px; min-height: 38px; padding: 0 8px; border: 0; background: none; color: #000; font: 700 13px/1 var(--sub); letter-spacing: .06em; cursor: pointer; }
+.pilih-bhs__tombol svg { width: 18px; height: 18px; }
+.pilih-bhs__tombol::after { content: ''; width: 6px; height: 6px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: translateY(-2px) rotate(45deg); }
+.pilih-bhs__daftar { position: absolute; right: 0; top: calc(100% + 10px); min-width: 190px; display: grid; padding: 6px; background: #0b0102; border: 1px solid rgba(255, 255, 255, .14); box-shadow: 0 16px 40px rgba(0, 0, 0, .45); animation: muncul .18s ease-out; }
+.pilih-bhs__daftar button { text-align: left; padding: 11px 12px; border: 0; background: none; color: #f3e9dc; font: 600 14px/1.2 var(--badan); cursor: pointer; }
+.pilih-bhs__daftar button:hover { background: rgba(255, 255, 255, .06); }
+.pilih-bhs__daftar button[aria-pressed="true"] { color: #fff; box-shadow: inset 3px 0 0 var(--merah); }
+.menu-hp { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 14px 16px 18px; }
+.menu-hp__masuk { flex: 1 1 100%; text-align: center; padding: 13px !important; border: 2px solid #000 !important; }
+@media (min-width: 1000px) {
+  .menu-ekstra, .menu-hp { display: none !important; }
+  .pilih-bhs { display: block; }
+  .atas__menu { gap: 28px; margin-right: 8px; }
+  .atas__menu a { font-size: 13px; letter-spacing: .12em; }
+}
+@media (min-width: 1180px) { .atas__masuk { display: inline-block; } }
+@media (max-width: 999px) {
+  .atas__menu { max-height: calc(100svh - 64px); overflow-y: auto; }
+  .atas__menu.buka { animation: menu-turun .22s ease-out; }
+  .atas__daftar { min-height: 36px; padding: 0 14px; }
+}
+@keyframes menu-turun { from { opacity: 0; transform: translateY(-8px); } }
+
+/* ---------- Our Team ringkas: angka satu baris, tab Active/Inactive, deret tim, pemain langsung tampil ---------- */
+.wilayah { display: flex !important; flex-wrap: wrap; align-items: center; gap: 10px 18px !important; padding: 0 0 18px !important; margin-bottom: 18px !important; background: none !important; border: 0 !important; border-bottom: 1px solid var(--garis) !important; }
+.wilayah__bendera, .wilayah p, .wilayah h3 { display: none !important; }
+.wilayah > div { display: contents; }
+.roster__kategori { display: inline-flex !important; gap: 0 !important; margin-bottom: 16px; border: 1px solid var(--garis); grid-template-columns: none !important; }
+.kartu-kategori { display: inline-flex !important; align-items: center; gap: 10px !important; padding: 12px 18px !important; border: 0 !important; background: none !important; box-shadow: none !important; transform: none !important; }
+.kartu-kategori + .kartu-kategori { border-left: 1px solid var(--garis) !important; }
+.kartu-kategori[aria-pressed="true"] { background: var(--merah) !important; color: #fff !important; }
+.kartu-kategori .kk__meta, .kartu-kategori .kk__sub, .kartu-kategori .kk__panah, .kartu-kategori .titik-status { display: none !important; }
+.kk__angka { margin: 0 !important; font-size: 0 !important; }
+.kk__angka b { font: 700 15px/1 var(--sub) !important; color: inherit !important; opacity: .75; }
+.kartu-kategori[aria-pressed="true"] .kk__angka b { opacity: 1; }
+.roster__tim-daftar { display: flex !important; flex-wrap: nowrap !important; gap: 8px !important; overflow-x: auto; padding-bottom: 6px; margin-bottom: 22px; scrollbar-width: thin; grid-template-columns: none !important; }
+.kartu-tim { flex: none; display: inline-flex !important; align-items: center; gap: 10px !important; min-height: 42px; padding: 0 16px !important; background: var(--kartu) !important; border: 1px solid var(--garis) !important; color: var(--teks) !important; clip-path: none !important; transform: none !important; box-shadow: none !important; }
+.kartu-tim:hover { border-color: var(--merah) !important; }
+.kartu-tim[aria-pressed="true"] { background: var(--teks) !important; color: var(--gradasi-a) !important; border-color: var(--teks) !important; }
+.kartu-tim__atas { display: contents !important; }
+.kartu-tim__nama { font: 700 13px/1 var(--sub) !important; letter-spacing: .08em; white-space: nowrap; }
+.kartu-tim__jumlah { font: 600 12px/1 var(--badan) !important; padding: 0 !important; border: 0 !important; background: none !important; opacity: .7; }
+.kartu-tim__sub, .kartu-tim__bendera { display: none !important; }
+[data-roster-petunjuk] { display: none !important; }
+.kelompok-roster__kepala { display: none !important; }
+.roster__wadah .daftar-pemain, .roster__wadah ul { animation: muncul .35s ease-out; }
+.orang--kosong .orang__nama { color: var(--teks-redup); }
+.creator-kartu__label { position: absolute; left: 10px; top: 10px; z-index: 1; padding: 4px 8px; background: rgba(0, 0, 0, .7); color: #fff; font: 700 11px/1 var(--sub); letter-spacing: .1em; text-transform: uppercase; }
+.creator-kartu__putar--yt img { object-position: center; }
+.creator-kartu__video--youtube { aspect-ratio: 16 / 9; min-height: 0; }
