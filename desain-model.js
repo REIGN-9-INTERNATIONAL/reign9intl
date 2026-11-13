@@ -3,7 +3,7 @@
   const ukuran = (label, css, min, max, unit = 'px') => ({ label, css, min, max, unit, type: 'number' });
   const warna = (label, css) => ({ label, css, type: 'color' });
   const pilihan = (label, css, options) => ({ label, css, type: 'select', options });
-  const fonts = { Reign9Display: 'Reign 9 Display', Oxanium: 'Oxanium', 'Uncut Sans': 'Uncut Sans', 'system-ui': 'Font perangkat' };
+  const fonts = { Reign9Display: 'Reign 9 Display', 'Chakra Petch': 'Chakra Petch', 'Uncut Sans': 'Uncut Sans', Oxanium: 'Oxanium', 'system-ui': 'Font perangkat' };
   const fields = {
     ink: warna('Warna tulisan', 'color'), fill: warna('Warna latar', 'background-color'), border: warna('Warna garis', 'border-color'),
     size: ukuran('Ukuran tulisan', 'font-size', 8, 240), font: pilihan('Jenis huruf', 'font-family', fonts),
@@ -27,7 +27,7 @@
     muted:warna('Tulisan pendamping','--teks-redup'), start:warna('Awal gradasi','--gradasi-a'),end:warna('Akhir gradasi','--gradasi-b'),
     panel:warna('Kartu','--kartu'),button:warna('Tombol utama','--tombol'),buttonText:warna('Tulisan tombol','--tombol-teks'),
     stroke:warna('Garis pemisah','--garis'), mascot:warna('Badan IXAR','--ixar'),eyes:warna('Mata IXAR','--ixar-mata'),item:warna('Perlengkapan IXAR','--ixar-alat'),
-    heading:pilihan('Font judul','--judul',fonts),body:pilihan('Font isi','--badan',fonts),wrap:ukuran('Lebar area isi','--lebar',240,4000)
+    heading:pilihan('Font judul','--judul',fonts),sub:pilihan('Font subjudul','--sub',fonts),body:pilihan('Font isi','--badan',fonts),wrap:ukuran('Lebar area isi','--lebar',240,4000)
   };
   const targets = [
     ['Seluruh website',':root'],['Bilah navigasi','#atas'],['Logo navigasi','.atas__logo svg'],['Menu navigasi','#menu'],['Pembuka','.hero'],

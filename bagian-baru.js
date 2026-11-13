@@ -42,13 +42,20 @@
     }
     const urut = [...DIVISI_WEB.map(([k]) => k).filter((k) => grup.has(k)), ...[...grup.keys()].filter((k) => !DIVISI_WEB.some(([x]) => x === k))];
     w.closest('section').hidden = !urut.length;
+    let n = 0;
     w.innerHTML = urut.map((k, i) => {
       const no = DIVISI_WEB.find(([x]) => x === k)?.[1], nama = no ? R9.t(`mgmt.${no}.nama`) : (R9.t(`kelompok.${k}`) !== `kelompok.${k}` ? R9.t(`kelompok.${k}`) : k);
-      return `<li class="divisi-kartu"><span class="divisi-kartu__no">0${i + 1}</span><h3>${esc(nama)}</h3>
-        <ul class="divisi-anggota">${grup.get(k).map((p) => `<li>
-          ${p.foto ? `<img src="${esc(urlMedia(p.foto))}" alt="" loading="lazy" width="120" height="150">` : `<span class="divisi-anggota__kosong" aria-hidden="true">${esc(String(p.nickname).replace(/^R9\.?\s*/i, '').slice(0, 1).toUpperCase())}</span>`}
-          <b>${esc(p.nickname)}</b>${p.role ? `<small>${esc(R9.t(`role.${p.role}`) !== `role.${p.role}` ? R9.t(`role.${p.role}`) : p.role)}</small>` : ''}</li>`).join('')}</ul></li>`;
+      const daftar = grup.get(k);
+      return `<section class="mgmt__divisi"><div class="mgmt__kepala"><span class="mgmt__no">${String(i + 1).padStart(2, '0')}</span><h3 class="mgmt__nama">${esc(nama)}</h3>
+        <span class="mgmt__jumlah">${daftar.length} ${esc(R9.t('roster.pemain'))}</span></div>
+        <ul class="mgmt__orang">${daftar.map((p) => `<li class="orang" style="--i:${n++}">
+          <div class="orang__bingkai">${p.foto ? `<img src="${esc(urlMedia(p.foto))}" alt="${esc(p.nickname)}" loading="lazy" width="400" height="500">`
+            : `<div class="orang__ixar"><span data-ixar="manajer" data-ixar-interaktif aria-hidden="true"></span></div>`}</div>
+          <span class="orang__nama">${esc(p.nickname)}</span>${p.role ? `<span class="orang__peran">${esc(R9.t(`role.${p.role}`) !== `role.${p.role}` ? R9.t(`role.${p.role}`) : p.role)}</span>` : ''}</li>`).join('')}</ul></section>`;
     }).join('');
+    // foto gagal dimuat → IXAR (rasio tetap 4:5)
+    $$('.orang__bingkai img', w).forEach((img) => img.addEventListener('error', () => { img.outerHTML = '<div class="orang__ixar"><span data-ixar="manajer" data-ixar-interaktif aria-hidden="true"></span></div>'; }, { once: true }));
+    $$('[data-ixar]', w).forEach((el) => window.IXAR?.pasang(el));
   }
   function news(d) {
     const w = $('[data-news]'); if (!w || $('[data-artikel-berita]')) return;

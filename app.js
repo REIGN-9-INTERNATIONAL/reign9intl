@@ -1637,8 +1637,8 @@ function gambarData() {
         <svg class="kk__panah" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2"/></svg>
       </button>`;
     // Management paling depan: inti organisasi
-    elKategori.innerHTML = kartu('management', ' titik-status--kompetitif', grupManagement.size, 'roster.unit', management.length)
-      + kartu('aktif', '', grupAktif.size, 'roster.tim', aktif.length)
+    // Management punya bagian sendiri (#management), gak ikut di Our Team
+    elKategori.innerHTML = kartu('aktif', '', grupAktif.size, 'roster.tim', aktif.length)
       + kartu('nonaktif', ' titik-status--sejarah', grupNonaktif.size, 'roster.tim', nonaktif.length);
   }
 
