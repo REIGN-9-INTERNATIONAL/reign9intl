@@ -23,8 +23,8 @@
       <span>${esc(p.nickname)}</span></li>`).join('');
   };
 
-  // alamat portal member. Ganti ke 'https://user.reign9.site/' setelah DNS + Caddy user.reign9.site aktif.
-  const PORTAL = 'https://admin.reign9.site/u/';
+  // alamat portal member
+  const PORTAL = 'https://user.reign9.site/';
   function akunLink() {
     for (const a of $$('[data-akun-link]')) {
       const u = new URL(a.getAttribute('href').replace('https://user.reign9.site/', PORTAL), location.href); u.searchParams.set('l', R9.bahasa); a.href = u.href;
