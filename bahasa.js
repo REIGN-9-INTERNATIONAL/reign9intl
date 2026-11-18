@@ -385,6 +385,7 @@ Object.assign(window.R9_KAMUS, {
   'menu.management': { id: 'Management', en: 'Management', zh: '管理层' },
   'menu.creator': { id: 'Creator Hub', en: 'Creator Hub', zh: '创作者中心' },
   'akun.daftar': { id: 'Daftar', en: 'Join', zh: '报名' },
+  'akun.panduan': { id: 'Panduan cara daftar (PDF)', en: 'Sign-up guide (PDF)', zh: '注册指南 (PDF)' },
   'akun.masuk': { id: 'Login', en: 'Log in', zh: '登录' },
   'akun.label': { id: 'Daftar atau login member Reign 9', en: 'Join or log in to Reign 9', zh: '报名或登录 Reign 9 会员' },
   'mgmt.judul': { id: 'Struktur <span class="aksen-merah">Management</span>', en: 'Our <span class="aksen-merah">Management</span>', zh: '<span class="aksen-merah">管理层</span>架构' },
