@@ -1,5 +1,5 @@
 {
- "diperbarui": "2026-11-18T04:42:34.291Z",
+ "diperbarui": "2026-11-18T06:03:54.979Z",
  "pemain": {
   "aktif": [
    {
@@ -1449,6 +1449,15 @@
   ]
  },
  "creator": [
+  {
+   "id": "f31",
+   "jenis": "tiktok",
+   "vid": "7680506567199821076",
+   "url": "https://www.tiktok.com/@cellynsan/video/7680506567199821076",
+   "ign": "R9.Cellyn",
+   "foto": "/media/a0781add72dc3688db43a18183de8575.jpg",
+   "waktu": "2026-11-18 06:03:48"
+  },
   {
    "id": 1,
    "jenis": "tiktok",
