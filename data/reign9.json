@@ -1,5 +1,5 @@
 {
- "diperbarui": "2026-11-18T06:03:54.979Z",
+ "diperbarui": "2026-11-18T08:24:10.485Z",
  "pemain": {
   "aktif": [
    {
@@ -1449,6 +1449,15 @@
   ]
  },
  "creator": [
+  {
+   "id": "f37",
+   "jenis": "tiktok",
+   "vid": "7692046529640615189",
+   "url": "https://www.tiktok.com/@dhllck/video/7692046529640615189",
+   "ign": "R9.Dhilluck",
+   "foto": "/media/b5f54b4d8008098b6aa57972d842d187.jpg",
+   "waktu": "2026-11-18 08:24:04"
+  },
   {
    "id": "f31",
    "jenis": "tiktok",
