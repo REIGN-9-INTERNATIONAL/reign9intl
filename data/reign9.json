@@ -1,5 +1,5 @@
 {
- "diperbarui": "2026-11-18T04:00:36.898Z",
+ "diperbarui": "2026-11-18T04:09:48.791Z",
  "pemain": {
   "aktif": [
    {
@@ -1449,6 +1449,15 @@
   ]
  },
  "creator": [
+  {
+   "id": 1,
+   "jenis": "tiktok",
+   "vid": "7677629533989670151",
+   "url": "https://www.tiktok.com/@lyxholic/video/7677629533989670151",
+   "ign": "R9.LYXHOLIC",
+   "foto": "/media/f553b7e395a615a5a3a31b03e263c370.jpg",
+   "waktu": "2026-11-18 04:09:42"
+  },
   {
    "id": "f2",
    "jenis": "tiktok",
