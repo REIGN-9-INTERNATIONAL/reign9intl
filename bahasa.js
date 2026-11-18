@@ -436,6 +436,7 @@ Object.assign(window.R9_KAMUS, {
   'creator.sub': { id: 'Video TikTok dari member Reign 9, dipilih tim Media.', en: 'TikTok videos from Reign 9 members, picked by our Media team.', zh: 'Reign 9 会员的 TikTok 视频，由媒体团队精选。' },
   'creator.putar': { id: 'Putar video dari {ign}', en: 'Play video by {ign}', zh: '播放 {ign} 的视频' },
   'creator.kosong': { id: 'Belum ada video.', en: 'No videos yet.', zh: '暂无视频。' },
+  'creator.buka': { id: 'Tonton di TikTok', en: 'Watch on TikTok', zh: '在 TikTok 观看' },
   'creator.lagi': { id: 'Lihat video lainnya', en: 'See more videos', zh: '查看更多视频' },
   'creator.kirim': { id: 'Kirim videomu', en: 'Submit your video', zh: '提交你的视频' },
   'galeri.judul': { id: '<span class="aksen-merah">Galeri</span>', en: '<span class="aksen-merah">Gallery</span>', zh: '<span class="aksen-merah">相册</span>' },

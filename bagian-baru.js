@@ -103,8 +103,8 @@
         return `<div class="br-tim${menang ? ' br-tim--menang' : ''}${kalah ? ' br-tim--kalah' : ''}${id == null ? ' br-tim--kosong' : ''}">${id == null ? '' : gbrLogo(id)}<span>${id == null ? (r ? 'TBD' : 'BYE') : esc(nama.get(id) || '?')}</span>${menang ? '<b>✓</b>' : ''}</div>`; };
       const juara = k.bracket.ronde.at(-1)[0].menang;
       return `<article class="bracket-web"><header><h3 class="sub-judul">${esc(R9.teks(k.nama))}</h3><span>${k.format === 'solo' ? '1 vs 1 · ' : ''}${esc(R9.tanggal(k.tanggal))}${k.hadiah ? ' · ' + esc(R9.rupiah(k.hadiah)) : ''}</span></header>
-        <div class="bracket">${k.bracket.ronde.map((ronde, r) => `<div class="br-ronde"><h4>${esc(judulRonde(r))}</h4><div class="br-laga-daftar">${ronde.map((l) => `<div class="br-laga">${slot(l, 'a', r)}${slot(l, 'b', r)}</div>`).join('')}</div></div>`).join('')}
-        ${juara != null ? `<div class="br-ronde"><h4>${esc(R9.t('bracket.juara'))}</h4><div class="br-laga-daftar"><div class="br-trofi">${gbrLogo(juara, ' br-logo--juara')}<span>${TROFI_SVG} ${esc(nama.get(juara) || '')}</span></div></div></div>` : ''}</div></article>`;
+        <div class="bracket" style="--ronde:${n}">${k.bracket.ronde.map((ronde, r) => `<div class="br-ronde"><h4>${esc(judulRonde(r))}</h4><div class="br-laga-daftar">${ronde.map((l) => `<div class="br-laga">${slot(l, 'a', r)}${slot(l, 'b', r)}</div>`).join('')}</div></div>`).join('')}
+        ${juara != null ? `<div class="br-ronde br-juara"><h4>${esc(R9.t('bracket.juara'))}</h4><div class="br-laga-daftar"><div class="br-trofi">${gbrLogo(juara, ' br-logo--juara')}<span>${TROFI_SVG} ${esc(nama.get(juara) || '')}</span></div></div></div>` : ''}</div></article>`;
     }).join('');
   }
   function prestasiTotal(d) {
@@ -129,7 +129,7 @@
     if (wadah.querySelector('iframe')) return;
     const f = document.createElement('iframe');
     f.src = TT_PLAYER(wadah.dataset.tt); f.title = wadah.getAttribute('aria-label') || 'TikTok';
-    f.allow = 'fullscreen; encrypted-media; picture-in-picture; accelerometer; gyroscope'; f.allowFullscreen = true; f.className = 'creator-kartu__video creator-kartu__video--tiktok';
+    f.allow = 'autoplay; fullscreen; encrypted-media; picture-in-picture; accelerometer; gyroscope'; f.allowFullscreen = true; f.className = 'creator-kartu__video creator-kartu__video--tiktok';
     f.onload = () => wadah.classList.add('creator-kartu__tt--siap');
     wadah.append(f);
   };
@@ -147,7 +147,7 @@
         : `<button type="button" class="creator-kartu__putar creator-kartu__putar--yt" data-video="youtube:${esc(c.vid)}" aria-label="${label}">
         ${/^[\w-]{11}$/.test(c.vid) ? `<img src="https://i.ytimg.com/vi/${c.vid}/hqdefault.jpg" alt="" loading="lazy" width="480" height="360">` : ''}
         <span class="creator-kartu__label">YouTube</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></button>`}
-      <span class="creator-kartu__nama">${esc(c.ign)}</span></div>`; }).join('')
+      <span class="creator-kartu__nama">${esc(c.ign)}</span>${tt ? `<a class="creator-kartu__buka" href="${esc(/^https:\/\/(www\.|m\.)?tiktok\.com\//.test(c.url || '') ? c.url : `https://www.tiktok.com/@reign9/video/${c.vid}`)}" target="_blank" rel="noopener">${esc(R9.t('creator.buka'))} ↗</a>` : ''}</div>`; }).join('')
       + (!semua && v.length > AWAL_CREATOR ? `<button type="button" class="tombol tombol--garis creator__lagi" data-creator-lagi>${esc(R9.t('creator.lagi'))}</button>` : '');
     for (const x of w.querySelectorAll('[data-tt]')) amatiTT ? amatiTT.observe(x) : pasangTT(x);
     const lagi = w.querySelector('[data-creator-lagi]'); if (lagi) lagi.onclick = () => creator(d, true);
