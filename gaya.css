@@ -1216,3 +1216,19 @@ p, li, h1, h2, h3, h4, dt, dd, small, label, blockquote { max-height: 1000000px;
 
 /* ikon piala garis (pengganti emoji) */
 .trofi { width: 1.05em; height: 1.05em; vertical-align: -.16em; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Creator Hub: pemutar TikTok resmi langsung di kartu */
+.creator-kartu__tt { position: relative; width: 100%; aspect-ratio: 9 / 16; border: 1px solid var(--garis); background: linear-gradient(160deg, var(--merah-tua), #000); overflow: hidden; }
+.creator-kartu__tt::after { content: ''; position: absolute; inset: 42% 38%; border-radius: 50%; border: 3px solid rgba(255, 255, 255, .25); border-top-color: #fff; animation: putarMuat 0.9s linear infinite; }
+.creator-kartu__tt--siap::after { display: none; }
+.creator-kartu__tt .creator-kartu__video { position: absolute; inset: 0; width: 100%; height: 100%; min-height: 0; }
+.creator-kartu__tt--siap .creator-kartu__label { display: none; }
+.creator__lagi { grid-column: 1 / -1; justify-self: center; }
+@keyframes putarMuat { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .creator-kartu__tt::after { animation: none; } }
+@media (max-width: 600px) {
+  .creator__grid { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 72%; overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; padding-bottom: 6px; scrollbar-width: none; }
+  .creator__grid::-webkit-scrollbar { display: none; }
+  .creator-kartu { scroll-snap-align: start; }
+  .creator__lagi { grid-column: auto; align-self: center; white-space: nowrap; }
+}

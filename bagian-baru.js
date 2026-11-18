@@ -123,25 +123,48 @@
         `<a href="news.html?id=t${t.id}">${TROFI_SVG} ${esc(juaraTeks(t))} · ${esc(R9.teks(t.turnamen))}</a>`).join('')}</div>`);
     }
   }
-  function creator(d) {
+  // TikTok: pemutar resmi (sampul & isi asli, putar di tempat) dipasang pas kartu mendekati layar. YouTube: sampul dulu, pemutar saat diklik.
+  const TT_PLAYER = (id) => `https://www.tiktok.com/player/v1/${id}?music_info=1&description=1&rel=0&native_context_menu=0&closed_caption=0`;
+  const pasangTT = (wadah) => {
+    if (wadah.querySelector('iframe')) return;
+    const f = document.createElement('iframe');
+    f.src = TT_PLAYER(wadah.dataset.tt); f.title = wadah.getAttribute('aria-label') || 'TikTok';
+    f.allow = 'fullscreen; encrypted-media; picture-in-picture; accelerometer; gyroscope'; f.allowFullscreen = true; f.className = 'creator-kartu__video creator-kartu__video--tiktok';
+    f.onload = () => wadah.classList.add('creator-kartu__tt--siap');
+    wadah.append(f);
+  };
+  const amatiTT = 'IntersectionObserver' in window ? new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { pasangTT(e.target); amatiTT.unobserve(e.target); } }), { rootMargin: '250px 0px' }) : null;
+  const AWAL_CREATOR = 12;
+  function creator(d, semua) {
     const w = $('[data-creator]'); if (!w) return;
-    const v = d.creator || [];
+    const v = d.creator || [], kunci = (semua ? 'S' : '') + R9.bahasa + v.map((c) => c.vid).join(',');
+    if (w.dataset.kunci === kunci) return; // data live sama: jangan muat ulang video yang lagi ditonton
+    w.dataset.kunci = kunci;
+    const tampil = semua ? v : v.slice(0, AWAL_CREATOR);
     $('[data-creator-kosong]').hidden = v.length > 0;
-    w.innerHTML = v.map((c) => `<div class="creator-kartu">
-      <button type="button" class="creator-kartu__putar creator-kartu__putar--${c.jenis === 'youtube' ? 'yt' : 'tt'}" data-video="${c.jenis === 'youtube' ? 'youtube' : 'tiktok'}:${esc(c.vid)}" aria-label="${esc(ganti(R9.t('creator.putar'), { ign: c.ign }))}">
-        ${c.jenis === 'youtube' && /^[\w-]{11}$/.test(c.vid) ? `<img src="https://i.ytimg.com/vi/${c.vid}/hqdefault.jpg" alt="" loading="lazy" width="480" height="360">` : c.foto ? `<img src="${esc(urlMedia(c.foto))}" alt="" loading="lazy" width="320" height="400">` : ''}
-        <span class="creator-kartu__label">${c.jenis === 'youtube' ? 'YouTube' : 'TikTok'}</span>
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></button>
-      <span class="creator-kartu__nama">${esc(c.ign)}</span></div>`).join('');
+    w.innerHTML = tampil.map((c) => { const tt = c.jenis !== 'youtube' && /^\d{8,25}$/.test(c.vid), label = esc(ganti(R9.t('creator.putar'), { ign: c.ign }));
+      return `<div class="creator-kartu">${tt ? `<div class="creator-kartu__tt" data-tt="${esc(c.vid)}" aria-label="${label}"><span class="creator-kartu__label">TikTok</span></div>`
+        : `<button type="button" class="creator-kartu__putar creator-kartu__putar--yt" data-video="youtube:${esc(c.vid)}" aria-label="${label}">
+        ${/^[\w-]{11}$/.test(c.vid) ? `<img src="https://i.ytimg.com/vi/${c.vid}/hqdefault.jpg" alt="" loading="lazy" width="480" height="360">` : ''}
+        <span class="creator-kartu__label">YouTube</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></button>`}
+      <span class="creator-kartu__nama">${esc(c.ign)}</span></div>`; }).join('')
+      + (!semua && v.length > AWAL_CREATOR ? `<button type="button" class="tombol tombol--garis creator__lagi" data-creator-lagi>${esc(R9.t('creator.lagi'))}</button>` : '');
+    for (const x of w.querySelectorAll('[data-tt]')) amatiTT ? amatiTT.observe(x) : pasangTT(x);
+    const lagi = w.querySelector('[data-creator-lagi]'); if (lagi) lagi.onclick = () => creator(d, true);
   }
+  // satu video jalan, yang lain berhenti (biar mulus & gak tabrakan suara)
+  const hentikanLain = (kecuali) => { for (const f of document.querySelectorAll('.creator-kartu__video')) if (f.contentWindow !== kecuali) {
+    if (f.src.includes('tiktok.com')) f.contentWindow?.postMessage({ 'x-tiktok-player': true, type: 'pause' }, '*');
+    else f.contentWindow?.postMessage(JSON.stringify({ event: 'command', func: 'pauseVideo', args: [] }), '*'); } };
+  addEventListener('message', (e) => { if (e.origin === 'https://www.tiktok.com' && e.data?.type === 'onStateChange' && e.data.value === 1) hentikanLain(e.source); });
   document.addEventListener('click', (e) => {
     const b = e.target.closest('[data-video]'); if (!b) return;
     const [jenis, id] = b.dataset.video.split(':'); if (!/^[\w-]{8,25}$/.test(id)) return;
     const f = document.createElement('iframe');
-    f.src = jenis === 'youtube' ? `https://www.youtube-nocookie.com/embed/${id}?autoplay=1` : `https://www.tiktok.com/embed/v2/${id}`;
-    f.title = b.getAttribute('aria-label') || 'Video'; f.allow = 'encrypted-media; fullscreen; picture-in-picture'; f.allowFullscreen = true; f.loading = 'lazy';
+    f.src = jenis === 'youtube' ? `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&playsinline=1&enablejsapi=1` : TT_PLAYER(id);
+    f.title = b.getAttribute('aria-label') || 'Video'; f.allow = 'autoplay; encrypted-media; fullscreen; picture-in-picture; accelerometer; gyroscope'; f.allowFullscreen = true;
     f.className = `creator-kartu__video creator-kartu__video--${jenis}`;
-    b.replaceWith(f);
+    hentikanLain(null); b.replaceWith(f);
   });
   function galeri(d) {
     const w = $('[data-galeri]'); if (!w) return;
