@@ -1,5 +1,5 @@
 {
- "diperbarui": "2026-11-20T06:42:24.681Z",
+ "diperbarui": "2026-11-25T10:51:09.875Z",
  "pemain": {
   "aktif": [
    {
@@ -463,6 +463,22 @@
     ],
     "periode": "",
     "gabung": "2026-06-06",
+    "negara": "ID",
+    "jenis": "pemain",
+    "foto": "",
+    "turnamen": []
+   },
+   {
+    "id": 71,
+    "nickname": "R9.RYY",
+    "role": "Roaming",
+    "divisi": "Honor of Kings",
+    "kelompok": "R9 Dewata",
+    "instagram": "",
+    "tiktok": "",
+    "hero": [],
+    "periode": "",
+    "gabung": "2026-04-01",
     "negara": "ID",
     "jenis": "pemain",
     "foto": "",
