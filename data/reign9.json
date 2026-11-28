@@ -1,5 +1,5 @@
 {
- "diperbarui": "2026-11-25T10:51:12.141Z",
+ "diperbarui": "2026-11-28T06:55:47.503Z",
  "pemain": {
   "aktif": [
    {
@@ -1465,6 +1465,15 @@
   ]
  },
  "creator": [
+  {
+   "id": "f78",
+   "jenis": "tiktok",
+   "vid": "7708524524802805012",
+   "url": "https://www.tiktok.com/@r9_heaven/video/7708524524802805012",
+   "ign": "R9.MadeInHeaven",
+   "foto": "/media/90ca4428db2b536a613cfbc5f1f373a4.jpg",
+   "waktu": "2026-11-28 06:55:41"
+  },
   {
    "id": "f41",
    "jenis": "tiktok",
